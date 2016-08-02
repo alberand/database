@@ -3,48 +3,11 @@
 
 import pprint
 import logging
-from datetime import datetime
+
+from config import pkg_structure, handlers
 
 logger = logging.getLogger(__name__)
 
-# This list define package structure. Thus, in which order data are arranged.
-# Empty fields doesn't appear in data structure. They are just skipped, also as
-# non defined fields.
-pkg_structure = [
-        'module_id',
-        'date',
-        'time',
-        'lattitude',
-        'longitude',
-        'course',
-        'gps_altitude',
-        'speed',
-        'temperature',
-        'pressure',
-        'unknown_1',
-        'unknown_2'
-]
-
-# This dictionary define data handlers. There is no need to keep right order.
-# Handler should be pointer (object) to callable function not result of calling
-# this function.
-handlers = {
-        # Name  # Handler
-        'module_id':    int,
-        'date':         lambda date: 
-                                datetime.strptime(date, '%d.%m.%y').date(),
-        'time':         lambda time: 
-                                datetime.strptime(time, '%H:%M:%S.%f').time(),
-        'lattitude':    str,
-        'longitude':    str,
-        'course':       float,
-        'gps_altitude': float,
-        'speed':        float,
-        'temperature':  int,
-        'pressure':     int,
-        'unknown_1':    int,
-        'unknown_2':    int
-}
 
 def parse(string):
     '''
@@ -76,6 +39,10 @@ def parse(string):
             result[name] = handlers[name](data_list[i])
         except ValueError:
             logger.error('There is wrong data or handler. This sample skipped.')
+            return None
+        except TypeError:
+            logger.error('Can\'t parse string. Possibly there is problem with '
+                         ' some handler. Handler should be callable function.')
             return None
 
     return result

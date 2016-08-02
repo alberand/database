@@ -3,7 +3,7 @@
 
 import logging
 
-import MySQLdb
+import mysql.connector
 
 from config import config
 
@@ -20,10 +20,24 @@ class Database:
         Set up connection with database. All conenction parameters can be
         changed in configuration file 'config.py'.
         '''
-        self.db = MySQLdb.connect(
-                config['mysql_host'], config['mysql_user'], 
-                config['mysql_pass'], config['loggers'])
-        self.cursor = self.db.cursor()
+        try:
+            self.cnx = mysql.connector.connect(
+                host=config['mysql_host'], 
+                user=config['mysql_user'], 
+                password=config['mysql_pass'], 
+                database=config['mysql_db'])
+        except mysql.connector.Error as err:
+            # Handle some errors
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                logger.error('Something is wrong with your user name'
+                             ' or password')
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                logger.error("Database does not exist")
+            else:
+                logger.error(err)
+
+        # Get cursor (input point to database)
+        self.curser = self.cnx.cursor()
 
     # def create_table(self, params):
         # query = 'CREATE TABLE {name}'.format(
