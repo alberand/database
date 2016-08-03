@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import copy
 import logging
 
 import mysql.connector
 
-from config import config
+from config import config, pkg_structure, db_fields
+from sql.queries import QUERIES
 
 logger = logging.getLogger(__name__)
 
 class Database:
 
     def __init__(self):
-        self.db = None
+        self.cnx = None
         self.cursor = None
 
     def connect(self):
@@ -26,6 +28,7 @@ class Database:
                 user=config['mysql_user'], 
                 password=config['mysql_pass'], 
                 database=config['mysql_db'])
+            logger.info("Successful connection to database.")
         except mysql.connector.Error as err:
             # Handle some errors
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -37,13 +40,47 @@ class Database:
                 logger.error(err)
 
         # Get cursor (input point to database)
-        self.curser = self.cnx.cursor()
+        self.cursor = self.cnx.cursor()
 
-    # def create_table(self, params):
-        # query = 'CREATE TABLE {name}'.format(
-                # name=params['name']         
-        # )
-        # self.cursor.excute(query)
+    def __dict_splitter(self, data):
+        data['t_ms'] = data['time'].microsecond
+        data['lat_pos'] = data['latitude'][1]
+        data['lon_pos'] = data['longitude'][1]
+        data['latitude'] = data['latitude'][0]
+        data['longitude'] = data['longitude'][0]
+
+        return data
+
+    def insert(self, data):
+        '''
+        Inserting data sample to table.
+        Args:
+            data: dictionary with parsed data
+        '''
+        # Because we want separate symbol in latitude and longitude we need to
+        # change 'pkg_structure.' Also because MySQL can't store microseconds 
+        # we need to use another column for this.
+        # We need to make copy of 'pkg_structure' because otherwise we will
+        # change global settings.
+        struct = copy.copy(pkg_structure) + db_fields
+
+        # Now we need change 'data' dictionary because we changed package
+        # structure
+        data = self.__dict_splitter(data)
+
+        # Generate quiery from data. For now table is static. But table should
+        # be choosen based on data.
+        query = QUERIES['insert'].format(
+            'logger', ', '.join(struct), 
+            ', '.join(['%({})s'.format(item) for item in struct])
+        )
+
+        try:
+            self.cursor.execute(query, data)
+            self.cnx.commit()
+        except Exception as e:
+            logging.info(e)
+            self.cnx.rollback()
 
 
     def send_query(self, query):
@@ -64,4 +101,5 @@ class Database:
         '''
         Close database.
         '''
-        self.db.close()
+        logger.info("Closing database.")
+        self.cnx.close()

@@ -57,3 +57,13 @@ handlers = {
         'unknown_1':    int,
         'unknown_2':    int
 }
+
+# Some elements in received packages can be divided in more data elements. For
+# example 'time' field consist of hours, minutes, seconds and also microseconds.
+# But MySQL can store only hours, minutes and seconds. So we need to create
+# additional field for storing ms. This list contains those additional fields.
+db_fields = [
+        't_ms',
+        'lat_pos',
+        'lon_pos'
+]

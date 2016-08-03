@@ -34,6 +34,7 @@ def parse(string):
 
     # Parse and convert data
     result = dict()
+    logging.info(pkg_structure)
     for i, name in enumerate(pkg_structure):
         try:
             result[name] = handlers[name](data_list[i])

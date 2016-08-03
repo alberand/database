@@ -19,14 +19,17 @@ TABLES['logger'] =  (
     '    `date` DATE NOT NULL,'                         # Date
     '    `time` TIME NOT NULL,'                         # Time
     '    `t_ms` INT(11) NOT NULL,'                      # Time microseconds
-    '    `latitude` FLOAT(11, 11) NOT NULL,'            # Latitude
+    '    `latitude` FLOAT(10, 5) NOT NULL,'            # Latitude
     '    `lat_pos` ENUM("N", "S") NOT NULL,'            # Latitude point N/S
-    '    `longitude` FLOAT(11, 11) NOT NULL,'           # Longitude
+    '    `longitude` FLOAT(10, 5) NOT NULL,'           # Longitude
     '    `lon_pos` ENUM("E", "W") NOT NULL,'            # Longitude point E/W
-    '    `course` FLOAT(11, 11) NOT NULL,'              # Speed
-    '    `gps_altitude` FLOAT(11, 11) NOT NULL,'        # Gps altitude
+    '    `course` FLOAT NOT NULL,'              # Course
+    '    `gps_altitude` FLOAT(4, 1) NOT NULL,'        # Gps altitude
+    '    `speed` FLOAT NOT NULL,'               # Speed 
     '    `temperature` INT(11) NOT NULL,'               # Temperature 
     '    `pressure` INT(11) NOT NULL,'                  # Pressure
+    '    `unknown_1` INT(11) NOT NULL,'                 # 
+    '    `unknown_2` INT(11) NOT NULL,'                 # 
     '    PRIMARY KEY (`smp_no`)'
     ') ENGINE=InnoDB'
 
