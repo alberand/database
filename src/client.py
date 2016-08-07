@@ -50,21 +50,14 @@ class Device(threading.Thread):
         self.port = port
 
     def run(self):
-
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.connect((self.ip, self.port))
-
-            i = 0
-            while self.running:
-                # sock.sendall(
-                        # bytes('#{} from thread {}'.format(
-                            # i, self.name), 'utf-8'))
+        i = 0
+        while self.running:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.connect((self.ip, self.port))
+    
                 sock.sendall(bytes(test_list[i], 'ascii'))
-                # print(sock.recv(1024))
                 i += 1
                 time.sleep(1)
-
-            sock.sendall(bytes('quit', 'utf-8'))
 
     def stop(self):
         self.running = False

@@ -20,7 +20,12 @@ config = {
 
         # Name of file where will be saved all corrupted packages (which can't
         # be parsed).
-        'corrupted_storage': './data/corrupted_data.txt'
+        'corrupted_storage': './data/corrupted_data.txt',
+
+        # Package symbols
+        'pkg_start':        '@',
+        'pkg_delimeter':    ';',
+        'pkg_end':          '#'
 }
 
 # This list define package structure. Thus, in which order data are arranged.

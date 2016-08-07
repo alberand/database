@@ -23,12 +23,12 @@ def parse(string):
         return None
 
     # Check if receive complete string
-    if string[0] != '@' or string[-1] != '#':
+    if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
         logger.error('Sorry, string is not complete. String: {}'.format(string))
         return None
     
     # Get rid of package characters and split data into list
-    raw_data = string[1:-1].split(';')
+    raw_data = string[1:-1].split(config['pkg_delimeter'])
     # Remove empty positions
     data_list = list(filter(None, raw_data))
 
