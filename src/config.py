@@ -16,7 +16,11 @@ config = {
 
         # Socket parameters
         'host': 'localhost',
-        'port': 5000
+        'port': 5000,
+
+        # Name of file where will be saved all corrupted packages (which can't
+        # be parsed).
+        'corrupted_storage': './data/corrupted_data.txt'
 }
 
 # This list define package structure. Thus, in which order data are arranged.

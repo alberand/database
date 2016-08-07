@@ -11,6 +11,7 @@ from server import Server
 from handler import RequestHandler
 from config import config
 from database import Database
+from dataprocessor import data_for_db, expand_pkg_struct
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +61,8 @@ class Listener(threading.Thread):
                     sample = self.queue.get()
 
                     # logging.info(sample)
-                    self.database.insert(sample)
+                    self.database.insert(
+                            expand_pkg_struct(), data_for_db(sample))
 
                 time.sleep(0.001)
         except KeyboardInterrupt:

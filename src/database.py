@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 import logging
 
 import mysql.connector
@@ -42,32 +41,13 @@ class Database:
         # Get cursor (input point to database)
         self.cursor = self.cnx.cursor()
 
-    def __dict_splitter(self, data):
-        data['t_ms'] = data['time'].microsecond
-        data['lat_pos'] = data['latitude'][1]
-        data['lon_pos'] = data['longitude'][1]
-        data['latitude'] = data['latitude'][0]
-        data['longitude'] = data['longitude'][0]
-
-        return data
-
-    def insert(self, data):
+    def insert(self, struct, data):
         '''
         Inserting data sample to table.
         Args:
+            struct: data fields in database
             data: dictionary with parsed data
         '''
-        # Because we want separate symbol in latitude and longitude we need to
-        # change 'pkg_structure.' Also because MySQL can't store microseconds 
-        # we need to use another column for this.
-        # We need to make copy of 'pkg_structure' because otherwise we will
-        # change global settings.
-        struct = copy.copy(pkg_structure) + db_fields
-
-        # Now we need change 'data' dictionary because we changed package
-        # structure
-        data = self.__dict_splitter(data)
-
         # Generate quiery from data. For now table is static. But table should
         # be choosen based on data.
         query = QUERIES['insert'].format(

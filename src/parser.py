@@ -4,7 +4,7 @@
 import pprint
 import logging
 
-from config import pkg_structure, handlers
+from config import pkg_structure, handlers, config
 
 logger = logging.getLogger(__name__)
 
@@ -34,16 +34,23 @@ def parse(string):
 
     # Parse and convert data
     result = dict()
-    logging.info(pkg_structure)
+
     for i, name in enumerate(pkg_structure):
         try:
             result[name] = handlers[name](data_list[i])
         except ValueError:
+            # We don't want to loose data in any case so we save it to file
             logger.error('There is wrong data or handler. This sample skipped.')
+            with open(config['corrupted_storage'], 'a+') as corrupted_storage:
+                corrupted_storage.write(string + '\n')
+
             return None
         except TypeError:
             logger.error('Can\'t parse string. Possibly there is problem with '
                          ' some handler. Handler should be callable function.')
+            with open(config['corrupted_storage'], 'a+') as corrupted_storage:
+                corrupted_storage.write(string + '\n')
+
             return None
 
     return result
