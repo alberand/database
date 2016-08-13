@@ -4,12 +4,13 @@
 import time
 import socket
 import logging
+import datetime
 import threading
 from queue import Queue
 
 from server import Server
 from handler import RequestHandler
-from config import config
+from config import config, msg_structure, init_structure
 from database import Database
 from dataprocessor import data_for_db, expand_pkg_struct
 
@@ -56,17 +57,65 @@ class Listener(threading.Thread):
         # Start processing loop
         try:
             logging.info('Run loop for receiving data from server.')
+
             while self.running:
+                # Package received
                 if not self.queue.empty():
-                    sample = self.queue.get()
+                    pkg = self.queue.get()
 
-                    # logging.info(sample)
-                    self.database.insert(
-                            expand_pkg_struct(), data_for_db(sample))
+                    self.process_pkg(pkg)
 
-                time.sleep(0.001)
+                time.sleep(0.5)
         except KeyboardInterrupt:
             self.stop()
+
+    def process_pkg(self, pkg):
+        '''
+        Save package to file and to database.
+        Args:
+            pkg: dict, with parsed data
+        '''
+        # Save package to file
+        self.save_pkg(pkg)
+
+        # Load package data to database
+        if pkg['type'] == 'D':
+            # There we need to change package structure a little bit.
+            self.database.insert(expand_pkg_struct(), 
+                    data_for_db(pkg), 'packages')
+        elif pkg['type'] == 'T':
+            self.database.insert(msg_structure, pkg, 'messages')
+        elif pkg['type'] == 'I':
+            self.database.insert(init_structure, pkg, 'loggers')
+        else:
+            logging.info('Unkonwn type of the packages. Skipping.')
+
+
+    def save_pkg(self, pkg):
+        '''
+        Saves package to session file.
+        Args:
+            pkg: dict, with parsed data
+        '''
+        filename = '{}/{}_{}.csv'.format(config['data_storage'],
+                datetime.datetime.today().strftime('%d-%m-%y'), pkg['ses_id'])
+
+        # Write package to file
+        with open(filename, 'a+') as _file:
+            _file.write(pkg['original'])
+            _file.write('\n')
+
+
+    def get_filename(self, session_id):
+        '''
+        Gets filename for a file to store data by session id.
+        Args:
+            session_id: string md5 hash.
+        '''
+        filename = self.database.select(
+                'filenames', ['filename'], {'ses_id': session_id})
+
+        return str(filename[0][0])
 
     def stop(self):
         '''

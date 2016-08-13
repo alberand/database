@@ -9,6 +9,7 @@ import threading
 logger = logging.getLogger(__name__)
 
 test_list = [
+        "TEXT: msg msg msg msg msg msg msg msg msg msg msg msg.\n\r",
         "@02;30.07.16;17:55:37.9;5007.84276N;01425.11099E;0.0;338.8;0.0;280;97847;;;;;;;;1;06#",
         "@02;30.07.16;17:55:41.9;5007.84266N;01425.11084E;0.0;339.1;0.0;280;97849;;;;;;;;1;06#",
         "@02;30.07.16;17:55:46.9;5007.84262N;01425.11075E;0.0;339.3;0.0;280;97849;;;;;;;;1;06#",
@@ -63,18 +64,19 @@ class Device(threading.Thread):
         self.running = False
 
 if __name__ == '__main__':
+    # ip, port = '147.32.196.177', 5000
     ip, port = '127.0.0.1', 5000
     a = Device(ip, port)
-    b = Device(ip, port)
-    c = Device(ip, port)
+    # b = Device(ip, port)
+    # c = Device(ip, port)
 
     a.start()
-    b.start()
-    c.start()
+    # b.start()
+    # c.start()
 
     time.sleep(5)
 
     a.stop()
-    b.stop()
-    c.stop()
+    # b.stop()
+    # c.stop()
 

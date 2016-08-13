@@ -41,17 +41,18 @@ class Database:
         # Get cursor (input point to database)
         self.cursor = self.cnx.cursor()
 
-    def insert(self, struct, data):
+    def insert(self, struct, data, table='packages'):
         '''
         Inserting data sample to table.
         Args:
             struct: data fields in database
             data: dictionary with parsed data
+            table: string with name of the table where to insert data
         '''
         # Generate quiery from data. For now table is static. But table should
         # be choosen based on data.
         query = QUERIES['insert'].format(
-            'logger', ', '.join(struct), 
+            table, ', '.join(struct), 
             ', '.join(['%({})s'.format(item) for item in struct])
         )
 
@@ -61,6 +62,31 @@ class Database:
         except Exception as e:
             logging.info(e)
             self.cnx.rollback()
+
+    def select(self, table, fields, where):
+        '''
+        Selects 'fields' from 'table' where 'where'.
+        Args:
+            table: string, name of the table
+            fields: list, name of the fields to return
+            where: dict, where key is field name and value is value to 
+                   determine which field to select
+        '''
+        # Generate conditions. For now only AND.
+        conditions = ' AND '.join(
+                ['{}={}'.format(key, value) for key, value in where.items()])
+        # Generate query.
+        query = QUERIES['select'].format(
+                ', '.join(fields), table, conditions
+        )
+
+        try:
+            self.cursor.execute(query)
+        except Exception as e:
+            logging.info(e)
+            self.cnx.rollback()
+
+        return [item for item in self.cursor]
 
 
     def send_query(self, query):

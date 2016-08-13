@@ -4,18 +4,49 @@
 import pprint
 import logging
 
+from utils import get_session_id
 from config import pkg_structure, handlers, config
 
 logger = logging.getLogger(__name__)
 
+def parse_msg(string):
+    if not string:
+        return None
 
-def parse(string):
+    result = dict()
+
+    # DEBUG
+    result['msg'] = 'So, this is a text message.'
+    # DEBUG
+
+    result['ses_id'] = get_session_id(123)
+    result['type'] = 'T'
+    result['original'] = string.rstrip()
+
+    return result
+
+def parse_init(string):
+    if not string:
+        return None
+
+    result = dict()
+
+    # DEBUG
+    # DEBUG
+
+    result['ses_id'] = get_session_id(123)
+    result['type'] = 'I'
+    result['original'] = string
+
+    return result
+
+def parse_data(string):
     '''
     This function receive string which represent data package sent by logger.
     Then this string is parased into separate elements. Those data are added 
     to resulting dictionary.
     Args:
-        str: package string in the next format: @02;;;...;;;1;06#
+        str: package string in the next format: @;;;...;;;;#
     Returns:
         Dictionary with names and converted data.
     '''
@@ -52,6 +83,10 @@ def parse(string):
                 corrupted_storage.write(string + '\n')
 
             return None
+
+    result['ses_id'] = get_session_id(123)
+    result['type'] = 'D'
+    result['original'] = string
 
     return result
 

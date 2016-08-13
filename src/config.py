@@ -18,14 +18,23 @@ config = {
         'host': 'localhost',
         'port': 5000,
 
+        # Files storage. Without slash (/) on the end.
+        'data_storage': './data',
+
         # Name of file where will be saved all corrupted packages (which can't
         # be parsed).
         'corrupted_storage': './data/corrupted_data.txt',
 
         # Package symbols
         'pkg_start':        '@',
-        'pkg_delimeter':    ';',
-        'pkg_end':          '#'
+        'pkg_delimeter':    b';',
+        'pkg_end':          b'#',
+        # Text package
+        'txt_start':        'T',
+        'txt_end':          b'\r',
+        # Init package
+        'ini_start':        'P',
+        'ini_end':          b'#'
 }
 
 # This list define package structure. Thus, in which order data are arranged.
@@ -42,8 +51,18 @@ pkg_structure = [
         'speed',
         'temperature',
         'pressure',
-        'unknown_1',
-        'unknown_2'
+        'gps_state',
+        'sat_num'
+]
+
+# Messages package structure
+msg_structure = [
+        'msg',
+]
+
+# Initial package structure
+init_structure = [
+        '',
 ]
 
 # This dictionary define data handlers. There is no need to keep right order.
@@ -63,8 +82,8 @@ handlers = {
         'speed':        float,
         'temperature':  int,
         'pressure':     int,
-        'unknown_1':    int,
-        'unknown_2':    int
+        'gps_state':    int,
+        'sat_num':      int
 }
 
 # Some elements in received packages can be divided in more data elements. For
