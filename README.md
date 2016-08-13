@@ -16,3 +16,8 @@ TODO
  - Maybe close connection to database if for a logng time there is no data
    coming.
  - Periodically backup database to remote server (FTP)
+ - Handle case when client is closing connection without ending transmittion.
+ - Creation random number from device id (import hashlib;
+   hashlib.md5(b'').digest())
+ - Parse packages
+ - Gui interface for database
