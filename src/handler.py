@@ -32,9 +32,8 @@ class RequestHandler(socketserver.BaseRequestHandler):
             data = self.recv_package()
 
             while data:
-                self.server.queue.put(data)
-                logging.info(data)
-
+                if data:
+                    self.server.queue.put(data)
                 data = self.recv_package()
         except socket.error:
             logging.info('Connection dropped.')
@@ -45,7 +44,10 @@ class RequestHandler(socketserver.BaseRequestHandler):
         data = None
         # Read first symbol
         start = str(self.request.recv(1), self.coding)
-        
+
+        if not start:
+            return None
+
         if start == config['pkg_start']:
             # Data package
             data = self.read_package(start_sym=start, end_sym=config['pkg_end'])
@@ -79,7 +81,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
         '''
         string = symbol = start_sym
 
-        while symbol != str(end_sym, self.coding):
+        while symbol != end_sym:
             symbol = str(self.request.recv(1), self.coding)
             string = string + symbol
 

@@ -27,14 +27,14 @@ config = {
 
         # Package symbols
         'pkg_start':        '@',
-        'pkg_delimeter':    b';',
-        'pkg_end':          b'#',
+        'pkg_delimeter':    ';',
+        'pkg_end':          '#',
         # Text package
         'txt_start':        'T',
-        'txt_end':          b'\r',
+        'txt_end':          '\r',
         # Init package
         'ini_start':        'P',
-        'ini_end':          b'#'
+        'ini_end':          '#'
 }
 
 # This list define package structure. Thus, in which order data are arranged.
@@ -58,6 +58,7 @@ pkg_structure = [
 # Messages package structure
 msg_structure = [
         'msg',
+        'ses_id',
 ]
 
 # Initial package structure
@@ -93,5 +94,6 @@ handlers = {
 db_fields = [
         't_ms',
         'lat_pos',
-        'lon_pos'
+        'lon_pos',
+        'ses_id'
 ]

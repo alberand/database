@@ -65,7 +65,7 @@ class Listener(threading.Thread):
 
                     self.process_pkg(pkg)
 
-                time.sleep(0.5)
+                time.sleep(0.01)
         except KeyboardInterrupt:
             self.stop()
 
@@ -86,7 +86,7 @@ class Listener(threading.Thread):
         elif pkg['type'] == 'T':
             self.database.insert(msg_structure, pkg, 'messages')
         elif pkg['type'] == 'I':
-            self.database.insert(init_structure, pkg, 'loggers')
+            self.database.insert(init_structure, pkg, 'sessions')
         else:
             logging.info('Unkonwn type of the packages. Skipping.')
 

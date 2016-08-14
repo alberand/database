@@ -16,10 +16,10 @@ def parse_msg(string):
     result = dict()
 
     # DEBUG
-    result['msg'] = 'So, this is a text message.'
+    result['msg'] = string.split(':')[-1].rstrip()
     # DEBUG
 
-    result['ses_id'] = get_session_id(123)
+    result['ses_id'] = get_session_id(1)
     result['type'] = 'T'
     result['original'] = string.rstrip()
 
@@ -34,7 +34,7 @@ def parse_init(string):
     # DEBUG
     # DEBUG
 
-    result['ses_id'] = get_session_id(123)
+    result['ses_id'] = get_session_id(1)
     result['type'] = 'I'
     result['original'] = string
 
@@ -84,7 +84,7 @@ def parse_data(string):
 
             return None
 
-    result['ses_id'] = get_session_id(123)
+    result['ses_id'] = get_session_id(1)
     result['type'] = 'D'
     result['original'] = string
 
@@ -123,4 +123,4 @@ if __name__ == '__main__':
     ]
 
     for line in test_list:
-        pprint.pprint(parse(line))
+        pprint.pprint(parse_data(line))

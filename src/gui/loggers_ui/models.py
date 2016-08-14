@@ -2,32 +2,16 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
 
-class Loggers(models.Model):
-    ses_id = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'loggers'
-
-    def __str__(self):
-        return str(self.ses_id)
-
-
-class Messages(models.Model):
-    ses_id = models.IntegerField()
-    msg = models.CharField(max_length=255)
+class Sessions(models.Model):
+    ses_id = models.IntegerField(primary_key=True)
 
     class Meta:
         managed = False
-        db_table = 'messages'
-
-    def __str__(self):
-        return 'Session: {}. Type: T. Message: {}'.format(self.ses_id, self.msg)
-
+        db_table = 'sessions'
 
 class Packages(models.Model):
+    ses = models.ForeignKey('Sessions', models.DO_NOTHING)
     module_id = models.IntegerField()
     date = models.DateField()
     time = models.TimeField()
@@ -43,11 +27,16 @@ class Packages(models.Model):
     pressure = models.IntegerField()
     gps_state = models.IntegerField()
     sat_num = models.IntegerField()
-    ses_id = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'packages'
 
-    def __str__(self):
-        return 'Session: {}. Type: D. Time: {}'.format(self.ses_id, self.time)
+class Messages(models.Model):
+    ses = models.ForeignKey('Sessions', models.DO_NOTHING)
+    msg = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'messages'
+

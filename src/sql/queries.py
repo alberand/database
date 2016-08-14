@@ -14,3 +14,9 @@ QUERIES['insert'] =  (
     '({}) '
     'VALUES ({})'
 )
+
+QUERIES['select'] =  (
+    'SELECT {} '
+    'FROM {} '
+    'WHERE {}'
+)

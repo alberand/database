@@ -2,7 +2,7 @@ from django.views import generic
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Loggers, Packages
+from .models import Sessions, Packages
 
 class MainPageView(generic.TemplateView):
     '''
@@ -12,7 +12,7 @@ class MainPageView(generic.TemplateView):
 
     def get(self, request):
         return render(request, self.template_name, 
-                        {'sessions': Loggers.objects.all()})
+                        {'sessions': Sessions.objects.all()})
 
 class PackagesList(generic.TemplateView):
     '''
@@ -57,7 +57,7 @@ class PackagesList(generic.TemplateView):
         return render(request, self.template_name, 
                 {
                     'ext_templ': 'main.html',
-                    'sessions': Loggers.objects.all(),
+                    'sessions': Sessions.objects.all(),
                     'names': names_list,
                     'packages': packages
                 }

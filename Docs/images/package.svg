@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="543.92229"
-     inkscape:cy="455.22164"
+     inkscape:cx="551.66974"
+     inkscape:cy="447.26914"
      inkscape:document-units="px"
      inkscape:current-layer="layer6"
      showgrid="true"
@@ -68,6 +68,10 @@
        position="1016,641"
        orientation="0,1"
        id="guide4285" />
+    <sodipodi:guide
+       position="55.861437,427.7996"
+       orientation="1,0"
+       id="guide4388" />
   </sodipodi:namedview>
   <defs
      id="defs4" />
@@ -195,10 +199,87 @@
        y="184.09091" />
     <path
        style="fill:#cccccc;fill-opacity:0.60752689;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 56.386719,183.95776 60.250001,-63 126.73828,0.004 88.125,63.125 z"
+       d="m 56.00002,184.09034 60.6367,-63.13258 126.73828,0.004 88.125,63.125 z"
        id="path4342"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:15px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="47"
+       y="511.09448"
+       id="text4286"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4288"
+         x="47"
+         y="511.09448"
+         style="font-size:25px">Examples:</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4290"
+       style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+         id="flowRegion4292"><rect
+           id="rect4294"
+           width="956"
+           height="201"
+           x="67"
+           y="488.09448" /></flowRegion><flowPara
+         id="flowPara4296" /></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="54"
+       y="577.09448"
+       id="text4298"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4300"
+         x="54"
+         y="577.09448">~<tspan
+   style="fill:#ff8080"
+   id="tspan4328">1</tspan><tspan
+   style="fill:#88aa00"
+   id="tspan4346">3</tspan><tspan
+   id="tspan4394"
+   style="fill:#0088aa">10</tspan>60494;12:00:32;0~</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="53.75"
+       y="605.34448"
+       id="text4302"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4304"
+         x="53.75"
+         y="605.34448">~<tspan
+   style="fill:#ff8080"
+   id="tspan4334">3</tspan><tspan
+   style="fill:#88aa00"
+   id="tspan4348">1</tspan><tspan
+   id="tspan4382"
+   style="fill:#0088aa">0С</tspan>Hello world.~</tspan><tspan
+         sodipodi:role="line"
+         x="53.75"
+         y="630.34448"
+         id="tspan4306" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="53.75"
+       y="633.09448"
+       id="text4308"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4310"
+         x="53.75"
+         y="633.09448">~<tspan
+   style="fill:#ff8080"
+   id="tspan4336">2</tspan><tspan
+   id="tspan4356"
+   style="fill:#88aa00">С</tspan><tspan
+   id="tspan4374"
+   style="fill:#0088aa">4С</tspan>02;30.07.16;17:55:37.9;5007.84276N;01425.11099E;0.0;338.8;0.0;280;97847;1;06~</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -215,8 +296,8 @@
          style="font-size:20px;line-height:300%;text-align:end;text-anchor:end"
          y="237.21432"
          x="232.52014"
-         id="tspan4193"
-         sodipodi:role="line">Package type:</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4320">Package type:</tspan><tspan
          style="font-size:20px;line-height:300%;text-align:end;text-anchor:end"
          id="tspan4199"
          y="297.21432"
@@ -238,21 +319,21 @@
          y="215.08932"
          x="245.65686"
          id="tspan4213"
-         sodipodi:role="line">I<tspan
+         sodipodi:role="line">1 - I<tspan
    id="tspan4237"
    style="fill:#808080">nitial</tspan></tspan><tspan
          style="font-size:17.5px"
          id="tspan4217"
          y="236.96432"
          x="245.65686"
-         sodipodi:role="line">D<tspan
+         sodipodi:role="line">2 - D<tspan
    id="tspan4239"
    style="fill:#808080">ata</tspan></tspan><tspan
          style="font-size:17.5px"
          id="tspan4215"
          y="258.83932"
          x="245.65686"
-         sodipodi:role="line">T<tspan
+         sodipodi:role="line">3 - T<tspan
    id="tspan4241"
    style="fill:#808080">ext</tspan></tspan></text>
     <text
@@ -279,5 +360,16 @@
          x="244.58548"
          id="tspan4225"
          sodipodi:role="line">0 - 65536 </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:20px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="131"
+       y="258.09448"
+       id="text4324"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4326"
+         x="131"
+         y="258.09448">(Protocol)</tspan></text>
   </g>
 </svg>
