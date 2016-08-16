@@ -1,6 +1,10 @@
+import os
+
 from django.views import generic
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils.encoding import smart_str
+from django.core.files import File
 
 from .models import Sessions, Packages
 
@@ -46,7 +50,7 @@ class PackagesList(generic.TemplateView):
         Returns:
             List with strings
         '''
-        except_fields = ['id', 't_ms', 'ses_id', 'latitude', 'lat_pos', 
+        except_fields = ['id', 'ses', 't_ms', 'ses_id', 'latitude', 'lat_pos', 
                 'longitude', 'lon_pos']
         return [item.name for item in Packages._meta.get_fields() if item.name 
                 not in except_fields]
@@ -63,3 +67,15 @@ class PackagesList(generic.TemplateView):
                 }
         )
 
+
+
+def downloadfile(request, ses_id):
+    path_to_file = os.path.realpath("./loggers_ui/data/{}.txt".format(ses_id))
+    f = open(path_to_file, 'r')
+    myfile = File(f)
+    response = HttpResponse(myfile, content_type='application/force-download') 
+    response['Content-Disposition'] = 'attachment; filename={}'.format(smart_str('{}.txt'.format(ses_id)))
+    # response['X-Sendfile'] = smart_str('./templates/main.html'.format(ses_id))
+    # print(response['X-Sendfile'])
+
+    return response

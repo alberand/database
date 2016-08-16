@@ -41,7 +41,6 @@ config = {
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
 pkg_structure = [
-        'module_id',
         'date',
         'time',
         'latitude',

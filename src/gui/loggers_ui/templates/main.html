@@ -13,7 +13,10 @@
                   href="{% url 'Session'  item.ses_id %}">{{ item.ses_id }}</a>
             </span>
             <span class="menu-item-down-icon" >
-              <a class="menu-down-icon" href="#">
+              {% load static %}
+              <a class="menu-down-icon" 
+                 href="{% url 'Session'  item.ses_id %}download"
+                  title="Download session">
                 <span class="glyphicon glyphicon-download-alt download-icon"
                   aria-hidden="true"></span>
               </a>

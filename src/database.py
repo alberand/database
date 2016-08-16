@@ -45,7 +45,7 @@ class Database:
         '''
         Inserting data sample to table.
         Args:
-            struct: data fields in database
+            struct: list with data fields in database
             data: dictionary with parsed data
             table: string with name of the table where to insert data
         '''
@@ -53,11 +53,11 @@ class Database:
         # be choosen based on data.
         query = QUERIES['insert'].format(
             table, ', '.join(struct), 
-            ', '.join(['%({})s'.format(item) for item in struct])
+            ', '.join(['"{}"'.format(data[item]) for item in struct])
         )
 
         try:
-            self.cursor.execute(query, data)
+            self.cursor.execute(query)
             self.cnx.commit()
         except Exception as e:
             logging.info(e)
@@ -74,7 +74,8 @@ class Database:
         '''
         # Generate conditions. For now only AND.
         conditions = ' AND '.join(
-                ['{}={}'.format(key, value) for key, value in where.items()])
+            ['{}={}'.format(key, value) for key, value in where.items()])
+
         # Generate query.
         query = QUERIES['select'].format(
                 ', '.join(fields), table, conditions
@@ -87,7 +88,6 @@ class Database:
             self.cnx.rollback()
 
         return [item for item in self.cursor]
-
 
     def send_query(self, query):
         '''

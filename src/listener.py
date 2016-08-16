@@ -11,6 +11,7 @@ from queue import Queue
 from server import Server
 from handler import RequestHandler
 from config import config, msg_structure, init_structure
+from utils import get_session_id
 from database import Database
 from dataprocessor import data_for_db, expand_pkg_struct
 
@@ -63,9 +64,13 @@ class Listener(threading.Thread):
                 if not self.queue.empty():
                     pkg = self.queue.get()
 
+                    if not self.is_session_created(pkg['ses_id']):
+                        self.database.insert(['ses_id'], 
+                                {'ses_id': pkg['ses_id']}, 'sessions')
+
                     self.process_pkg(pkg)
 
-                time.sleep(0.01)
+                time.sleep(0.1)
         except KeyboardInterrupt:
             self.stop()
 
@@ -79,16 +84,21 @@ class Listener(threading.Thread):
         self.save_pkg(pkg)
 
         # Load package data to database
-        if pkg['type'] == 'D':
-            # There we need to change package structure a little bit.
-            self.database.insert(expand_pkg_struct(), 
-                    data_for_db(pkg), 'packages')
-        elif pkg['type'] == 'T':
-            self.database.insert(msg_structure, pkg, 'messages')
-        elif pkg['type'] == 'I':
-            self.database.insert(init_structure, pkg, 'sessions')
-        else:
-            logging.info('Unkonwn type of the packages. Skipping.')
+        try:
+            if pkg['type'] == 'D':
+                # There we need to change package structure a little bit.
+                self.database.insert(expand_pkg_struct(), 
+                        data_for_db(pkg), 'packages')
+            elif pkg['type'] == 'T':
+                self.database.insert(msg_structure, pkg, 'messages')
+            elif pkg['type'] == 'I':
+                self.database.insert(init_structure, pkg, 'sessions')
+            else:
+                logging.info('Unkonwn type of the packages. Skipping.')
+        except Exception as e:
+            logging.info('Can\'t save package to database.')
+            logging.info(pkg)
+            logging.info(e)
 
 
     def save_pkg(self, pkg):
@@ -97,14 +107,18 @@ class Listener(threading.Thread):
         Args:
             pkg: dict, with parsed data
         '''
-        filename = '{}/{}_{}.csv'.format(config['data_storage'],
-                datetime.datetime.today().strftime('%d-%m-%y'), pkg['ses_id'])
+        filename = '{}/{}.txt'.format(config['data_storage'], pkg['ses_id'])
 
         # Write package to file
         with open(filename, 'a+') as _file:
             _file.write(pkg['original'])
             _file.write('\n')
 
+    def is_session_created(self, session):
+        status = self.database.select('sessions', ['ses_id'], 
+                {'ses_id': session})
+
+        return True if status else False
 
     def get_filename(self, session_id):
         '''

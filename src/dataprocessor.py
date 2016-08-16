@@ -26,11 +26,24 @@ def data_for_db(data):
     Args:
         data: dictionary with data
     '''
-    data['t_ms'] = data['time'].microsecond
-    data['lat_pos'] = data['latitude'][1]
-    data['lon_pos'] = data['longitude'][1]
-    data['latitude'] = data['latitude'][0]
-    data['longitude'] = data['longitude'][0]
+    if data['time'] != 'NULL':
+        data['t_ms'] = data['time'].microsecond
+    else:
+        data['t_ms'] = 'NULL'
+
+    if data['latitude'] != 'NULL':
+        data['lat_pos'] = data['latitude'][1]
+        data['latitude'] = data['latitude'][0]
+    else:
+        data['lat_pos'] = 'NULL'
+        data['latitude'] = 'NULL'
+
+    if data['longitude'] != 'NULL':
+        data['lon_pos'] = data['longitude'][1]
+        data['longitude'] = data['longitude'][0]
+    else:
+        data['lon_pos'] = 'NULL'
+        data['longitude'] = 'NULL'
 
     return data
 

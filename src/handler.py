@@ -7,7 +7,7 @@ import socket
 import threading
 import socketserver
 
-from parser import parse_data, parse_msg, parse_init
+from parser import parse
 from config import config
 
 # log_filename = 'handlers_log.log'
@@ -35,6 +35,8 @@ class RequestHandler(socketserver.BaseRequestHandler):
                 if data:
                     self.server.queue.put(data)
                 data = self.recv_package()
+
+            logging.info('Handler exiting.')
         except socket.error:
             logging.info('Connection dropped.')
 
@@ -42,34 +44,13 @@ class RequestHandler(socketserver.BaseRequestHandler):
         '''
         '''
         data = None
-        # Read first symbol
-        start = str(self.request.recv(1), self.coding)
 
-        if not start:
-            return None
-
-        if start == config['pkg_start']:
-            # Data package
-            data = self.read_package(start_sym=start, end_sym=config['pkg_end'])
-            data = parse_data(data)
-        elif start == config['txt_start']:
-            # Text package
-            data = self.read_package(start_sym=start, end_sym=config['txt_end'])
-            data = parse_msg(data)
-        elif start == config['ini_start']:
-            # Initial package
-            data = self.read_package(start_sym=start, end_sym=config['ini_end'])
-            data = parse_init(data)
-        else:
-            logging.info('No package with this starting symbol: {}'.format(
-                start))
-            logging.error('Can\'t parse this string. Skipping. ' 
-                        'String: \n\t{}'.format(data))
-            return start
+        data = self.read_package()
+        data = parse(data)
 
         return data
 
-    def read_package(self, start_sym, end_sym):
+    def read_package(self):
         '''
         Read package with starting symbol 'start_sym' until 'end_sym'.
         'start_sym' is just added to the start of a string.
@@ -79,11 +60,13 @@ class RequestHandler(socketserver.BaseRequestHandler):
         Returns:
             String, ended by 'end_sym'.
         '''
-        string = symbol = start_sym
+        string = ''
+        symbol = ''
 
-        while symbol != end_sym:
+        while symbol != config['pkg_end']:
             symbol = str(self.request.recv(1), self.coding)
             string = string + symbol
+            time.sleep(0.01)
 
         return string
 

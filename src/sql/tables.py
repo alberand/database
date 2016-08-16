@@ -26,21 +26,21 @@ TABLES['packages'] =  (
     'CREATE TABLE `packages` ('
     '    `id` int(11) NOT NULL AUTO_INCREMENT,'         # Sample id
     '    `ses_id` INT(11) NOT NULL,'                    # Session id
-    '    `module_id` INT(11) NOT NULL,'                 # Module id
-    '    `date` DATE NOT NULL,'                         # Date
-    '    `time` TIME NOT NULL,'                         # Time
-    '    `t_ms` INT(11) NOT NULL,'                      # Time microseconds
-    '    `latitude` FLOAT(10, 5) NOT NULL,'             # Latitude
-    '    `lat_pos` ENUM("N", "S") NOT NULL,'            # Latitude point N/S
-    '    `longitude` FLOAT(10, 5) NOT NULL,'            # Longitude
-    '    `lon_pos` ENUM("E", "W") NOT NULL,'            # Longitude point E/W
-    '    `course` FLOAT NOT NULL,'                      # Course
-    '    `gps_altitude` FLOAT(4, 1) NOT NULL,'          # Gps altitude
-    '    `speed` FLOAT NOT NULL,'                       # Speed 
-    '    `temperature` INT(11) NOT NULL,'               # Temperature 
-    '    `pressure` INT(11) NOT NULL,'                  # Pressure
-    '    `gps_state` INT(11) NOT NULL,'                 # Is gps connected
-    '    `sat_num` INT(11) NOT NULL,'                   # Number of sattelites
+    '    `module_id` INT(11) NULL,'                 # Module id
+    '    `date` DATE NULL,'                         # Date
+    '    `time` TIME NULL,'                         # Time
+    '    `t_ms` INT(11) NULL,'                      # Time microseconds
+    '    `latitude` FLOAT(10, 5) NULL,'             # Latitude
+    '    `lat_pos` ENUM("N", "S") NULL,'            # Latitude point N/S
+    '    `longitude` FLOAT(10, 5) NULL,'            # Longitude
+    '    `lon_pos` ENUM("E", "W") NULL,'            # Longitude point E/W
+    '    `course` FLOAT NULL,'                      # Course
+    '    `gps_altitude` FLOAT(4, 1) NULL,'          # Gps altitude
+    '    `speed` FLOAT NULL,'                       # Speed 
+    '    `temperature` INT(11) NULL,'               # Temperature 
+    '    `pressure` INT(11) NULL,'                  # Pressure
+    '    `gps_state` INT(11) NULL,'                 # Is gps connected
+    '    `sat_num` INT(11) NULL,'                   # Number of sattelites
     '    FOREIGN KEY pkg_session(`ses_id`)'
     '        REFERENCES sessions(`ses_id`),'
     '    PRIMARY KEY (`id`)'
