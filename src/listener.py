@@ -10,7 +10,7 @@ from queue import Queue
 
 from server import Server
 from handler import RequestHandler
-from config import config, msg_structure, init_structure
+from config import config, msg_structure
 from utils import get_session_id
 from database import Database
 from dataprocessor import data_for_db, expand_pkg_struct
@@ -57,7 +57,7 @@ class Listener(threading.Thread):
 
         # Start processing loop
         try:
-            logging.info('Run loop for receiving data from server.')
+            logging.info('Running loop for receiving data from TCP-server.')
 
             while self.running:
                 # Package received
@@ -65,8 +65,9 @@ class Listener(threading.Thread):
                     pkg = self.queue.get()
 
                     if not self.is_session_created(pkg['ses_id']):
-                        self.database.insert(['ses_id'], 
-                                {'ses_id': pkg['ses_id']}, 'sessions')
+                        self.database.insert(
+                                ['ses_id'], {'ses_id': pkg['ses_id']}, 
+                                'sessions')
 
                     self.process_pkg(pkg)
 
@@ -91,8 +92,6 @@ class Listener(threading.Thread):
                         data_for_db(pkg), 'packages')
             elif pkg['type'] == 'T':
                 self.database.insert(msg_structure, pkg, 'messages')
-            elif pkg['type'] == 'I':
-                self.database.insert(init_structure, pkg, 'sessions')
             else:
                 logging.info('Unkonwn type of the packages. Skipping.')
         except Exception as e:
@@ -115,21 +114,17 @@ class Listener(threading.Thread):
             _file.write('\n')
 
     def is_session_created(self, session):
+        '''
+        Check in database if session with this id already created or not.
+        Args:
+            session: string or integer
+        Returns:
+            True if created, otherwise False.
+        '''
         status = self.database.select('sessions', ['ses_id'], 
                 {'ses_id': session})
 
         return True if status else False
-
-    def get_filename(self, session_id):
-        '''
-        Gets filename for a file to store data by session id.
-        Args:
-            session_id: string md5 hash.
-        '''
-        filename = self.database.select(
-                'filenames', ['filename'], {'ses_id': session_id})
-
-        return str(filename[0][0])
 
     def stop(self):
         '''

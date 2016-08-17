@@ -15,3 +15,4 @@ class Server(socketserver.ThreadingMixIn, socketserver.TCPServer):
     daemon_threads = True
     # Much faster rebinding
     allow_reuse_address = True
+

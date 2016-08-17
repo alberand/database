@@ -4,6 +4,13 @@
 import random
 
 def get_session_id(key):
+    '''
+    This function generate random number from some seed.
+    Args:
+        key: string or integer
+    Returns:
+        Random 5 places ingeger.
+    '''
     random.seed(int(key))
 
     return random.randint(10000, 99999)

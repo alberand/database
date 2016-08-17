@@ -41,6 +41,7 @@ config = {
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
 pkg_structure = [
+        'ses_time',
         'date',
         'time',
         'latitude',
@@ -57,12 +58,8 @@ pkg_structure = [
 # Messages package structure
 msg_structure = [
         'msg',
+        'ses_time',
         'ses_id',
-]
-
-# Initial package structure
-init_structure = [
-        '',
 ]
 
 # This dictionary define data handlers. There is no need to keep right order.
@@ -71,6 +68,8 @@ init_structure = [
 handlers = {
         # Name  # Handler
         'module_id':    int,
+        'ses_time':     lambda time: 
+                                datetime.strptime(time, '%H:%M:%S').time(),
         'date':         lambda date: 
                                 datetime.strptime(date, '%d.%m.%y').date(),
         'time':         lambda time: 

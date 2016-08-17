@@ -28,6 +28,9 @@ class Database:
                 password=config['mysql_pass'], 
                 database=config['mysql_db'])
             logger.info("Successful connection to database.")
+
+            # Get cursor (input point to database)
+            self.cursor = self.cnx.cursor()
         except mysql.connector.Error as err:
             # Handle some errors
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -37,9 +40,6 @@ class Database:
                 logger.error("Database does not exist")
             else:
                 logger.error(err)
-
-        # Get cursor (input point to database)
-        self.cursor = self.cnx.cursor()
 
     def insert(self, struct, data, table='packages'):
         '''
@@ -83,25 +83,11 @@ class Database:
 
         try:
             self.cursor.execute(query)
+
+            return [item for item in self.cursor]
         except Exception as e:
             logging.info(e)
             self.cnx.rollback()
-
-        return [item for item in self.cursor]
-
-    def send_query(self, query):
-        '''
-        Send query to database. If query empty or None returns None otherwise
-        return result of query.
-        '''
-        result = None
-
-        if query:
-            result = self.cursor.execute(query)
-        else:
-            logger.info('Empty query. Do nothing.')
-
-        return result
 
     def close(self):
         '''

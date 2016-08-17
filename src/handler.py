@@ -23,50 +23,46 @@ class RequestHandler(socketserver.BaseRequestHandler):
         # String buffer for receiving symbols
         self.buf = ''
         self.coding = 'utf-8'
+        self.request.setblocking(True)
 
     def handle(self):
         logging.info('Client with address {} connected.'.format(
             self.client_address))
 
         try:
-            data = self.recv_package()
-
-            while data:
+            while True:
+                data = parse(self.read_package())
                 if data:
                     self.server.queue.put(data)
-                data = self.recv_package()
+                else:
+                    break
 
-            logging.info('Handler exiting.')
+            logging.info('Handler for client {} end working.'.format(
+                self.client_address))
+
         except socket.error:
             logging.info('Connection dropped.')
 
-    def recv_package(self):
-        '''
-        '''
-        data = None
-
-        data = self.read_package()
-        data = parse(data)
-
-        return data
-
     def read_package(self):
         '''
-        Read package with starting symbol 'start_sym' until 'end_sym'.
-        'start_sym' is just added to the start of a string.
-        Args:
-            start_sym: string, symbol
-            end_sym: string, one symbol
+        Reads package enditing by config['pkg_end'] symbol.
         Returns:
-            String, ended by 'end_sym'.
+            String, ended by 'pkg_end'.
         '''
         string = ''
         symbol = ''
 
+        # Don't know why but if I put this construction only in cycle loop
+        # continue executing forever. Like if socket was is non-blocking state.
+        # byte = self.request.recv(1, socket.MSG_WAITALL) 
+
         while symbol != config['pkg_end']:
-            symbol = str(self.request.recv(1), self.coding)
+            byte = self.request.recv(1, socket.MSG_WAITALL) 
+            symbol = str(byte, self.coding)
             string = string + symbol
-            time.sleep(0.01)
+            time.sleep(0.001)
+
+        logging.info('Sending string: {}'.format(string))
 
         return string
 

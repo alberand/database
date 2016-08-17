@@ -24,9 +24,10 @@ TABLES['sessions'] =  (
 # Tables with received packages
 TABLES['packages'] =  (
     'CREATE TABLE `packages` ('
-    '    `id` int(11) NOT NULL AUTO_INCREMENT,'         # Sample id
-    '    `ses_id` INT(11) NOT NULL,'                    # Session id
+    '    `id` int(11) NOT NULL AUTO_INCREMENT,'     # Sample id
+    '    `ses_id` INT(11) NOT NULL,'                # Session id
     '    `module_id` INT(11) NULL,'                 # Module id
+    '    `ses_time` TIME NULL,'                     # Time
     '    `date` DATE NULL,'                         # Date
     '    `time` TIME NULL,'                         # Time
     '    `t_ms` INT(11) NULL,'                      # Time microseconds
@@ -53,6 +54,7 @@ TABLES['messages'] =  (
     'CREATE TABLE `messages` ('
     '    `id` int(11) NOT NULL AUTO_INCREMENT,'         # Message id
     '    `ses_id` INT(11) NOT NULL,'                    # Session id
+    '    `ses_time` TIME NULL,'                     # Time
     '    `msg` VARCHAR(255) NOT NULL,'                  # Message
     '    FOREIGN KEY msg_session(`ses_id`)'
     '       REFERENCES sessions(`ses_id`),'
