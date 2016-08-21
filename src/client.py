@@ -72,8 +72,8 @@ class Device(threading.Thread):
         self.running = False
 
 if __name__ == '__main__':
-    # ip, port = '147.32.196.177', 5000
-    ip, port = '127.0.0.1', 5000
+    ip, port = '147.32.196.177', 5000
+    # ip, port = '127.0.0.1', 5000
     a = Device(ip, port, False)
     b = Device(ip, port, True)
     # c = Device(ip, port)
