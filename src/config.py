@@ -41,18 +41,18 @@ config = {
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
 pkg_structure = [
-        'ses_time',
+        # 'ses_time',
         'date',
         'time',
         'latitude',
         'longitude',
-        'course',
-        'gps_altitude',
-        'speed',
-        'temperature',
-        'pressure',
-        'gps_state',
-        'sat_num'
+        # 'course',
+        # 'gps_altitude',
+        # 'speed',
+        # 'temperature',
+        # 'pressure',
+        # 'gps_state',
+        # 'sat_num'
 ]
 
 # Messages package structure
@@ -74,6 +74,8 @@ handlers = {
                                 datetime.strptime(date, '%d.%m.%y').date(),
         'time':         lambda time: 
                                 datetime.strptime(time, '%H:%M:%S.%f').time(),
+        'time_ms_out': lambda time: 
+                                datetime.strptime(time, '%H:%M:%S').time(),
         'latitude':     lambda data: [float(data[:-1]), str(data[-1])],
         'longitude':    lambda data: [float(data[:-1]), str(data[-1])],
         'course':       float,

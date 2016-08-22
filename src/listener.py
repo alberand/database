@@ -93,7 +93,8 @@ class Listener(threading.Thread):
             elif pkg['type'] == 'T':
                 self.database.insert(msg_structure, pkg, 'messages')
             else:
-                logging.info('Unkonwn type of the packages. Skipping.')
+                logging.info('Unkonwn type of the packages. Skipping. Package '
+                        'already saved.')
         except Exception as e:
             logging.info('Can\'t save package to database.')
             logging.info(pkg)
