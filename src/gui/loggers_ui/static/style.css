@@ -1,0 +1,81 @@
+.nav-sidebar { 
+  width: 100%;
+}
+
+.nav-sidebar-without-rp {
+  padding-right: 0px;
+}
+
+.nav-sidebar-list {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-sidebar-list li {
+  line-height: 20px;
+  overflow: auto;
+  margin: 5px 0px;
+}
+
+.nav-sidebar-list .menu-item {
+  display: block;
+  position: relative;
+  width: 80%;
+  float: left;
+}
+
+.nav-sidebar-list .menu-item a {
+  padding: 7px 5px;
+  float: left;
+  width: 100%;
+}
+
+.nav-sidebar-list .menu-item-down-icon {
+  padding: 0;
+  float: right;
+  width: 20%;
+}
+
+.nav-sidebar-list .menu-down-icon {
+  padding: 7px 5px;
+  display: block;
+}
+
+.nav-sidebar-list .menu-down-icon .download-icon {
+  text-align: center;
+  display: block;
+}
+
+.nab-sidebar-list li:hover {
+  background-color: #DDD;
+}
+
+
+.navbar {
+  width: 1200px;
+  height: 50px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.menu-list {
+	float: right !important;
+  margin-right: -15px;
+	list-style: none;
+}
+
+.menu-list li {
+	float: left;
+}
+
+.menu-list li a {
+	padding: 15px 15px;
+	line-height: 20px;
+  display: block;
+  position: relative;
+}
+
+.row-border {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}

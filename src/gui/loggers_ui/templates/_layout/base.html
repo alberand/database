@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}CAST - Loggers database{% endblock title %}</title>
+
+    <!-- Include Bootstrap --!>
+    <link
+    href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+    rel="stylesheet">
+    <link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css"
+        integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY"
+    crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"
+        integrity="sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD"
+    crossorigin="anonymous"></script>
+    <!-- End of Bootstrap --!>
+
+    <!-- Mobile friendly --!>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block css %}{% endblock css %}
+
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+
+      <!-- Header bar -->
+      <nav class="navbar">
+
+        <div class="navbar-header">
+          <a class="navbar-brand" href="">CAST - Loggers database</a>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="menu-container">
+          <ul class="menu-list">
+            <!--
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Works</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="#">Contact</a></li>
+            -->
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </nav><!-- /.navbar -->
+
+      {% block content %}{% endblock content%}
+
+    </div>
+  </body>
+</html>

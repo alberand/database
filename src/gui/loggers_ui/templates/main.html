@@ -1,0 +1,49 @@
+{% extends '_layout/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="row row-border">
+
+  <!-- Start of the side bar -->
+  <div class="col-md-2 nav-sidebar-without-rp">
+
+    <h4>Sessions:</h4>
+    <nav class="nav-sidebar">
+	  <ul class="nav-sidebar-list">
+	    {% for item in sessions %}
+        <li>
+          <!-- Start link to session -->
+          <span class="menu-item" >
+            <a href="{% url 'Session'  item.ses_id %}">{{ item.ses_id }}</a>
+          </span>
+          <!-- End link to session -->
+
+          <!-- Start download button -->
+          <span class="menu-item-down-icon" >
+            <a class="menu-down-icon" 
+               href="{% url 'Session'  item.ses_id %}download"
+               title="Download session">
+              <span class="glyphicon glyphicon-download-alt download-icon"
+                    aria-hidden="true"></span>
+            </a>
+          </span>
+          <!-- End download button -->
+		</li>
+		{% endfor %}
+	  </ul>
+	</nav>
+
+  </div>
+  <!-- End of the sidebar -->
+  <!-- Start of the content -->
+  <div class="col-md-10">
+    <h4>Contents:</h4>
+    {% block session_content %}{% endblock session_content %}
+  </div>
+  <!-- End of the content -->
+
+</div>
+
+
+{% endblock content %}

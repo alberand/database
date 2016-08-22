@@ -1,0 +1,38 @@
+2016-08-17 17:03:46,623 - root - INFO - Creating server.
+2016-08-17 17:03:46,624 - root - INFO - Server loop running in thread: Thread-1
+2016-08-17 17:03:46,624 - root - INFO - IP: 127.0.0.1, Port: 5000
+2016-08-17 17:03:46,624 - root - INFO - Run server daemon.
+2016-08-17 17:03:46,625 - root - INFO - Connect to database.
+2016-08-17 17:03:46,628 - root - INFO - Running loop for receiving data from TCP-server.
+2016-08-17 17:04:36,502 - root - INFO - Client with address ('127.0.0.1', 59392) connected.
+2016-08-17 17:04:36,502 - root - INFO - Client with address ('127.0.0.1', 59394) connected.
+2016-08-17 17:04:39,562 - root - INFO - Sending string: @004;00:00:00;T;Var. init.;SW:PaPa,0.2;HW:s12,SIM5320e,bastl#
+2016-08-17 17:04:40,665 - root - INFO - Sending string: @004;00:00:00;T;Reset#
+2016-08-17 17:04:41,217 - root - INFO - Sending string: @010;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:04:42,270 - root - INFO - Sending string: @004;00:00:05;T;Init wait done.#
+2016-08-17 17:04:42,976 - root - INFO - Sending string: @010;00:00:26;T;GSM Process error.#
+2016-08-17 17:04:43,926 - root - INFO - Sending string: @004;00:00:05;T;Modem init done.#
+2016-08-17 17:04:46,132 - root - INFO - Sending string: @004;00:00:10;D;x;x;x;x;x;x;x;x;x;320;99486#
+2016-08-17 17:04:47,690 - root - INFO - Sending string: @011;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:04:48,339 - root - INFO - Sending string: @004;00:00:15;D;x;x;x;x;x;x;x;x;x;320;99473#
+2016-08-17 17:04:49,445 - root - INFO - Sending string: @011;00:00:26;T;GSM Process error.#
+2016-08-17 17:04:54,160 - root - INFO - Sending string: @012;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:04:55,915 - root - INFO - Sending string: @012;00:00:26;T;GSM Process error.#
+2016-08-17 17:05:00,629 - root - INFO - Sending string: @012;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:05:02,385 - root - INFO - Sending string: @012;00:00:26;T;GSM Process error.#
+2016-08-17 17:23:24,819 - root - INFO - Client with address ('127.0.0.1', 59910) connected.
+2016-08-17 17:23:24,819 - root - INFO - Client with address ('127.0.0.1', 59912) connected.
+2016-08-17 17:23:27,878 - root - INFO - Sending string: @004;00:00:00;T;Var. init.;SW:PaPa,0.2;HW:s12,SIM5320e,bastl#
+2016-08-17 17:23:28,981 - root - INFO - Sending string: @004;00:00:00;T;Reset#
+2016-08-17 17:23:29,533 - root - INFO - Sending string: @010;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:23:30,587 - root - INFO - Sending string: @004;00:00:05;T;Init wait done.#
+2016-08-17 17:23:31,289 - root - INFO - Sending string: @010;00:00:26;T;GSM Process error.#
+2016-08-17 17:23:32,242 - root - INFO - Sending string: @004;00:00:05;T;Modem init done.#
+2016-08-17 17:23:34,448 - root - INFO - Sending string: @004;00:00:10;D;x;x;x;x;x;x;x;x;x;320;99486#
+2016-08-17 17:23:36,003 - root - INFO - Sending string: @011;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:23:36,655 - root - INFO - Sending string: @004;00:00:15;D;x;x;x;x;x;x;x;x;x;320;99473#
+2016-08-17 17:23:37,758 - root - INFO - Sending string: @011;00:00:26;T;GSM Process error.#
+2016-08-17 17:23:42,471 - root - INFO - Sending string: @012;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:23:44,226 - root - INFO - Sending string: @012;00:00:26;T;GSM Process error.#
+2016-08-17 17:23:48,941 - root - INFO - Sending string: @012;00:00:20;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;379;99479#
+2016-08-17 17:23:50,696 - root - INFO - Sending string: @012;00:00:26;T;GSM Process error.#
