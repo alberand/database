@@ -15,7 +15,6 @@ config = {
         'mysql_db':  'loggersdb',
 
         # Socket parameters
-        # 'host': '147.32.196.177',
         'host': 'localhost',
         'port': 5000,
 

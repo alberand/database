@@ -22,23 +22,26 @@ def parse(string):
         type), original (original string)
     """
     if not string:
-        return None
-
-    # Check if receive complete string
-    if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
-        logger.error('Sorry, string is not complete. String: {}'.format(string))
-        return None
-    
-    # Get rid of package characters and split data into list
-    raw_data = string[1:-1].split(config['pkg_delimeter'])
-    # Remove empty positions
-    data_list = list(filter(None, raw_data))
+        return string
 
     # Parse and convert data
     result = dict()
 
     # Add original string to dict. Later it will be used to it to file.
     result['original'] = string.rstrip()
+
+    # Check if receive complete string
+    if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
+        logger.error('Sorry, string is not complete. String: {}'.format(string))
+        result['ses_id'] = 0
+        result['type'] = 'E'
+        return result
+    
+    # Get rid of package characters and split data into list
+    raw_data = string[1:-1].split(config['pkg_delimeter'])
+    # Remove empty positions
+    data_list = list(filter(None, raw_data))
+
     # Setup some specific fields. This fields are common for all packages.
     try:
         result['ses_id'] = get_session_id(int(data_list.pop(0)))

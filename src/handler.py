@@ -24,6 +24,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
         self.buf = ''
         self.coding = 'utf-8'
         self.request.setblocking(True)
+        self.request.settimeout(3)
 
     def handle(self):
         logging.info('Client with address {} connected.'.format(
