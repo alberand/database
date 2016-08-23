@@ -24,6 +24,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
         self.buf = ''
         self.coding = 'utf-8'
         self.request.setblocking(True)
+        self.request.settimeout(3)
 
     def handle(self):
         logging.info('Client with address {} connected.'.format(
@@ -58,11 +59,14 @@ class RequestHandler(socketserver.BaseRequestHandler):
 
         while symbol != config['pkg_end']:
             byte = self.request.recv(1, socket.MSG_WAITALL) 
+            if not byte:
+                break
+
             symbol = str(byte, self.coding)
             string = string + symbol
             time.sleep(0.001)
 
-        logging.info('Sending string: {}'.format(string))
+        logging.info('Received string: {}'.format(string))
 
         return string
 

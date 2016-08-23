@@ -7,6 +7,7 @@ import logging
 import datetime
 import threading
 from queue import Queue
+import mysql.connector
 
 from server import Server
 from handler import RequestHandler
@@ -85,19 +86,15 @@ class Listener(threading.Thread):
         self.save_pkg(pkg)
 
         # Load package data to database
-        try:
-            if pkg['type'] == 'D':
-                # There we need to change package structure a little bit.
-                self.database.insert(expand_pkg_struct(), 
-                        data_for_db(pkg), 'packages')
-            elif pkg['type'] == 'T':
-                self.database.insert(msg_structure, pkg, 'messages')
-            else:
-                logging.info('Unkonwn type of the packages. Skipping.')
-        except Exception as e:
-            logging.info('Can\'t save package to database.')
-            logging.info(pkg)
-            logging.info(e)
+        if pkg['type'] == 'D':
+            # There we need to change package structure a little bit.
+            self.database.insert(expand_pkg_struct(), 
+                    data_for_db(pkg), 'packages')
+        elif pkg['type'] == 'T':
+            self.database.insert(msg_structure, pkg, 'messages')
+        else:
+            logging.info('Unkonwn type of the packages. Skipping. Package '
+                    'already saved.')
 
 
     def save_pkg(self, pkg):

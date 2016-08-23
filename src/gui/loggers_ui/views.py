@@ -50,8 +50,9 @@ class PackagesList(generic.TemplateView):
         Returns:
             List with strings
         '''
-        except_fields = ['id', 'ses', 't_ms', 'ses_id', 'latitude', 'lat_pos', 
-                'longitude', 'lon_pos']
+        except_fields = ['id', 'ses', 't_ms', 'ses_id', 'course',
+                'gps_altitude', 'speed', 'temperature', 'pressure', 'gps_state',
+                'sat_num', 'module_id']
         return [item.name for item in Packages._meta.get_fields() if item.name 
                 not in except_fields]
 

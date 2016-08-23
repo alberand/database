@@ -59,7 +59,7 @@ class Database:
         try:
             self.cursor.execute(query)
             self.cnx.commit()
-        except Exception as e:
+        except mysql.connector.Error as e:
             logging.info(e)
             self.cnx.rollback()
 
@@ -85,7 +85,7 @@ class Database:
             self.cursor.execute(query)
 
             return [item for item in self.cursor]
-        except Exception as e:
+        except mysql.connector.Error as e:
             logging.info(e)
             self.cnx.rollback()
 
@@ -94,4 +94,8 @@ class Database:
         Close database.
         '''
         logger.info("Closing database.")
-        self.cnx.close()
+        # Don't know maybe there also can be error =)
+        try:
+            self.cnx.close()
+        except mysql.connector.Error as e:
+            logging.error('Error while closing database. \n{}'.format(e))
