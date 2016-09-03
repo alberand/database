@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-sessions_list = [
-        normal_session,
-        bad_data_session,
-        miss_data_session,
-        normal_mul_session,
-]
-
 # Noraml session
 normal_session = [
         "@010;I;00:00:00;Var. init.;SW:PaPa,0.2;HW:s12,SIM5320e,bastl#",
@@ -72,4 +65,11 @@ normal_mul_session = [
         "@011;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;323;99479#",
         "@011;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;388;99479#",
         "@011;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;323;99479#",
+]
+
+sessions_list = [
+        normal_session,
+        bad_data_session,
+        miss_data_session,
+        normal_mul_session,
 ]
