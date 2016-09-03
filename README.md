@@ -12,7 +12,6 @@ Outlines
 
 TODO
 ===============================================================================
- - Save data to files if connection to database lost.
  - Maybe close connection to database if for a logng time there is no data
    coming.
  - Periodically backup database to remote server (FTP)
@@ -20,4 +19,4 @@ TODO
  - Creation random number from device id (import hashlib;
    hashlib.md5(b'').digest())
  - Parse packages
- - Gui interface for database
+ - On web page open *.txt files in new tab
