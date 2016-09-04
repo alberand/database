@@ -64,7 +64,8 @@ class PackagesList(generic.TemplateView):
                     'ext_templ': 'main.html',
                     'sessions': Sessions.objects.all(),
                     'names': names_list,
-                    'packages': packages
+                    'packages': packages,
+                    'json_map_data': '../static/data.json'
                 }
         )
 

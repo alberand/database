@@ -38,6 +38,15 @@
   <!-- End of the sidebar -->
   <!-- Start of the content -->
   <div class="col-md-10">
+
+
+    <!-- Map -->
+    <div id="map" class="map"><div id="popup" class="ol-popup"></div></div>
+    <script type="text/javascript">
+        loadJSON("{{ json_map_data }}", draw_map); 
+    </script>
+    <!-- End map -->
+
     <h4>Contents:</h4>
     {% block session_content %}{% endblock session_content %}
   </div>
