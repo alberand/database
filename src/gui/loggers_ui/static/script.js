@@ -19,6 +19,8 @@ function draw_map(response){
   // TODO: Should be generated
   var zoom = 15;
   var center = [14.398977756500244, 50.07859060687297];
+
+  console.log(response);
   // Load data
   geojsonObject = JSON.parse(response);
   var route = new ol.format.GeoJSON().readFeatures(geojsonObject, {

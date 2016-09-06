@@ -1,4 +1,5 @@
 import os
+import json
 
 from django.views import generic
 from django.shortcuts import render
@@ -7,6 +8,8 @@ from django.utils.encoding import smart_str
 from django.core.files import File
 
 from .models import Sessions, Packages
+
+from .utils import add_coords_to_json, NMEA_to_ll
 
 class MainPageView(generic.TemplateView):
     '''
@@ -44,7 +47,7 @@ class PackagesList(generic.TemplateView):
 
     def generate_fld_names(self):
         '''
-        Generate list of fields names of Model.
+        Generate list of fields names of Model. So names to display.
         Args:
             package: django.db.models.Model
         Returns:
@@ -56,8 +59,29 @@ class PackagesList(generic.TemplateView):
         return [item.name for item in Packages._meta.get_fields() if item.name 
                 not in except_fields]
 
+    def generate_route_for_map(self, pkg_list):
+        '''
+        Generate GEOjson structure for displaying on map.
+        Args:
+            pkg_list: list of packages with coordinates.
+        '''
+        with open('./loggers_ui/template.json', 'r') as _file:
+            data_set = json.loads(_file.read())
+
+            for pkg in pkg_list:
+                data_set = add_coords_to_json(data_set, 
+                        NMEA_to_ll(float(pkg[2]), 
+                                   float(pkg[4])))
+
+        replace_table = {ord('\''): '"', ord('"'): '\''}
+
+        # return str(data_set).translate(replace_table)
+        return str(data_set).replace('\'', '"')
+
     def get(self, request, ses_id):
         names_list, packages = self.generate_pkg_set(ses_id)
+
+        route_json = self.generate_route_for_map(packages)
 
         return render(request, self.template_name, 
                 {
@@ -65,7 +89,7 @@ class PackagesList(generic.TemplateView):
                     'sessions': Sessions.objects.all(),
                     'names': names_list,
                     'packages': packages,
-                    'json_map_data': '../static/data.json'
+                    'json_map_data': route_json
                 }
         )
 
