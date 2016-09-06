@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from django.core.files import File
+from django.db.models import Max, Min
 
 from .models import Sessions, Packages
 
@@ -78,10 +79,41 @@ class PackagesList(generic.TemplateView):
         # return str(data_set).translate(replace_table)
         return str(data_set).replace('\'', '"')
 
+    def session_info(self, ses_id):
+        '''
+        Generate sessions information displayed on the page.
+        Args:
+            ses_id: integer, session id
+        Returns:
+            Dictionary.
+        '''
+        ses_info = dict()
+
+        # Calculate date range
+        earliest_d = Packages.objects.all().aggregate(Min('date'))['date__min']
+        latest_d = Packages.objects.all().aggregate(Max('date'))['date__max']
+
+        # Calculate time range
+        earliest_t = Packages.objects.all().aggregate(Min('time'))['time__min']
+        latest_t = Packages.objects.all().aggregate(Max('time'))['time__max']
+
+        ses_info['ses_id'] = ses_id
+        ses_info['date_range'] = ('{} - {}'.format(earliest_d, latest_d) if
+                latest_d != earliest_d else '{}'.format(latest_d))
+        ses_info['time_range'] = ('{} - {}'.format(earliest_t, latest_t) if
+                latest_t != earliest_t else '{}'.format(latest_t))
+        # TODO: empty for now
+        ses_info['avr_speed'] = 322
+        ses_info['avr_sat_num'] = 7
+
+        return ses_info
+
     def get(self, request, ses_id):
         names_list, packages = self.generate_pkg_set(ses_id)
 
         route_json = self.generate_route_for_map(packages)
+
+        ses_info = self.session_info(ses_id)
 
         return render(request, self.template_name, 
                 {
@@ -89,7 +121,8 @@ class PackagesList(generic.TemplateView):
                     'sessions': Sessions.objects.all(),
                     'names': names_list,
                     'packages': packages,
-                    'json_map_data': route_json
+                    'json_map_data': route_json,
+                    'ses_info': ses_info
                 }
         )
 
