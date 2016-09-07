@@ -19,6 +19,8 @@ function draw_map(response){
   // TODO: Should be generated
   var zoom = 15;
   var center = [14.398977756500244, 50.07859060687297];
+
+  console.log(response);
   // Load data
   geojsonObject = JSON.parse(response);
   var route = new ol.format.GeoJSON().readFeatures(geojsonObject, {
@@ -154,7 +156,7 @@ function draw_map(response){
       popup.setPosition(coordinates);
       var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
                           coordinates, 'EPSG:3857', 'EPSG:4326'));
-      content = '<p>You clicked here:</p><code>' + hdms +
+      content = '<p>Information:</p><code>' + hdms +
                               '</code>';
       content = content + '<p id="hidden_id">' + feature.id + '</p>'
       $(element).popover({

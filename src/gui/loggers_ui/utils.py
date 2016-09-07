@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
+
 def NMEA_to_ll(lat, lon):
     '''
     Converts NMEA coordinates to decimal degree.
@@ -26,7 +28,38 @@ def NMEA_to_ll(lat, lon):
 
     return result 
 
+def add_coords_to_json(json_str, coords):
+    '''
+    Add list of coordinates [lat, lon, alt] to prepared json structure.
+    Args:
+        json_str: json object.
+        coords: list with three float numbers.
+    Returns:
+        Update json structure.
+    '''
+    json_str['features'][0]['geometry']['coordinates'].append(coords)
+
+    return json_str
+
+
 if __name__ == '__main__':
+    from pprint import pprint
+
+    print('='*80)
+    print('{0:=^80}'.format('Test coords convertion from NMEA to dd formats.'))
+    print('='*80)
     print('Initial coordinates: {} {}'.format(14.3924090, 50.0813583))
     print('Calculated coordinates: {} {}'.format(
         *NMEA_to_ll(1423.5445, 5004.8815)))
+
+    print('='*80)
+    print('{0:=^80}'.format('Test adding coords to data set.'))
+    print('='*80)
+
+    with open('./template.json', 'r') as _file:
+        coords_set = json.loads(_file.read())
+
+        updated_set = add_coords_to_json(coords_set, [123.0, 34.0, 42.0])
+
+        pprint(updated_set['features'][0]['geometry']['coordinates'])
+

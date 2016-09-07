@@ -20,15 +20,26 @@
           <!-- End link to session -->
 
           <!-- Start download button -->
-          <span class="menu-item-down-icon" >
-            <a class="menu-down-icon" 
+          <span class="menu-item-cont-icon" >
+            <a class="menu-icon-link" 
                href="{% url 'Session'  item.ses_id %}download"
                title="Download session">
-              <span class="glyphicon glyphicon-download-alt download-icon"
+              <span class="glyphicon glyphicon-download-alt icon-cont"
                     aria-hidden="true"></span>
             </a>
           </span>
           <!-- End download button -->
+          <!-- Start Map button -->
+          <span class="menu-item-cont-icon" >
+            <a class="menu-icon-link" 
+               href="{% url 'Session'  item.ses_id %}Map"
+               title="View map in another tab." 
+               target="_blank">
+              <span class="glyphicon glyphicon-map-marker icon-cont"
+                    aria-hidden="true"></span>
+            </a>
+          </span>
+          <!-- End Map button -->
 		</li>
 		{% endfor %}
 	  </ul>
@@ -39,16 +50,8 @@
   <!-- Start of the content -->
   <div class="col-md-10">
 
+      {% block session_content %}{% endblock session_content %}
 
-    <!-- Map -->
-    <div id="map" class="map"><div id="popup" class="ol-popup"></div></div>
-    <script type="text/javascript">
-        loadJSON("{{ json_map_data }}", draw_map); 
-    </script>
-    <!-- End map -->
-
-    <h4>Contents:</h4>
-    {% block session_content %}{% endblock session_content %}
   </div>
   <!-- End of the content -->
 

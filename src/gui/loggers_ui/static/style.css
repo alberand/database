@@ -33,7 +33,7 @@
 .nav-sidebar-list .menu-item {
   display: block;
   position: relative;
-  width: 80%;
+  width: 75%;
   float: left;
 }
 
@@ -43,18 +43,17 @@
   width: 100%;
 }
 
-.nav-sidebar-list .menu-item-down-icon {
+.nav-sidebar-list .menu-item-cont-icon {
   padding: 0;
-  float: right;
-  width: 20%;
+  float: left;
 }
 
-.nav-sidebar-list .menu-down-icon {
+.nav-sidebar-list .menu-icon-link {
   padding: 7px 5px;
   display: block;
 }
 
-.nav-sidebar-list .menu-down-icon .download-icon {
+.nav-sidebar-list .menu-icon-link .icon-cont {
   text-align: center;
   display: block;
 }
