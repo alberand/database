@@ -14,13 +14,12 @@ function loadJSON(file, callback) {
     
 
 // Call response function when loading is finished
-function draw_map(response){
+function draw_map(response, center){
   // Some initial information 
-  // TODO: Should be generated
   var zoom = 15;
-  var center = [14.398977756500244, 50.07859060687297];
+  // var center = [14.398977756500244, 50.07859060687297];
+  var center = JSON.parse(center);
 
-  console.log(response);
   // Load data
   geojsonObject = JSON.parse(response);
   var route = new ol.format.GeoJSON().readFeatures(geojsonObject, {
@@ -43,6 +42,8 @@ function draw_map(response){
   // Styles for points
   var styles = {
       'start_marker': new ol.style.Style({
+        // graphicZIndex: 100,
+        // zIndex: 100,
         image: new ol.style.Circle({
           radius: 7,
           snapToPixel: false,
@@ -54,6 +55,8 @@ function draw_map(response){
       }),
 
       'end_marker': new ol.style.Style({
+        // graphicZIndex: 100,
+        // zIndex: 100,
         image: new ol.style.Circle({
           radius: 7,
           snapToPixel: false,
@@ -65,18 +68,25 @@ function draw_map(response){
       }), 
       
       'point': new ol.style.Style({
+        // graphicZIndex: 99,
+        // zIndex: 99,
         image: new ol.style.Circle({
-          radius: 3,
+          radius: 7,
           fill: new ol.style.Fill({
-            color: '#800',
+            //color: '#800',
+            color: 'rgba(60, 160, 10, 0.9)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#555', 
+            width: 1
           })
         })
       }),
 
       'line': new ol.style.Style({
         stroke: new ol.style.Stroke({
-          width: 4,
-          color: 'rgba(100, 200, 50, 0.8)'
+          width: 5,
+          color: 'rgba(100, 200, 50, 0.9)'
         }),
       })
   };
@@ -102,7 +112,8 @@ function draw_map(response){
   var vector_layer = new ol.layer.Vector({
     source: new ol.source.Vector({
       features: [lineFeature, startMarker, endMarker]
-    })
+    }),
+    rendererOptions: { zIndexing: true }
   });
 
   // Array of points. Used for keyboard orientation on the map.
@@ -114,6 +125,7 @@ function draw_map(response){
       type: 'point',
     });
     point.id = i
+    point.setStyle(styles['point']);
     vector_layer.getSource().addFeature(point);
     points.push(point);
   }
@@ -145,7 +157,7 @@ function draw_map(response){
     element: element,
     positioning: 'bottom-center',
     stopEvent: false,
-    offset: [0, -7]
+    offset: [-2, -8]
   });
   map.addOverlay(popup);
 
@@ -200,6 +212,16 @@ function draw_map(response){
 	// display popup on click
   map.on('click', function(evt) {
     // console.log(evt);
+    // var pos = evt.coordinate;        
+    // var point =  new ol.geom.Point(pos.lon, pos.lat);
+    // var closest = Math.min(vector_layer.getSource().getFeatures().map(
+          // function(feature) {
+            // console.log(feature.getGeometry().getClosestPoint(pos));
+            // return feature.getGeometry().getClosestPoint(point);
+    // }));
+    // var closest = lineFeature.getGeometry().getClosestPoint(pos);
+    // console.log(pos);
+    // console.log(closest);
     var feature = map.forEachFeatureAtPixel(evt.pixel,
         function(feature) {
           return feature;

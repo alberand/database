@@ -88,6 +88,20 @@ class SessionPage(generic.TemplateView):
 
         return str(data_set).replace('\'', '"')
 
+    def _find_coords_center(self, pkg_list):
+        # Latitude id in the list.
+        i = 2
+        max_lat = max([pkg[i] for pkg in pkg_list])
+        min_lat = min([pkg[i] for pkg in pkg_list])
+        # Longitude id in the list.
+        i = 4
+        max_lon = max([pkg[i] for pkg in pkg_list])
+        min_lon = min([pkg[i] for pkg in pkg_list])
+
+        return json.dumps(NMEA_to_ll(min_lat + (max_lat - min_lat)/2,
+                                     min_lon + (max_lon - min_lon)/2))
+
+
     def session_info(self, ses_id):
         '''
         Generate sessions information displayed on the page.
@@ -120,10 +134,6 @@ class SessionPage(generic.TemplateView):
     def get(self, request, ses_id):
         # Get packages
         names_list, packages = self.get_packages(ses_id)
-        # Generate Json data for displaying on map
-        route_json = self.json_route(packages)
-        # Get information about session
-        ses_info = self.session_info(ses_id)
 
         return render(request, self.template_name, 
                 {
@@ -131,8 +141,9 @@ class SessionPage(generic.TemplateView):
                     'sessions':         Sessions.objects.all(),
                     'names':            names_list,
                     'packages':         packages,
-                    'json_map_data':    route_json,
-                    'ses_info':         ses_info
+                    'ses_info':         self.session_info(ses_id),
+                    'json_map_data':    self.json_route(packages),
+                    'json_map_center':  self._find_coords_center(packages)
                 }
         )
 
@@ -181,16 +192,28 @@ class MapPage(generic.TemplateView):
 
         return str(data_set).replace('\'', '"')
 
+    def _find_coords_center(self, pkg_list):
+        # Latitude id in the list.
+        i = 0
+        max_lat = max([pkg[i] for pkg in pkg_list])
+        min_lat = min([pkg[i] for pkg in pkg_list])
+        # Longitude id in the list.
+        i = 2
+        max_lon = max([pkg[i] for pkg in pkg_list])
+        min_lon = min([pkg[i] for pkg in pkg_list])
+
+        return json.dumps(NMEA_to_ll(min_lat + (max_lat - min_lat)/2,
+                                     min_lon + (max_lon - min_lon)/2))
+
     def get(self, request, ses_id):
         # Get packages
         names_list, packages = self.get_packages(ses_id)
-        # Generate Json data for displaying on map
-        route_json = self.json_route(packages)
 
         response =  render(request, self.template_name, 
                 {
                     'ses_id':           ses_id,
-                    'json_map_data':    route_json
+                    'json_map_data':    self.json_route(packages),
+                    'json_map_center':  self._find_coords_center(packages)
                 }
         )
 

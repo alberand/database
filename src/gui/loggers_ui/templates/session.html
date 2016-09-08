@@ -37,7 +37,8 @@
   </div>
   <!-- Script for sending map data to javascript code. -->
   <script type="text/javascript">
-      draw_map('{{ json_map_data|safe }}', draw_map); 
+    draw_map('{{ json_map_data|safe }}', '{{ json_map_center|safe }}', 
+             draw_map); 
   </script>
 </div>
 <!-- End of map -->
