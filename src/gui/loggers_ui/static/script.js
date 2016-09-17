@@ -26,6 +26,7 @@ function draw_map(response, center){
       featureProjection: 'EPSG:3857'
   });
 
+
   // Get element from the array and set type
 	route = route[0];
 	route.set('type', 'route');
@@ -164,12 +165,14 @@ function draw_map(response, center){
   function create_popup(feature, element){
     if (feature && feature.get('type') == 'point') {
       var coordinates = feature.getGeometry().getCoordinates();
-			console.log(coordinates)
+			console.log(coordinates);
+      get_address(coordinates);
       popup.setPosition(coordinates);
       var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
                           coordinates, 'EPSG:3857', 'EPSG:4326'));
       content = '<p>Information:</p><code>' + hdms +
                               '</code>';
+      content = content + '<p id="point_address"></p>'
       content = content + '<p id="hidden_id">' + feature.id + '</p>'
       $(element).popover({
         'placement': 'top',
@@ -230,4 +233,22 @@ function draw_map(response, center){
   });
 
 };
+
+
+function get_address(coords){
+  // Get response from API
+  coords = ol.proj.transform(coords, 'EPSG:3857', 'EPSG:4326');
+  lon = coords[0];
+  lat = coords[1];
+  loadJSON('http://open.mapquestapi.com/nominatim/v1/reverse.php?key=xKWXFzDoNFf4q9DbKXh6zPpfOkqAwb5A&format=json&lat=' + lat + '&lon=' + lon, 
+  function(data){
+    data = JSON.parse(data);
+    console.log(data['display_name'])
+	  var element = document.getElementById('point_address');
+    element.textContent = data['display_name'];
+  });
+
+}
+
+// get_address(50.08135833034937, 14.39240902662277);
 
