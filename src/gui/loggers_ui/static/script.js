@@ -172,8 +172,10 @@ function draw_map(response, center){
                           coordinates, 'EPSG:3857', 'EPSG:4326'));
       content = '<p>Information:</p><code>' + hdms +
                               '</code>';
-      content = content + '<p id="point_address"></p>'
       content = content + '<p id="hidden_id">' + feature.id + '</p>'
+      // Add coordinates to Point information table
+	    var point_table = document.getElementById('point_coords');
+      point_table.innerHTML = '<code>' + hdms + '</code>';
       $(element).popover({
         'placement': 'top',
         'html': true,
