@@ -1,5 +1,5 @@
 // Load json file with data
-function loadJSON(file, callback) {   
+function load_file(file, callback) {   
   var xobj = new XMLHttpRequest();
   xobj.overrideMimeType("application/json");
   console.log("Start loading ");
@@ -25,6 +25,7 @@ function draw_map(response, center){
   var route = new ol.format.GeoJSON().readFeatures(geojsonObject, {
       featureProjection: 'EPSG:3857'
   });
+
 
 
   // Get element from the array and set type
@@ -152,6 +153,25 @@ function draw_map(response, center){
     ],
   });
 
+  // Load airspaces
+  load_file('../static/polygon.gml', function (response){
+    var airspaces_layer = new ol.layer.Vector({
+      source: new ol.source.Vector(),
+			style: new ol.style.Style({
+        strokeColor: '#bada55'
+      })
+    });
+    // console.log(response);
+    response = (new DOMParser()).parseFromString(response, 'text/xml');
+    var airspaces = new ol.format.WMSGetFeatureInfo().readFeatures(response);
+    console.log('Airspaces:');
+    console.log(airspaces);
+    console.log('Create airspaces layer.');
+    airspaces_layer.getSource().addFeatures(airspaces);
+    console.log('Adding airspaces layer to the map.');
+    map.addLayer(airspaces_layer);
+  });
+
 	var element = document.getElementById('popup');
 
   var popup = new ol.Overlay({
@@ -242,7 +262,7 @@ function get_address(coords){
   coords = ol.proj.transform(coords, 'EPSG:3857', 'EPSG:4326');
   lon = coords[0];
   lat = coords[1];
-  loadJSON('http://open.mapquestapi.com/nominatim/v1/reverse.php?key=xKWXFzDoNFf4q9DbKXh6zPpfOkqAwb5A&format=json&lat=' + lat + '&lon=' + lon, 
+  load_file('http://open.mapquestapi.com/nominatim/v1/reverse.php?key=xKWXFzDoNFf4q9DbKXh6zPpfOkqAwb5A&format=json&lat=' + lat + '&lon=' + lon, 
   function(data){
     data = JSON.parse(data);
     console.log(data['display_name'])
@@ -251,6 +271,3 @@ function get_address(coords){
   });
 
 }
-
-// get_address(50.08135833034937, 14.39240902662277);
-
