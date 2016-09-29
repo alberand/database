@@ -1,0 +1,97 @@
+.maps {
+  width: 400px;
+  height: 400px;
+}
+
+.ol-popup {
+  min-width: 280px;
+}
+
+#hidden_id {
+  display: none;
+}
+
+.nav-sidebar { 
+  width: 100%;
+}
+
+.nav-sidebar-without-rp {
+  padding-right: 0px;
+}
+
+.nav-sidebar-list {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-sidebar-list li {
+  line-height: 20px;
+  overflow: auto;
+  margin: 5px 0px;
+}
+
+.nav-sidebar-list .menu-item {
+  display: block;
+  position: relative;
+  width: 75%;
+  float: left;
+}
+
+.nav-sidebar-list .menu-item a {
+  padding: 7px 5px;
+  float: left;
+  width: 100%;
+}
+
+.nav-sidebar-list .menu-item-cont-icon {
+  padding: 0;
+  float: left;
+}
+
+.nav-sidebar-list .menu-icon-link {
+  padding: 7px 5px;
+  display: block;
+}
+
+.nav-sidebar-list .menu-icon-link .icon-cont {
+  text-align: center;
+  display: block;
+}
+
+.nab-sidebar-list li:hover {
+  background-color: #DDD;
+}
+
+
+.navbar {
+  width: 1200px;
+  height: 50px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.navbar-brand {
+  line-height: 100%;
+}
+
+.menu-list {
+	float: right !important;
+  margin-right: -15px;
+	list-style: none;
+}
+
+.menu-list li {
+	float: left;
+}
+
+.menu-list li a {
+	padding: 15px 15px;
+	line-height: 20px;
+  display: block;
+  position: relative;
+}
+
+.row-border {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
