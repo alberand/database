@@ -20,6 +20,8 @@ def NMEA_to_ll(lat, lon):
     # Get degree
     for coord in (lat, lon):
         num = coord.split('.')
+        if len(num[0]) < 5:
+            num[0] = '{0:0>5}'.format(num[0])
         # Last two numbers are minutes, but first 1 - 3 are degree
         int_part = num[0][0:len(num[0]) - 2]
         dd = float(int_part) + \
@@ -62,4 +64,11 @@ if __name__ == '__main__':
         updated_set = add_coords_to_json(coords_set, [123.0, 34.0, 42.0])
 
         pprint(updated_set['features'][0]['geometry']['coordinates'])
+
+    print('='*80)
+    print('{0:=^80}'.format('Test zeros coordinates.'))
+    print('='*80)
+    print('Initial coordinates: {} {}'.format(0.1, 0.1))
+    print('Calculated coordinates: {} {}'.format(
+        *NMEA_to_ll(0.1, 0.1)))
 
