@@ -62,7 +62,7 @@ if __name__ == '__main__':
             exit(1)
 
     # Create tables described in TABLES dictonary
-    for name, ddl in TABLES.items():
+    for name, ddl in zip(['sessions', 'packages', 'messages'], TABLES.values()):
         try:
             print("Creating table '{}': ".format(name), end='')
             cursor.execute(ddl)

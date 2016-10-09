@@ -14,7 +14,7 @@ source ./config.cfg
 # Folder with sources
 src_folder="./src"
 # Running scripts (should be separated by spaces).
-run_scripts="./run_server.sh ./run_web_interface.sh"
+run_scripts="run_server.sh run_web_interface.sh"
 # Folder with .deb packages
 pkg_folder="./packages"
 # File with list of requered python-packages
@@ -51,7 +51,7 @@ function error(){
 # Initalize user
 #==============================================================================
 head "Creating user."
-success "Adding user with name \"$user\""
+info "Adding user with name \"$user\""
 
 # Adds user
 id -u $user &>/dev/null
@@ -59,6 +59,7 @@ if [ $? -eq 1 ]; then
  adduser --gecos "" $user
  echo "# Custom users" >> /etc/sudoers
  echo "$user ALL=(ALL:ALL) ALL" >> /etc/sudoers
+ success "User added."
 else
  info "User with this name already exists. So, use \"$user\"."
 fi
@@ -72,24 +73,32 @@ fuser /var/lib/dpkg/lock &>/dev/null
 if [ $? -eq 1 ]; then
   # Install mysql-server
   info "Installing mysql-server ..."
-  dpkg -s mysql-server &>/dev/null
+  yes | dpkg -s --force-confdef mysql-server &>/dev/null
   if [ $? -eq 1 ]; then
       apt-get install mysql-server
   fi
+  info "Installing libmysqlclient-dev..."
+  dpkg -s --force-confdef libmysqlclient-dev &>/dev/null
+  if [ $? -eq 1 ]; then
+      apt-get install libmysqlclient-dev
+  fi
   # Install python3
   info "Installing python3 ..."
-  dpkg -s python3 &>/dev/null
+  dpkg -s --force-confdef python3 &>/dev/null
   if [ $? -eq 1 ]; then
       apt-get install python3
+      success "Python3 installed."
   fi
   # Install pip3
   info "Installing pip3 ..."
   which pip3 &>/dev/null
   if [ $? -eq 1 ]; then
       python3 get-pip.py
+      success "Pip3 installed."
   fi
 else
   error "dpkg lock is locked. Can't install packages. Are you installing something?"
+  exit 1
 fi
 
 #==============================================================================
@@ -98,7 +107,7 @@ fi
 head "Moving source files."
 # Create catalog
 info "Creating " + "$USER_HOME/$catalog_name"
-mkdir "$USER_HOME/$catalog_name"
+mkdir -p "$USER_HOME/$catalog_name"
 # Move source files to their places
 info "Copying source files ..."
 cp -R "$src_folder" "$USER_HOME/$catalog_name"
@@ -112,14 +121,14 @@ head "Adding virtual environment"
 info "Installing virtualenv..."
 wcich virtualenv &>/dev/null
 if [ $? ]; then
-    pip3 install virtualenv
+    pip3 --no-cache-dir install virtualenv
 fi
 
 info "Creating new virtual environment for Python packages ..."
 # Create virtual environment
 virtualenv -p `which python3` "$USER_HOME/$catalog_name/$venv_name"
 # Activate virtenv
-source "$USER_HOME/$venv_name"/bin/activate
+source "$USER_HOME$venv_name"/bin/activate
 
 #==============================================================================
 # Install python packages from .deb
@@ -131,19 +140,21 @@ if [ $? -eq 1 ]; then
   dpkg -i "$pkg_folder/mysql-connector-python-py3_2.1.3-1ubuntu14.04_all.deb"
 else
   error "dpkg lock is locked. Can't install packages. Are you installing something?"
+  exit 1
 fi
 
 #==============================================================================
 # Install python packages
 #==============================================================================
 head "Installing python packages ..."
-pip3 install -r $list_of_pp
+pip3 --no-cache-dir install -r $list_of_pp
 
 #==============================================================================
 # Initialize database
 #==============================================================================
 head "Creating mysql user and mysql tables..."
 # Create MySQL user
+info "Creating creation user \"$mysql_user\" ..."
 echo "CREATE USER '$mysql_user'@'localhost' IDENTIFIED BY '$mysql_pass';" | mysql -uroot -p
 info "Creating tables and database ..."
 # Create database and tables
