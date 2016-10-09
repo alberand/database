@@ -50,6 +50,7 @@ function create_route(json_data, color=[100, 200, 50]){
     })
   );
 
+  console.log(lineFeature.getGeometry());
 
   // Array of points. Used for keyboard orientation on the map.
   var features = Array();
@@ -144,6 +145,10 @@ function key_listener(e) {
     if (e.keyCode == 37){
       console.log("Left " + id);
       create_popup(points[id - 1], $(popup_element))
+      create_popup(
+          new ol.Feature({
+            geometry: new ol.geom.Point([id])
+          }), $(popup_element))
     } else if (e.keyCode == 39){
       console.log("Right " + id);
       create_popup(points[id + 1], $(popup_element))

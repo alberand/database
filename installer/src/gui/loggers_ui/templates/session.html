@@ -50,14 +50,16 @@
   </div>
   <!-- Script for sending map data to javascript code. -->
   <script type="text/javascript">
-    draw_map('{{ json_map_data|safe }}', '{{ json_map_center|safe }}', 
-             draw_map); 
+    init_map(JSON.parse('{{ json_map_center|safe }}'));
+    add_route(JSON.parse('{{ json_map_data|safe }}'));
   </script>
 </div>
 <!-- End of map -->
 
-<h4>Contents:</h4>
-<!-- { block packages_list %}{ endblock packages_list %} -->
-{% include 'packages_table.html' %}
+<div class="col-md-12">
+  <h4>Contents:</h4>
+  <!-- { block packages_list %}{ endblock packages_list %} -->
+  {% include 'packages_table.html' %}
+</div>
 <!-- End of the content -->
 {% endblock session_content %}

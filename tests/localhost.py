@@ -25,7 +25,7 @@ if __name__ == '__main__':
     # Configure test properties
     ip, port = '127.0.0.1', 5000
     # Order: normal, bad, miss, multiple
-    _set = load_session_from_file('data.txt')
+    _set = load_session_from_file('data_1.txt')
     # Clients number should be > 0
     clients_number = 1
 

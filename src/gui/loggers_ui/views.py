@@ -219,6 +219,83 @@ class MapPage(generic.TemplateView):
 
         return response
 
+class GlobalMap(generic.TemplateView):
+    '''
+    '''
+    template_name = 'maps.html'
+
+    def get_packages(self, ses_id):
+        '''
+        Generate list with lists contain packages data.
+        Args:
+            ses_id: session id
+        Returns:
+            List with lists representing pacakges.
+        '''
+        packages = Packages.objects.filter(ses_id=ses_id)
+
+        names_list = ['latitude', 'lat_pos', 'longitude', 'lon_pos']
+
+        pkgs_list = list()
+        for package in packages:
+            pkgs_list.append([getattr(package, field) for field in names_list])
+
+        return (names_list, pkgs_list)
+
+    def json_route(self, pkg_list):
+        '''
+        Generate GEOjson structure for displaying on map.
+        Args:
+            pkg_list: list of packages with coordinates.
+        Returns:
+            String which represents json structure.
+        '''
+        with open('./loggers_ui/template.json', 'r') as _file:
+            data_set = json.loads(_file.read())
+
+            for pkg in pkg_list:
+                data_set = add_coords_to_json(data_set, 
+                        NMEA_to_ll(float(pkg[0]), 
+                                   float(pkg[2])))
+
+        replace_table = {ord('\''): '"', ord('"'): '\''}
+
+        return str(data_set).replace('\'', '"')
+
+    def _find_coords_center(self, pkg_list):
+        # Latitude id in the list.
+        i = 0
+        max_lat = max([pkg[i] for pkg in pkg_list])
+        min_lat = min([pkg[i] for pkg in pkg_list])
+        # Longitude id in the list.
+        i = 2
+        max_lon = max([pkg[i] for pkg in pkg_list])
+        min_lon = min([pkg[i] for pkg in pkg_list])
+
+        return json.dumps(NMEA_to_ll(min_lat + (max_lat - min_lat)/2,
+                                     min_lon + (max_lon - min_lon)/2))
+
+    def get(self, request):
+        # Get packages
+        routes = list()
+        all_pkgs = list()
+        for session in Sessions.objects.all():
+            names_list, packages = self.get_packages(getattr(session, 'ses_id'))
+            all_pkgs.extend(packages)
+            routes.append(self.json_route(packages))
+            print(all_pkgs)
+
+        response =  render(request, self.template_name, 
+                {
+                    'ext_templ':        'main.html',
+                    'sessions':         Sessions.objects.all(),
+                    'routes':           routes,
+                    'json_map_center': self._find_coords_center(all_pkgs)
+                }
+        )
+
+        return response
+
 def download_file(request, ses_id):
     '''
     Function which called when you want to download session file.
