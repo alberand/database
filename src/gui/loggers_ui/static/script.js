@@ -50,7 +50,6 @@ function create_route(json_data, color=[100, 200, 50]){
     })
   );
 
-
   // Array of points. Used for keyboard orientation on the map.
   var features = Array();
   features.push(lineFeature);
@@ -144,6 +143,10 @@ function key_listener(e) {
     if (e.keyCode == 37){
       console.log("Left " + id);
       create_popup(points[id - 1], $(popup_element))
+      create_popup(
+          new ol.Feature({
+            geometry: new ol.geom.Point([id])
+          }), $(popup_element))
     } else if (e.keyCode == 39){
       console.log("Right " + id);
       create_popup(points[id + 1], $(popup_element))
@@ -164,6 +167,19 @@ function key_listener(e) {
  */
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/*
+ * Function for setting zoom level of the map.
+ * Args:
+ *  center: array with two numbers representing coordinates of the focus center.
+ *  level: zoom level from 1 to 20.
+ */
+function set_zoom(center, level){
+  var view = map.getView();
+
+  view.setCenter(center);
+  view.setZoom(level);
 }
 
 /*
@@ -288,6 +304,9 @@ function load_route(address){
 }
     
 
+//=============================================================================
+// Deprecated
+//=============================================================================
 // Call response function when loading is finished
 function draw_map(response, center){
   // Some initial information 
