@@ -178,7 +178,13 @@ function getRandomInt(min, max) {
 function set_zoom(center, level){
   var view = map.getView();
 
-  view.setCenter(center);
+  console.log('Center ' + center);
+  console.log('Zoom level ' + level);
+
+  var width = document.getElementsByClassName('ol-unselectable')[0].offsetWidth;
+  console.log(Math.floor(width/256));
+
+  view.setCenter(ol.proj.fromLonLat(center));
   view.setZoom(level);
 }
 
