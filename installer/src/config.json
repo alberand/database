@@ -11,7 +11,7 @@
     "pkg_delimeter": ";",
     "pkg_end": "#",
     "pkg_start": "@",
-    "port": "5000",
+    "port": 5000,
     "txt_end": "\r",
     "txt_start": "T"
 }

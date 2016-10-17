@@ -25,6 +25,8 @@ def parse(_file):
             field = [item.rstrip() for item in line.split('=')]
             if field[1][0] == '"':
                 field[1] = field[1][1:-1]
+            if field[0] == 'port':
+                field[1] = int(field[1])
 
         result[field[0]] = field[1]
 
@@ -42,6 +44,7 @@ fields_to_update = [
 # Open and parse bash config
 with open(bash_config, 'r') as _config:
     new_values = parse(_config)
+    pprint(new_values)
 
 # Open and save new values to json config
 with open(server_config, 'r+') as _json_config:
