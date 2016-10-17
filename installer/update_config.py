@@ -40,5 +40,15 @@ fields_to_update = [
         'mysql_db'
 ]
 with open(bash_config, 'r') as _config:
-    pprint(parse(_config))
+    new_values = parse(_config)
+
+with open('config.json', 'r+') as _json_config:
+    new_config = json.load(_json_config)
+    for field in fields_to_update:
+        new_config[field] = new_values[field]
+
+    _json_config.seek(0)
+    _json_config.write(json.dumps(new_config, indent=4, sort_keys=True))
+    _json_config.truncate()
+
 
