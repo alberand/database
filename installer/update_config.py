@@ -12,7 +12,7 @@ from pprint import pprint
 # Bash configuration
 bash_config = './config.cfg'
 # Server configuration file
-server_config = ['./src/config.py', './scripts/config.py']
+server_config = './src/config.json'
 
 # Parse function
 def parse(_file):
@@ -42,7 +42,7 @@ fields_to_update = [
 with open(bash_config, 'r') as _config:
     new_values = parse(_config)
 
-with open('config.json', 'r+') as _json_config:
+with open(server_config, 'r+') as _json_config:
     new_config = json.load(_json_config)
     for field in fields_to_update:
         new_config[field] = new_values[field]

@@ -1,8 +1,10 @@
 #!/bin/python
 
+import json
 from datetime import datetime
 
-config = {
+config = json.load(open('./config.json', 'r'))
+a = {
         # MySQL information
         # Host is usually localhost, if database is running on another machine
         # it should be change to address of that machine.
@@ -98,3 +100,6 @@ db_fields = [
         'lon_pos',
         'ses_id'
 ]
+
+if __name__ == '__main__':
+    print(config['mysql_user'])
