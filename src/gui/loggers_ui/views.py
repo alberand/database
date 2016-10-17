@@ -294,8 +294,8 @@ class GlobalMap(generic.TemplateView):
         max_lon = NMEA_to_dd(max([pkg[i] for pkg in pkg_list]))
         min_lon = NMEA_to_dd(min([pkg[i] for pkg in pkg_list]))
 
-        # return json.dumps([[min_lat, max_lat], [min_lon, max_lon]])
-        return [[min_lat, max_lat], [min_lon, max_lon]]
+        return json.dumps([[min_lat, max_lat], [min_lon, max_lon]])
+        # return [[min_lat, max_lat], [min_lon, max_lon]]
         # return json.dumps([max_lat - min_lat, max_lon - min_lon])
 
     def _find_zoom_level(self, bounds):
@@ -352,8 +352,7 @@ class GlobalMap(generic.TemplateView):
                     'sessions':         Sessions.objects.all(),
                     'routes':           routes,
                     'json_map_center': self._find_coords_center(all_pkgs),
-                    'json_map_zoom_lvl': self._find_zoom_level(
-                        self._find_bounds(all_pkgs))
+                    'json_map_bounds': self._find_bounds(all_pkgs)
                 }
         )
 

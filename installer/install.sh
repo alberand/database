@@ -10,6 +10,8 @@
 #******************
 # Load configuration
 source ./config.cfg
+# User home directory
+USER_HOME="/home/$user/"
 
 # Folder with sources
 src_folder="./src"

@@ -1,4 +1,31 @@
 /*
+ * Definition of the array for zoom degree ranges. Used in zoomFromBounds.
+ */
+
+lvl_to_degree = [
+    360.0,
+    180.0,
+    90.0,
+    45.0,
+    22.5,
+    11.25,
+    5.625,
+    2.813,
+    1.406,
+    0.703,
+    0.352,
+    0.176,
+    0.088,
+    0.044,
+    0.022,
+    0.011,
+    0.005,
+    0.003,
+    0.001,
+    0.0005,
+]
+
+/*
  * Load file from address and then call 'callback' function on received
  * response.
  * Args:
@@ -167,6 +194,56 @@ function key_listener(e) {
  */
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/*
+ * Function to calculate apropriate zoom level for received coordinates bounds.
+ * Because we need to know how many tiles are shown we perform this calculation
+ * here.
+ * Args:
+ *  bounds: Array of coordinates bounds [[min_lon, max_lon], [min_lat, max_lat]]
+ * Returns:
+ *  Integer number from 1 to 20.
+ */
+function zoomFromBounds(bounds){
+  var diff_lon = bounds[0][1] - bounds[0][0];
+  var diff_lat = bounds[1][1] - bounds[1][0];
+  var zoom_lvl = 20;
+
+  // Get number of shown tiles
+  var map_el = document.getElementsByClassName('ol-unselectable')[0];
+  var width_visible_tiles = Math.floor(map_el.offsetWidth/256);
+  var height_visible_tiles = Math.floor(map_el.offsetHeight/256);
+
+  for(i = 0; i < lvl_to_degree.length; i++){
+    var degree_range = lvl_to_degree[lvl_to_degree.length - 1 - i];
+    if (diff_lat > (degree_range/2)*height_visible_tiles){
+      continue;
+    }
+    else{
+      var new_zoom_level = lvl_to_degree.indexOf(degree_range);
+      if (new_zoom_level < zoom_lvl){
+        zoom_lvl = new_zoom_level;
+      }
+      break;
+    }
+  }
+
+  for(i = 0; i < lvl_to_degree.length; i++){
+    var degree_range = lvl_to_degree[lvl_to_degree.length - 1 - i];
+    if (diff_lon > degree_range*width_visible_tiles){
+      prev_degree_range = degree_range;
+    }
+    else{
+      var new_zoom_level = lvl_to_degree.indexOf(degree_range);
+      if (new_zoom_level < zoom_lvl){
+        zoom_lvl = new_zoom_level;
+      }
+      break;
+    }
+  }
+
+  return zoom_lvl;
 }
 
 /*
