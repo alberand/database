@@ -30,8 +30,7 @@ def parse(_file):
 
     return result
 
-# with open(server_config, 'wr') as _server:
-
+# Fields to update in json file
 fields_to_update = [
         'host',
         'port',
@@ -39,12 +38,17 @@ fields_to_update = [
         'mysql_pass',
         'mysql_db'
 ]
+
+# Open and parse bash config
 with open(bash_config, 'r') as _config:
     new_values = parse(_config)
 
+# Open and save new values to json config
 with open(server_config, 'r+') as _json_config:
     new_config = json.load(_json_config)
     for field in fields_to_update:
+        if field == 'port':
+            new_config[field] = int(new_values[field])
         new_config[field] = new_values[field]
 
     _json_config.seek(0)

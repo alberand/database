@@ -10,7 +10,7 @@ from django.db.models import Max, Min
 
 from .models import Sessions, Packages
 
-from .utils import add_coords_to_json, NMEA_to_ll
+from .utils import add_coords_to_json, NMEA_to_ll, NMEA_to_dd, lvl_to_degree
 
 class MainPage(generic.TemplateView):
     '''
@@ -275,6 +275,68 @@ class GlobalMap(generic.TemplateView):
         return json.dumps(NMEA_to_ll(min_lat + (max_lat - min_lat)/2,
                                      min_lon + (max_lon - min_lon)/2))
 
+    def _find_bounds(self, pkg_list):
+        '''
+        Function for finding coordinates bounds for all points contained in
+        list.
+        Args:
+            pkg_list: list of packages with points. See self.get_packages.
+        Returns:
+            List with two lists first one is latitude range [min, max] and
+            second one longitude range [min, max].
+        '''
+        # Latitude id in the list.
+        i = 0
+        max_lat = NMEA_to_dd(max([pkg[i] for pkg in pkg_list]))
+        min_lat = NMEA_to_dd(min([pkg[i] for pkg in pkg_list]))
+        # Longitude id in the list.
+        i = 2
+        max_lon = NMEA_to_dd(max([pkg[i] for pkg in pkg_list]))
+        min_lon = NMEA_to_dd(min([pkg[i] for pkg in pkg_list]))
+
+        return json.dumps([[min_lat, max_lat], [min_lon, max_lon]])
+        # return [[min_lat, max_lat], [min_lon, max_lon]]
+        # return json.dumps([max_lat - min_lat, max_lon - min_lon])
+
+    def _find_zoom_level(self, bounds):
+        diff_lat, diff_lon = [
+                bounds[0][1] - bounds[0][0], 
+                bounds[1][1] - bounds[1][0]
+        ]
+        print('Latitude range: {}, Longitude range: {}'.format(diff_lat, diff_lon))
+
+        zoom_level = 20
+        prev_degree_range = lvl_to_degree[-1]
+
+        for degree_range in lvl_to_degree[::-1]:
+            if diff_lat > degree_range:
+                continue
+            else:
+                print('New degree range: {}'.format(degree_range))
+                prev_degree_range = degree_range
+
+                new_zoom_level = lvl_to_degree.index(prev_degree_range)
+                print('New zoom level: {}'.format(new_zoom_level))
+                if new_zoom_level < zoom_level:
+                    zoom_level = new_zoom_level
+                break
+
+        for degree_range in lvl_to_degree[::-1]:
+            if diff_lon > degree_range:
+                continue
+            else:
+                print('New degree range: {}'.format(degree_range))
+                prev_degree_range = degree_range
+
+                new_zoom_level = lvl_to_degree.index(prev_degree_range)
+                print('New zoom level: {}'.format(new_zoom_level))
+                if new_zoom_level < zoom_level:
+                    zoom_level = new_zoom_level
+                break
+
+        return zoom_level
+
+
     def get(self, request):
         # Get packages
         routes = list()
@@ -283,14 +345,14 @@ class GlobalMap(generic.TemplateView):
             names_list, packages = self.get_packages(getattr(session, 'ses_id'))
             all_pkgs.extend(packages)
             routes.append(self.json_route(packages))
-            print(all_pkgs)
 
         response =  render(request, self.template_name, 
                 {
                     'ext_templ':        'main.html',
                     'sessions':         Sessions.objects.all(),
                     'routes':           routes,
-                    'json_map_center': self._find_coords_center(all_pkgs)
+                    'json_map_center': self._find_coords_center(all_pkgs),
+                    'json_map_bounds': self._find_bounds(all_pkgs)
                 }
         )
 

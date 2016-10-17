@@ -100,6 +100,3 @@ db_fields = [
         'lon_pos',
         'ses_id'
 ]
-
-if __name__ == '__main__':
-    print(config['mysql_user'])
