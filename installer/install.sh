@@ -111,6 +111,11 @@ else
 fi
 
 #==============================================================================
+# Update server configuration
+#==============================================================================
+python3 ./update_config.py
+
+#==============================================================================
 # Move sources
 #==============================================================================
 head "Moving source files."
@@ -122,6 +127,13 @@ info "Copying source files ..."
 cp -R "$src_folder" "$USER_HOME/$catalog_name"
 # Move run files
 for file in $run_scripts; do cp "$file" "$USER_HOME/$file"; done
+
+#==============================================================================
+# Change user right
+#==============================================================================
+chmod u+x "$USER_HOME/$catalog_name"
+chmod -R ug+rw "$USER_HOME/$catalog_name"
+chown -R $user:$user "$USER_HOME/$catalog_name"
 
 #==============================================================================
 # Add virtual environment
@@ -165,9 +177,12 @@ head "Creating mysql user and mysql tables..."
 # Create MySQL user
 info "Creating creation user \"$mysql_user\" ..."
 echo "CREATE USER '$mysql_user'@'localhost' IDENTIFIED BY '$mysql_pass';" | mysql -uroot -p
+# Create database
+echo "CREATE DATABASE $mysql_db" | mysql -uroot -p
+# Give mysql-user privileges
+echo "GRANT ALL PRIVILEGES ON $mysql_db.* TO '$mysql_user'@'localhost';" | mysql -uroot -p
+echo "FLUSH PRIVILEGES;" | mysql -uroot -p
+
 info "Creating tables and database ..."
 # Create database and tables
 python3 ./scripts/init.py
-# Give mysql-user privileges
-echo "GRANT ALL PRIVILEGES ON loggersdb.* TO '$mysql_user'@'localhost';" | mysql -uroot -p
-echo "FLUSH PRIVILEGES;" | mysql -uroot -p
