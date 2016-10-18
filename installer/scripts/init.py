@@ -14,9 +14,6 @@ sys.path.insert(1, '../src')
 from config import config
 from sql.tables import TABLES
 
-print(config)
-sys.exit()
-
 def create_database(cursor):
     '''
     Create database if it doesn't exist.
