@@ -91,12 +91,19 @@ if [ $? -eq 1 ]; then
       apt-get install python3
       success "Python3 installed."
   fi
+  # Install python3-dev
+  info "Installing python3-dev ..."
+  dpkg -s --force-confdef python3-dev &>/dev/null
+  if [ $? -eq 1 ]; then
+      apt-get install python3-dev
+      success "Python3 installed."
+  fi
   # Install pip3
   info "Installing pip3 ..."
   which pip3 &>/dev/null
   if [ $? -eq 1 ]; then
       python3 get-pip.py
-      success "Pip3 installed."
+      success "pip3 installed."
   fi
 else
   error "dpkg lock is locked. Can't install packages. Are you installing something?"

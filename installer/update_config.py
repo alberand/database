@@ -50,8 +50,6 @@ with open(bash_config, 'r') as _config:
 with open(server_config, 'r+') as _json_config:
     new_config = json.load(_json_config)
     for field in fields_to_update:
-        if field == 'port':
-            new_config[field] = int(new_values[field])
         new_config[field] = new_values[field]
 
     _json_config.seek(0)
