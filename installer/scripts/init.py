@@ -5,8 +5,13 @@
 # Script for initialization database.
 #==============================================================================
 
+import os
+import sys
 import mysql.connector
 from mysql.connector import errorcode
+
+src_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, os.path.join(src_dir, '..', 'src'))
 
 from config import config
 from sql.tables import TABLES
@@ -62,10 +67,10 @@ if __name__ == '__main__':
             exit(1)
 
     # Create tables described in TABLES dictonary
-    for name, ddl in zip(['sessions', 'packages', 'messages'], TABLES.values()):
+    for name in ['sessions', 'packages', 'messages']:
         try:
             print("Creating table '{}': ".format(name), end='')
-            cursor.execute(ddl)
+            cursor.execute(TABLES[name])
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                 print("already exists.")

@@ -18,6 +18,9 @@
       <td id="point_address"></td>
     </tr>
   </table>
+  <!--<div>
+    {{ json_map_bounds|safe }}
+  </div> -->
   <!-- End of point information table -->
   <div id="map" class="map">
     <div id="popup" class="ol-popup"></div>
@@ -34,6 +37,11 @@
       ];
       add_route({{ route|safe }}, color);
     {% endfor %}
+    // set_zoom(, );
+    set_zoom(
+            {{ json_map_center|safe }},
+            zoomFromBounds({{ json_map_bounds|safe }})
+    );
   </script>
 </div>
 <!-- End of map -->

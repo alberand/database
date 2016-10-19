@@ -5,8 +5,11 @@
 # Script for initialization database.
 #==============================================================================
 
+import sys
 import mysql.connector
 from mysql.connector import errorcode
+
+sys.path.insert(1, '../src')
 
 from config import config
 from sql.tables import TABLES

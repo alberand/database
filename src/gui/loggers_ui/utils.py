@@ -3,6 +3,51 @@
 
 import json
 
+lvl_to_degree = [
+    360.0,
+    180.0,
+    90.0,
+    45.0,
+    22.5,
+    11.25,
+    5.625,
+    2.813,
+    1.406,
+    0.703,
+    0.352,
+    0.176,
+    0.088,
+    0.044,
+    0.022,
+    0.011,
+    0.005,
+    0.003,
+    0.001,
+    0.0005,
+]
+
+def NMEA_to_dd(coord):
+    '''
+    Converts NMEA representation of coordinate to decimal degree form. 
+    TODO: For now doesn't support E/W, S/N
+    Args:
+        coord: string or float number describing coordinate in NMEA form
+    Returns:
+        Float number representing coordinate.
+    '''
+    coord = str(coord)
+
+    num = coord.split('.')
+    if len(num[0]) < 5:
+        num[0] = '{0:0>5}'.format(num[0])
+    # Last two numbers are minutes, but first 1 - 3 are degree
+    int_part = num[0][0:len(num[0]) - 2]
+    dd = float(int_part) + \
+        float(num[0][len(num[0]) - 2:] + '.' + num[1])/60.0
+
+    return dd
+
+
 def NMEA_to_ll(lat, lon):
     '''
     Converts NMEA coordinates to decimal degree.
@@ -19,14 +64,7 @@ def NMEA_to_ll(lat, lon):
 
     # Get degree
     for coord in (lat, lon):
-        num = coord.split('.')
-        if len(num[0]) < 5:
-            num[0] = '{0:0>5}'.format(num[0])
-        # Last two numbers are minutes, but first 1 - 3 are degree
-        int_part = num[0][0:len(num[0]) - 2]
-        dd = float(int_part) + \
-            float(num[0][len(num[0]) - 2:] + '.' + num[1])/60.0
-        result.append(dd)
+        result.append(NMEA_to_dd(coord))
 
     return result 
 

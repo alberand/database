@@ -1,42 +1,12 @@
 #!/bin/python
 
+import os
+import json
 from datetime import datetime
 
-config = {
-        # MySQL information
-        # Host is usually localhost, if database is running on another machine
-        # it should be change to address of that machine.
-        'mysql_host':   'localhost',
-        # User name
-        'mysql_user':   'cast',
-        # Password
-        'mysql_pass':   'castpass',
-        # Name of the DATABASE (not a table)
-        'mysql_db':  'loggersdb',
+config_dir = os.path.dirname(os.path.abspath(__file__))
 
-        # Socket parameters
-        # 'host': '147.32.196.177',
-        'host': 'localhost',
-        'port': 5000,
-
-        # Files storage. Without slash (/) on the end.
-        'data_storage': './data',
-
-        # Name of file where will be saved all corrupted packages (which can't
-        # be parsed).
-        'corrupted_storage': './data/corrupted_data.txt',
-
-        # Package symbols
-        'pkg_start':        '@',
-        'pkg_delimeter':    ';',
-        'pkg_end':          '#',
-        # Text package
-        'txt_start':        'T',
-        'txt_end':          '\r',
-        # Init package
-        'ini_start':        'P',
-        'ini_end':          '#'
-}
+config = json.load(open(os.path.join(config_dir, 'config.json'), 'r'))
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
