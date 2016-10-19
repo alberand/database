@@ -373,8 +373,8 @@ def download_file(request, ses_id):
     file_to_down = File(_file)
     response = HttpResponse(
             file_to_down, 
-            content_type='application/force-download') 
-    response['Content-Disposition'] = 'attachment; filename={}'.format(
+            content_type='text/plain') 
+    response['Content-Disposition'] = 'inline; filename={}'.format(
             smart_str('{}.txt'.format(ses_id)))
 
     return response
