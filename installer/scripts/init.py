@@ -5,11 +5,13 @@
 # Script for initialization database.
 #==============================================================================
 
+import os
 import sys
 import mysql.connector
 from mysql.connector import errorcode
 
-sys.path.insert(1, '../src')
+src_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, os.path.join(src_dir, '..', 'src'))
 
 from config import config
 from sql.tables import TABLES
