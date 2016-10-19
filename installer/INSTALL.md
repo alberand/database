@@ -3,6 +3,8 @@ Installation guide:
 ```sh
 # Edit config.cfg
 
+# Update packages cache
+sudo apt-get update
 # Run installatin script
 sudo ./install.sh
 # Change user. Name placed in configuration file.
