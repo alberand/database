@@ -100,14 +100,30 @@ database) and than store it in the filesystem and database.
 %==============================================================================
 % #1
 %==============================================================================
-\par 
+\par Ubuntu linux platform is used to test and run this software. Program is
+written in Python 3 and use MySQL database for storing data. Therefore there
+are several packages required to run it properly.
+\par To install application on the Ubuntu machine follow next instruction:
 \begin{enumerate}
-    \item Run script.
-    \item Change user.
-    \item Go to user home directory and run server.
-    \item Now server is working and you can send data to address specified in
-    the settings.
+    \item Download *.tar archive and put it somewhere on the targeted machine.
+    \item Unpack it (using for example tar command).
+    \item You will see catalog which should contain some files and source code
+    of the program. 
+    \item Open config.cfg and edit it as you need. This is configuration file
+    for the program it will be parsed and used for installation process.
+    \item After setting configuration find install.sh script. Run it.
+    \item Follow the instruction shown by script installation process. You will
+    be asked about installation of system packages, login information 
+    for database and few other things.
+    \item If there is no error messages inctallation is succesfully finished.
 \end{enumerate}
+
+\par After finishing installation there are should be new user on the target
+machine. Name of this user is specified in the configuration file. Login to
+this user (for example by using 'sudo username' command) and in the home
+directory (/home/username) there should be catalog named as in configuration
+file. 
+\par TODO. Go into catalog. Run scripts for server and web-interface.
 
 \section{Usage}
 %==============================================================================
@@ -119,6 +135,7 @@ socket port specified in the settings file.
 %==============================================================================
 % The bibliography 
 %==============================================================================
+\iffalse
 \newpage
 \begin{thebibliography}{1}
 
@@ -127,5 +144,6 @@ socket port specified in the settings file.
     A Linear Systems Primer,
     Birkhauser, Boston, Basel, Berlin
 \end{thebibliography}
+\fi
 
 \end{document}
