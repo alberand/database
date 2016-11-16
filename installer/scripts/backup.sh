@@ -1,9 +1,20 @@
 #!/bin/sh
 
-database="loggersdb"
-mysql_user="cast"
-mysql_pass="castpass"
+function help(){
+    echo -e "Backup script for database.\n"
+    echo -e "To run this script throw three arguments to it:\n"
+    echo -e "\t./backup.sh database_name mysql_user mysql_pass\n"
+}
 
+# Get arguments
+if [ $# -eq 3 ]; then
+    database="$1"
+    mysql_user="$2"
+    mysql_pass="$3"
+else
+    help
+    exit 1
+fi
 
 # Create file
 touch "../backups/$database.sql"
