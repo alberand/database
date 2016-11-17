@@ -2,11 +2,18 @@
 
 import os
 import json
+import sys
 from datetime import datetime
 
 config_dir = os.path.dirname(os.path.abspath(__file__))
 
-config = json.load(open(os.path.join(config_dir, 'config.json'), 'r'))
+if len(sys.argv) < 2:
+    logging.error('Please specify config name.')
+    sys.exit(1)
+else:
+    config_name = sys.argv[1]
+
+config = json.load(open(os.path.join(config_dir, config_name), 'r'))
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
