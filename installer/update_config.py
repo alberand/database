@@ -52,6 +52,8 @@ with open(server_config, 'r+') as _json_config:
     for field in fields_to_update:
         new_config[field] = new_values[field]
 
+    new_config['data_storage'] = './data/{}'.format(new_values['catalog_name'])
+
     _json_config.seek(0)
     _json_config.write(json.dumps(new_config, indent=4, sort_keys=True))
     _json_config.truncate()
