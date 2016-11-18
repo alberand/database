@@ -62,8 +62,8 @@ class SessionPage(generic.TemplateView):
         # Add to this list names which you don't want to display
         except_fields = [
                 'id', 'ses', 't_ms', 'ses_id', 'course',
-                'gps_altitude', 'speed', 'temperature', 'pressure', 'gps_state',
-                'sat_num', 'module_id'
+                'gps_altitude', 'speed', 'gps_state',
+                'sat_num'
         ]
         return [item.name for item in Packages._meta.get_fields() if item.name 
                 not in except_fields]
