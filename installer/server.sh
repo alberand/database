@@ -12,6 +12,20 @@ function help(){
 
 # Run function
 #==============================================================================
+function remove_server(){
+    # TODO need to drop whole database
+    # Get arguments
+    mysql_db="$1"
+    mysql_user="$2"
+    mysql_pass="$3"
+    host="$4"
+    catalog="$5"
+
+    ./scripts/clear.py $mysql_user $mysql_pass $mysql_db $host "drop"
+}
+
+# Run function
+#==============================================================================
 function run(){
     echo "Run server."
 }
@@ -26,11 +40,13 @@ function backup(){
     host="$4"
 
     # Create file
-    filename="./backups/$database.sql"
+    filename="./backups/$mysql_db.sql"
     touch $filename
+    info "Filename is $filename."
 
     # Backup database
-    mysqldump --single-transaction --flush-logs --master-data=2 -h"$host" -u"$mysql_user" -p"$mysql_pass" --databases "$mysql_db" > $filename
+    mysqldump --single-transaction --flush-logs --master-data=2 -h"$host" \
+        -u"$mysql_user" -p"$mysql_pass" --databases "$mysql_db" > $filename
 
     if [ $? -eq 0 ]; then
         # Success
@@ -87,11 +103,18 @@ while [[ $# -gt 0 ]]; do
     # Run command
     case $arg in
         -c|--config)
-            echo "Config specified."
+            head "Config specified."
             shift
             ;;
         -r|--remove)
-            echo "Remove server."
+            head "Remove server."
+            remove_server $mysql_db $mysql_user $mysql_pass $host $catalog_name 
+            if [ $? -eq 0 ]; then
+                success "Server's data were successfully removed from the "\
+"machine."
+            else
+                error "Fail to remove server's data."
+            fi
             shift
             ;;
         -b|--backup)

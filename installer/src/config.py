@@ -1,12 +1,23 @@
 #!/bin/python
 
 import os
+import sys
 import json
+import logging
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 config_dir = os.path.dirname(os.path.abspath(__file__))
 
-config = json.load(open(os.path.join(config_dir, 'config.json'), 'r'))
+# Get configuration file name which send as first argumen to the program
+if len(sys.argv) < 2:
+    logging.error('Please specify config name.')
+    sys.exit(1)
+else:
+    config_name = sys.argv[1]
+
+config = json.load(open(os.path.join(config_dir, config_name), 'r'))
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
@@ -17,13 +28,14 @@ pkg_structure = [
         'time',
         'latitude',
         'longitude',
-        # 'course',
-        # 'gps_altitude',
-        # 'speed',
+        'speed',
+        'course',
+        'gps_altitude',
+        'sat_num',
+        'gps_state',
+        'gps_sig_str'
         # 'temperature',
         # 'pressure',
-        # 'gps_state',
-        # 'sat_num'
 ]
 
 # Messages package structure
@@ -45,7 +57,7 @@ handlers = {
                                 datetime.strptime(date, '%d.%m.%y').date(),
         'time':         lambda time: 
                                 datetime.strptime(time, '%H:%M:%S.%f').time(),
-        'time_ms_out': lambda time: 
+        'time_ms_out':  lambda time: 
                                 datetime.strptime(time, '%H:%M:%S').time(),
         'latitude':     lambda data: [float(data[:-1]), str(data[-1])],
         'longitude':    lambda data: [float(data[:-1]), str(data[-1])],
@@ -55,6 +67,7 @@ handlers = {
         'temperature':  int,
         'pressure':     int,
         'gps_state':    int,
+        'gps_sig_str':  float,
         'sat_num':      int
 }
 

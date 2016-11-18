@@ -321,6 +321,11 @@ function init_map(center){
             'WFVLLWcifQ.IcYEbFzFZGuPmMDAGfx4ew'
         })
       }),
+      new ol.layer.Tile({
+        source: new ol.source.XYZ({
+          url: 'http://2.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{-y}.png'
+        })
+      }),
       vec_layer
     ],
   });

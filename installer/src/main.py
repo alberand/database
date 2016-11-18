@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import config
 import logging.config
 
 from listener import Listener
@@ -10,9 +9,13 @@ from listener import Listener
 logging.config.fileConfig('logging.ini')
 
 if __name__ == '__main__':
+    if '-h' in sys.argv or '--help' in sys.argv:
+        print('Run this file and as the first argument send name of the config'
+                'file. For example: python main.py config.json')
 
-    if len(sys.argv) > 1:
-        logging.info('Config file is specified.')
+    if len(sys.argv) < 2:
+        logging.error('Please specify config name.')
+        sys.exit(1)
 
     listener = Listener()
     try:
