@@ -9,6 +9,12 @@ from config import pkg_structure, handlers, config
 
 logger = logging.getLogger(__name__)
 
+GUID = 0
+
+def generate_GUID():
+    global GUID
+    GUID = get_session_id()
+
 def parse(string):
     """
     This function receive raw string (package) in next format: 
@@ -44,8 +50,11 @@ def parse(string):
 
     # Setup some specific fields. This fields are common for all packages.
     try:
-        result['ses_id'] = get_session_id(int(data_list.pop(0)))
-        result['type'] = data_list.pop(0)
+        result['type'] = data_list.pop(1)
+        if result['type'] == 'I':
+            generate_GUID()
+        result['ses_id'] = GUID
+        data_list.pop(0)
     except:
         # This is case if package really bad and hasn't some basic fields.
         logging.info('Fail to parse primary fields. Package is wrong.')
@@ -53,9 +62,7 @@ def parse(string):
         result['type'] = 'E'
 
     # Based on package type choose next parser.
-    if result['type'] == 'I':
-        pass
-    elif result['type'] == 'T':
+    if result['type'] == 'T':
         result.update(parse_msg(data_list))
     elif result['type'] == 'D':
         result.update(parse_data(data_list))

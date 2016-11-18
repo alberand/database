@@ -28,6 +28,8 @@
 \usepackage{setspace}
 % Specific symbols (degree...)
 \usepackage{gensymb}
+% Color boxes
+\usepackage{tcolorbox}
 \usepackage{titling}
 
 %==============================================================================
@@ -44,6 +46,26 @@
 \setlength{\parindent}{0em}
 % Line spacing
 \onehalfspacing
+
+%==============================================================================
+% Custom commands and definitions
+%==============================================================================
+\definecolor{codeBg}{rgb}{0.976, 0.949, 0.956}
+\definecolor{codeColor}{rgb}{0.780, 0.145, 0.305}
+
+\newtcbox{\bCode}{
+    nobeforeafter,
+    fontupper=\color{codeColor}~\small\sffamily,
+    colframe=codeBg,
+    colback=codeBg,
+    boxrule=0.1pt,
+    arc=3pt,
+    boxsep=0pt,
+    left=2pt,
+    right=5pt,
+    top=3pt,
+    bottom=2pt,
+    tcbox raise base}
 
 %==============================================================================
 \title{Data logger for devices connected via TCP}
@@ -129,8 +151,16 @@ file.
 %==============================================================================
 % #1
 %==============================================================================
-\par Data should be sent to the address of machine which runs the server with
-socket port specified in the settings file.
+\par Web-interface by default available on the address
+\bCode{http://127.0.0.1:8001} or on the network address of the target machine 
+with port \bCode{8001}.
+\par If you need to access to all created files they can be found in the
+\bCode{name\_of\_server/data} catalog.
+\par To run the server go to the server catalog and run main.py script. For
+example: \bCode{python3 ./main.py}. You should see logging output of the server.
+\par Web-interface is run similar way. Go to \bCode{name\_of\_server/gui} and 
+run manage.py script, by using following command: \bCode{python ./manage.py
+runserver 8001}.
 
 %==============================================================================
 % The bibliography 

@@ -3,7 +3,7 @@
 
 import random
 
-def get_session_id(key):
+def get_session_id(key=None):
     '''
     This function generate random number from some seed.
     Args:
@@ -11,9 +11,12 @@ def get_session_id(key):
     Returns:
         Random 5 places ingeger.
     '''
-    random.seed(int(key))
+    if key:
+        random.seed(int(key))
+    else:
+        random.seed(random.randint(0, 1000))
 
     return random.randint(10000, 99999)
 
 if __name__ == '__main__':
-    print(get_session_id(1))
+    print(get_session_id())

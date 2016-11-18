@@ -10,28 +10,39 @@ import sys
 import mysql.connector
 from mysql.connector import errorcode
 
-from config import config
-
 if __name__ == '__main__':
+    # Parse arguments
+    if len(sys.argv) < 4:
+        print('Not enough arguments. Please specify arguments in the next '\
+            'order: \n\tuser password database host')
+        sys.exit(1)
+    else:
+        print(sys.argv)
+        user        = sys.argv[1]
+        password    = sys.argv[2]
+        database    = sys.argv[3]
+        host        = sys.argv[4]
+        drop        = True if 'drop' in sys.argv else False
+
     print('{0:=^80}'.format(''))
     print('{0: ^80}'.format('Clear script.'))
     print('{0:=^80}'.format(''))
     # Get database name
-    DB_NAME = config['mysql_db']
+    DB_NAME = database
     print('This script clear tables or drop tables if you specify \'drop\''
           'argument. Packages are cleared/dropped in the next order: packages,'
           ' messages, sessions.')
     print('{0: ^80}'.format(''))
     print('Used database name:  {}'.format(DB_NAME))
-    print('Used name:           {}'.format(config['mysql_user']))
-    print('Used password:       {}'.format(config['mysql_pass']))
+    print('Used name:           {}'.format(user))
+    print('Used password:       {}'.format(password))
     print('{0:=^80}'.format(''))
 
     # Open connection to MySQL server and get cursor
     cnx = mysql.connector.connect(
-            host=config['mysql_host'], 
-            user=config['mysql_user'], 
-            password=config['mysql_pass'])
+            host=host, 
+            user=user, 
+            password=password)
     cursor = cnx.cursor()
 
     cnx.database = DB_NAME    
@@ -51,7 +62,7 @@ if __name__ == '__main__':
 
     for name in ['packages', 'messages', 'sessions']:
         try:
-            if 'drop' not in sys.argv:
+            if not drop:
                 print("Clearing table '{}': ".format(name), end='')
                 cursor.execute(queries_cl[name])
             else:

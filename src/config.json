@@ -1,6 +1,7 @@
 {
+    "server_name": "server_01",
     "corrupted_storage": "./data/corrupted_data.txt",
-    "data_storage": "./data",
+    "data_storage": "./data/server_01",
     "host": "localhost",
     "ini_end": "#",
     "ini_start": "P",

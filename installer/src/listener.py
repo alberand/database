@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import time
 import socket
 import logging
@@ -64,7 +65,8 @@ class Listener(threading.Thread):
                 # Package received
                 if not self.queue.empty():
                     pkg = self.queue.get()
-
+                    
+                    # if pkg['type'] == 'I':
                     if not self.is_session_created(pkg['ses_id']):
                         self.database.insert(
                                 ['ses_id'], {'ses_id': pkg['ses_id']}, 
@@ -104,6 +106,10 @@ class Listener(threading.Thread):
             pkg: dict, with parsed data
         '''
         filename = '{}/{}.txt'.format(config['data_storage'], pkg['ses_id'])
+
+        # Create server's data directory if doesn't exist
+        if not os.path.exists(config['data_storage']):
+            os.makedirs(config['data_storage'])
 
         # Write package to file
         with open(filename, 'a+') as _file:

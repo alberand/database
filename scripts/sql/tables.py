@@ -26,8 +26,8 @@ TABLES['packages'] =  (
     'CREATE TABLE `packages` ('
     '    `id` int(11) NOT NULL AUTO_INCREMENT,'     # Sample id
     '    `ses_id` INT(11) NOT NULL,'                # Session id
-    '    `module_id` INT(11) NULL,'                 # Module id
-    '    `ses_time` TIME NULL,'                     # Time
+   #'    `module_id` INT(11) NULL,'                 # Module id
+   #'    `ses_time` TIME NULL,'                     # Time
     '    `date` DATE NULL,'                         # Date
     '    `time` TIME NULL,'                         # Time
     '    `t_ms` INT(11) NULL,'                      # Time microseconds
@@ -38,10 +38,11 @@ TABLES['packages'] =  (
     '    `course` FLOAT NULL,'                      # Course
     '    `gps_altitude` FLOAT(4, 1) NULL,'          # Gps altitude
     '    `speed` FLOAT NULL,'                       # Speed 
-    '    `temperature` INT(11) NULL,'               # Temperature 
-    '    `pressure` INT(11) NULL,'                  # Pressure
+   #'    `temperature` INT(11) NULL,'               # Temperature 
+   #'    `pressure` INT(11) NULL,'                  # Pressure
     '    `gps_state` INT(11) NULL,'                 # Is gps connected
     '    `sat_num` INT(11) NULL,'                   # Number of sattelites
+    '    `gps_sig_str` FLOAT NULL,'                 # GPS signal strength
     '    FOREIGN KEY pkg_session(`ses_id`)'
     '        REFERENCES sessions(`ses_id`),'
     '    PRIMARY KEY (`id`)'
