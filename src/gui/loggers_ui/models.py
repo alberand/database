@@ -24,7 +24,7 @@ class Packages(models.Model):
     speed = models.FloatField(blank=True, null=True)
     gps_state = models.IntegerField(blank=True, null=True)
     sat_num = models.IntegerField(blank=True, null=True)
-    gps_sig_str = models.FloatField(blank=True, null=True)
+    gsm_sig_str = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
