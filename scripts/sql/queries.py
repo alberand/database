@@ -20,3 +20,9 @@ QUERIES['select'] =  (
     'FROM {} '
     'WHERE {}'
 )
+
+QUERIES['update'] =  (
+    'UPDATE {} '
+    'SET {} '
+    'WHERE {}'
+)
