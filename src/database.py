@@ -59,9 +59,12 @@ class Database:
         try:
             self.cursor.execute(query)
             self.cnx.commit()
+            return True
         except mysql.connector.Error as e:
             logging.info(e)
+            logging.info('Query: {}.'.format(query))
             self.cnx.rollback()
+            return False
 
     def select(self, table, fields, where):
         '''
@@ -83,11 +86,40 @@ class Database:
 
         try:
             self.cursor.execute(query)
-
             return [item for item in self.cursor]
         except mysql.connector.Error as e:
             logging.info(e)
+            logging.info('Query: {}.'.format(query))
             self.cnx.rollback()
+            return None
+
+    def update(self, table, struct, fields, on_update):
+        '''
+        Update 'fields' from 'table' where 'where'. If item doesn't exist create
+        it.
+        Args:
+            table: string, name of the table
+            struct: list with columns names
+            fields: dictionary where key is name of the field to update and
+                value is a new value
+            on_update: string. Used when element already exist in the database.
+                See ON DUPLICATE KEY UPDATE.
+        '''
+        query = QUERIES['update'].format(
+            table, 
+            ', '.join(struct), 
+            ', '.join(['{}'.format(fields[item]) for item in struct]),
+            on_update
+        )
+
+        try:
+            self.cursor.execute(query)
+            return True
+        except mysql.connector.Error as e:
+            logging.info(e)
+            logging.info('Query: {}.'.format(query))
+            self.cnx.rollback()
+            return False
 
     def close(self):
         '''
