@@ -14,6 +14,8 @@ sys.path.insert(1, '../src')
 from config import config
 from sql.tables import TABLES
 
+tables_order = ['sessions', 'packages', 'messages', 'connections']
+
 def create_database(cursor):
     '''
     Create database if it doesn't exist.
@@ -65,7 +67,7 @@ if __name__ == '__main__':
             exit(1)
 
     # Create tables described in TABLES dictonary
-    for name in ['sessions', 'packages', 'messages']:
+    for name in tables_order:
         try:
             print("Creating table '{}': ".format(name), end='')
             cursor.execute(TABLES[name])

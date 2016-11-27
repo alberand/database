@@ -70,7 +70,8 @@ class SessionPage(generic.TemplateView):
 
     def json_route(self, pkg_list):
         '''
-        Generate GEOjson structure for displaying on map.
+        Generate GEOjson structure for displaying on map. Adds coordinates from
+        every package to json structure.
         Args:
             pkg_list: list of packages with coordinates.
         Returns:
@@ -81,14 +82,16 @@ class SessionPage(generic.TemplateView):
 
             for pkg in pkg_list:
                 data_set = add_coords_to_json(data_set, 
-                        NMEA_to_ll(float(pkg[2]), 
-                                   float(pkg[4])))
+                        NMEA_to_ll(float(pkg[4]), 
+                                   float(pkg[2])))
 
         replace_table = {ord('\''): '"', ord('"'): '\''}
 
         return str(data_set).replace('\'', '"')
 
     def _find_coords_center(self, pkg_list):
+        if not pkg_list:
+            return json.dumps([0.0, 0.0])
         # Latitude id in the list.
         i = 2
         max_lat = max([pkg[i] for pkg in pkg_list])
@@ -193,6 +196,8 @@ class MapPage(generic.TemplateView):
         return str(data_set).replace('\'', '"')
 
     def _find_coords_center(self, pkg_list):
+        if not pkg_list:
+            return json.dumps([0.0, 0.0])
         # Latitude id in the list.
         i = 0
         max_lat = max([pkg[i] for pkg in pkg_list])
@@ -263,6 +268,8 @@ class GlobalMap(generic.TemplateView):
         return str(data_set).replace('\'', '"')
 
     def _find_coords_center(self, pkg_list):
+        if not pkg_list:
+            return json.dumps([0.0, 0.0])
         # Latitude id in the list.
         i = 0
         max_lat = max([pkg[i] for pkg in pkg_list])
@@ -285,6 +292,8 @@ class GlobalMap(generic.TemplateView):
             List with two lists first one is latitude range [min, max] and
             second one longitude range [min, max].
         '''
+        if not pkg_list:
+            return json.dumps([[-90.0, 90.0], [-180.0, 180.0]])
         # Latitude id in the list.
         i = 0
         max_lat = NMEA_to_dd(max([pkg[i] for pkg in pkg_list]))
@@ -303,7 +312,6 @@ class GlobalMap(generic.TemplateView):
                 bounds[0][1] - bounds[0][0], 
                 bounds[1][1] - bounds[1][0]
         ]
-        print('Latitude range: {}, Longitude range: {}'.format(diff_lat, diff_lon))
 
         zoom_level = 20
         prev_degree_range = lvl_to_degree[-1]
@@ -367,7 +375,7 @@ def download_file(request, ses_id):
     Returns:
         HttpResponse response objects for browser.
     '''
-    path_to_file = os.path.realpath("./loggers_ui/data/{}.txt".format(ses_id))
+    path_to_file = os.path.realpath("./loggers_ui/data/server_01/{}.txt".format(ses_id))
     _file = open(path_to_file, 'r')
 
     file_to_down = File(_file)

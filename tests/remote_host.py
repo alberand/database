@@ -26,7 +26,7 @@ if __name__ == '__main__':
     ip, port = '147.32.196.177', 5000
     # Order: normal, bad, miss, multiple
     # _set = sessions_list[0]
-    _set = load_session_from_file('data_4.txt')
+    _set = load_session_from_file('data_5.txt')
     # Clients number should be > 0
     clients_number = 1
 

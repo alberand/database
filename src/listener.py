@@ -66,17 +66,62 @@ class Listener(threading.Thread):
                 if not self.queue.empty():
                     pkg = self.queue.get()
                     
-                    # if pkg['type'] == 'I':
-                    if not self.is_session_created(pkg['ses_id']):
-                        self.database.insert(
-                                ['ses_id'], {'ses_id': pkg['ses_id']}, 
-                                'sessions')
-
-                    self.process_pkg(pkg)
+                    if pkg['type'] == 'I':
+                        self.create_new_session(pkg)
+                    elif pkg['type'] == 'E':
+                        pkg['ses_id'] = self.database.select('connections', 
+                                ['device_id', 'ses_id'],
+                                {'device_id': pkg['device_id']}
+                        )
+                    else:
+                        # Data or message package
+                        self.process_pkg(pkg)
 
                 time.sleep(0.1)
         except KeyboardInterrupt:
             self.stop()
+
+    def create_new_session(self, pkg):
+        # Generate new session id
+        session_id = get_session_id()
+        logging.info('Creating new session. New session id is {}.'.format(
+            session_id))
+        # Create session
+        self.database.insert(['ses_id'], 
+                {'ses_id': session_id}, 'sessions')
+        # Update session for the current device. If doesn't
+        # exists create.
+        self.database.update('connections', 
+                ['ses_id', 'device_id'],
+                {
+                    'ses_id': session_id, 
+                    'device_id': pkg['device_id']
+                },
+                'ses_id={}'.format(session_id)
+        )
+
+    def assign_session_id(self, pkg):
+        '''
+        Assign current session id to the package. Session id is selected from
+        database. For every device id (first elemen of the package) attach
+        current session id.
+        Args:
+            pkg: dict. Package.
+        Returns:
+            Package (dict) or None.
+        '''
+        if not pkg:
+            return None
+        ses_id = self.database.select(
+                'connections', ['ses_id'], 
+                {'device_id': pkg['device_id']}
+        )
+
+        if len(ses_id):
+            pkg['ses_id'] = ses_id[0][0]
+            return pkg
+
+        return None
 
     def process_pkg(self, pkg):
         '''
@@ -87,13 +132,17 @@ class Listener(threading.Thread):
         # Save package to file
         self.save_pkg(pkg)
 
+        self.assign_session_id(pkg)
+
         # Load package data to database
         if pkg['type'] == 'D':
             # There we need to change package structure a little bit.
-            self.database.insert(expand_pkg_struct(), 
-                    data_for_db(pkg), 'packages')
+            if not self.database.insert(expand_pkg_struct(), 
+                    data_for_db(pkg), 'packages'):
+                logging.info('Fail to load package to database.')
         elif pkg['type'] == 'T':
-            self.database.insert(msg_structure, pkg, 'messages')
+            if not self.database.insert(msg_structure, pkg, 'messages'):
+                logging.info('Fail to load package to database.')
         else:
             logging.info('Unkonwn type of the packages. Skipping. Package '
                     'already saved.')

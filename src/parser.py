@@ -15,6 +15,20 @@ def generate_GUID():
     global GUID
     GUID = get_session_id()
 
+def is_valid_package(string):
+    '''
+    Check if it is valid package. Control if it's have starting and ending
+    symbols.
+    Args:
+        string: string to check
+    Returns:
+        True is it is false otherwise.
+    '''
+    if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
+        logger.error('Sorry, string is not complete. String: {}'.format(string))
+        return False
+    return True
+
 def parse(string):
     """
     This function receive raw string (package) in next format: 
@@ -30,18 +44,16 @@ def parse(string):
     if not string:
         return string
 
-    # Parse and convert data
-    result = dict()
-
     # Add original string to dict. Later it will be used to it to file.
-    result['original'] = string.rstrip()
+    package = {
+            'ses_id':   0,
+            'type':     'E',
+            'original': string.rstrip()
+    }
 
     # Check if receive complete string
-    if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
-        logger.error('Sorry, string is not complete. String: {}'.format(string))
-        result['ses_id'] = 0
-        result['type'] = 'E'
-        return result
+    if not is_valid_package(string):
+        return package
     
     # Get rid of package characters and split data into list
     raw_data = string[1:-1].split(config['pkg_delimeter'])
@@ -50,26 +62,24 @@ def parse(string):
 
     # Setup some specific fields. This fields are common for all packages.
     try:
-        result['type'] = data_list.pop(1)
-        if result['type'] == 'I':
-            generate_GUID()
-        result['ses_id'] = GUID
-        data_list.pop(0)
+        package['device_id'] = data_list.pop(0)
+        package['type'] = data_list.pop(0)
     except:
         # This is case if package really bad and hasn't some basic fields.
         logging.info('Fail to parse primary fields. Package is wrong.')
-        result['ses_id'] = 0
-        result['type'] = 'E'
+        return package
 
     # Based on package type choose next parser.
-    if result['type'] == 'T':
-        result.update(parse_msg(data_list))
-    elif result['type'] == 'D':
-        result.update(parse_data(data_list))
+    if package['type'] == 'I':
+        package['version'] = data_list.pop(0).split(':')[1]
+    elif package['type'] == 'T':
+        package.update(parse_msg(data_list))
+    elif package['type'] == 'D':
+        package.update(parse_data(data_list))
     else:
         logging.info('Unknown package type. Just save it to file.')
 
-    return result
+    return package
 
 
 def parse_msg(data_list):
@@ -85,8 +95,6 @@ def parse_msg(data_list):
         logging.error('There is wrong data or handler. The sample skipped.')
         with open(config['corrupted_storage'], 'a+') as corrupted_storage:
             corrupted_storage.write(string + '\n')
-
-
 
     return result
 
@@ -113,6 +121,8 @@ def parse_data(data_list):
         except ValueError:
             # We don't want to loose data in any case so we save it to file
             logging.error('There is wrong data or handler. The sample skipped.')
+            logging.error('item = {}, name of handler = {}'.format(
+                data_list[i], name))
             result[name] = 'NULL'
         except TypeError:
             logging.error('Can\'t parse string. Possibly there is problem with '

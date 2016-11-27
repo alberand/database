@@ -22,21 +22,39 @@ config = json.load(open(os.path.join(config_dir, config_name), 'r'))
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
-pkg_structure = [
-        # 'ses_time',
-        'date',
-        'time',
-        'latitude',
-        'longitude',
-        'speed',
-        'course',
-        'gps_altitude',
-        'sat_num',
-        'gps_state',
-        'gps_sig_str'
-        # 'temperature',
-        # 'pressure',
-]
+current_pkg_version = '1a'
+pkg_versions = {
+        '1a':[
+            # 'ses_time',
+            'date',
+            'time',
+            'latitude',
+            'longitude',
+            'speed',
+            'course',
+            'gps_altitude',
+            'sat_num',
+            'gps_state',
+            'gsm_sig_str'
+        ],
+        '1b':[
+            # 'ses_time',
+            'date',
+            'time',
+            'latitude',
+            'longitude',
+            'speed',
+            'course',
+            'gps_altitude',
+            'sat_num',
+            'gps_state',
+            'gsm_sig_str',
+            'net_provider',
+            'network_type'
+        ]
+}
+
+pkg_structure = pkg_versions[current_pkg_version]
 
 # Messages package structure
 msg_structure = [
@@ -67,8 +85,10 @@ handlers = {
         'temperature':  int,
         'pressure':     int,
         'gps_state':    int,
-        'gps_sig_str':  float,
-        'sat_num':      int
+        'gsm_sig_str':  float,
+        'sat_num':      int,
+        'net_provider': str,
+        'network_type': str
 }
 
 # Some elements in received packages can be divided in more data elements. For

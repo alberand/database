@@ -18,7 +18,14 @@ TABLES['sessions'] =  (
     '    `ses_id` INT(11) NOT NULL,'                    # Session number
     '    PRIMARY KEY (`ses_id`)'
     ') ENGINE=InnoDB'
+)
 
+TABLES['connections'] = (
+    'CREATE TABLE `connections` ('
+    '    `device_id` INT(11) NOT NULL,'
+    '    `ses_id` INT(11) NOT NULL,'                    # Session number
+    '    PRIMARY KEY(`device_id`)'
+    ') ENGINE=InnoDB'
 )
 
 # Tables with received packages
@@ -42,7 +49,9 @@ TABLES['packages'] =  (
    #'    `pressure` INT(11) NULL,'                  # Pressure
     '    `gps_state` INT(11) NULL,'                 # Is gps connected
     '    `sat_num` INT(11) NULL,'                   # Number of sattelites
-    '    `gps_sig_str` FLOAT NULL,'                 # GPS signal strength
+    '    `gsm_sig_str` FLOAT NULL,'                 # GPS signal strength
+    '    `net_provider` VARCHAR(20) NULL,'                # GPS signal strength
+    '    `network_type` VARCHAR(5) NULL,'                # GPS signal strength
     '    FOREIGN KEY pkg_session(`ses_id`)'
     '        REFERENCES sessions(`ses_id`),'
     '    PRIMARY KEY (`id`)'

@@ -20,3 +20,10 @@ QUERIES['select'] =  (
     'FROM {} '
     'WHERE {}'
 )
+
+QUERIES['update'] =  (
+    'INSERT INTO {} '
+    '({}) '
+    'VALUES ({}) '
+    'ON DUPLICATE KEY UPDATE {}'
+)
