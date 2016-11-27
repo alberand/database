@@ -22,7 +22,8 @@ QUERIES['select'] =  (
 )
 
 QUERIES['update'] =  (
-    'UPDATE {} '
-    'SET {} '
-    'WHERE {}'
+    'INSERT INTO {} '
+    '({}) '
+    'VALUES ({}) '
+    'ON DUPLICATE KEY UPDATE {}'
 )

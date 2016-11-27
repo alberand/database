@@ -40,16 +40,18 @@ if __name__ == '__main__':
     queries_cl = {
             'packages': 'DELETE FROM packages;', 
             'messages': 'DELETE FROM messages;', 
+            'connections': 'DELETE FROM connections;', 
             'sessions': 'DELETE FROM sessions;',
     }
 
     queries_dp = {
             'packages': 'DROP TABLE packages;', 
             'messages': 'DROP TABLE messages;', 
+            'connections': 'DROP TABLE connections;', 
             'sessions': 'DROP TABLE sessions;',
     }
 
-    for name in ['packages', 'messages', 'sessions']:
+    for name in ['packages', 'messages', 'connections', 'sessions']:
         try:
             if 'drop' not in sys.argv:
                 print("Clearing table '{}': ".format(name), end='')
