@@ -4,6 +4,8 @@
 # Script for running socket server with specified configuration file.
 #==============================================================================
 
+$DIRECTORY="/home/andrew/Projects/CAST/database/installer"
+
 # Help message
 #==============================================================================
 function help(){
@@ -13,7 +15,6 @@ function help(){
 # Run function
 #==============================================================================
 function remove_server(){
-    # TODO need to drop whole database
     # Get arguments
     mysql_db="$1"
     mysql_user="$2"
@@ -21,13 +22,15 @@ function remove_server(){
     host="$4"
     catalog="$5"
 
-    ./scripts/clear.py $mysql_user $mysql_pass $mysql_db $host "drop"
+    python3 $DIRECTORY/scripts/clear.py $mysql_user $mysql_pass $mysql_db $host "drop"
 }
 
 # Run function
 #==============================================================================
 function run(){
-    echo "Run server."
+    tmpfile=$(mktemp)
+    python3 ./json_config_producer.py $tmpfile
+    python3 $DIRECTORY/src/main.py $tmpfile
 }
 
 # Backup function
