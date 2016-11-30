@@ -51,6 +51,7 @@ if __name__ == '__main__':
             'sessions': 'DROP TABLE sessions;',
     }
 
+    # Clear or drop tables
     for name in ['packages', 'messages', 'connections', 'sessions']:
         try:
             if 'drop' not in sys.argv:
@@ -63,6 +64,16 @@ if __name__ == '__main__':
             print(err.msg)
         else:
             print("OK")
+
+    # Drop database in case of 'drop'
+    if 'drop' in sys.argv:
+        query = 'DROP DATABASE {};'.format(DB_NAME)
+        try:
+            cursor.execute(query)
+        except mysql.connector.Error as err:
+            print(err.msg)
+        else:
+            print("Dropping database '{}': OK".format(DB_NAME))
 
     cnx.commit()
     # Close connection and database
