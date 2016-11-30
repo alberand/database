@@ -32,9 +32,6 @@ if __name__ == '__main__':
     # Clients number should be > 0
     clients_number = 1
 
-    # pprint.pprint(_set)
-    # sys.exit()
-
     # Test section
     clients_list = list()
     for i in range(clients_number):
