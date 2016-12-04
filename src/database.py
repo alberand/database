@@ -31,6 +31,9 @@ class Database:
 
             # Get cursor (input point to database)
             self.cursor = self.cnx.cursor()
+            # Set session timeout as long as possible
+            self.cursor.execute('SET GLOBAL wait_timeout=31536000')
+            self.cnx.commit()
         except mysql.connector.Error as err:
             # Handle some errors
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
