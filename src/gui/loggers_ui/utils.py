@@ -115,8 +115,8 @@ def find_coords_center(packages):
     max_lon = max([pkg['longitude'] for pkg in packages])
     min_lon = min([pkg['longitude'] for pkg in packages])
 
-    return json.dumps(NMEA_to_ll(min_lat + (max_lat - min_lat)/2,
-                                 min_lon + (max_lon - min_lon)/2))
+    return json.dumps(NMEA_to_ll(min_lon + (max_lon - min_lon)/2, 
+            min_lat + (max_lat - min_lat)/2))
 
 def find_bounds(packages):
     '''
@@ -137,7 +137,7 @@ def find_bounds(packages):
     max_lon = NMEA_to_dd(max([pkg['longitude'] for pkg in packages]))
     min_lon = NMEA_to_dd(min([pkg['longitude'] for pkg in packages]))
 
-    return json.dumps([[min_lat, max_lat], [min_lon, max_lon]])
+    return json.dumps([[min_lon, max_lon], [min_lat, max_lat]])
 
 def json_route(packages):
     '''
@@ -152,7 +152,7 @@ def json_route(packages):
 
     for pkg in packages:
         data_set = add_coords_to_json(data_set, 
-                NMEA_to_ll(float(pkg['latitude']), float(pkg['longitude'])))
+                NMEA_to_ll(float(pkg['longitude']), float(pkg['latitude'])))
 
     replace_table = {ord('\''): '"', ord('"'): '\''}
 
