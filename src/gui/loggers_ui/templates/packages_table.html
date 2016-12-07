@@ -13,7 +13,7 @@
 
   {% for package in packages %}
   <tr>
-    {% for field in package %}
+    {% for field in package.values %}
     <td>{{ field }}</td>
     {% endfor %}
   </tr>

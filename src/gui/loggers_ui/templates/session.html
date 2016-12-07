@@ -18,14 +18,14 @@
         <td class="col-md-5">Time range:</td>
         <td> {{ ses_info.time_range }}</td>
       </tr>
-      <tr>
+      <!--<tr>
         <td class="col-md-5">Average speed:</td>
         <td> {{ ses_info.avr_speed }}</td>
       </tr>
       <tr>
         <td class="col-md-5">Average satelite number:</td>
         <td> {{ ses_info.avr_sat_num }}</td>
-      </tr>
+      </tr> -->
     </table>
     <!-- End of table with session information -->
     <!-- Point information -->
@@ -52,6 +52,10 @@
   <script type="text/javascript">
     init_map(JSON.parse('{{ json_map_center|safe }}'));
     add_route(JSON.parse('{{ json_map_data|safe }}'));
+    set_zoom(
+            {{ json_map_center|safe }},
+            zoomFromBounds({{ json_map_bounds|safe }})
+    );
   </script>
 </div>
 <!-- End of map -->
