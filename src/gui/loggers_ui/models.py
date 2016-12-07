@@ -1,7 +1,11 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.template.defaulttags import register
 
+@register.filter
+def get_package_fields(package, field):
+    return package.get(field)
 
 class Sessions(models.Model):
     ses_id = models.IntegerField(primary_key=True)

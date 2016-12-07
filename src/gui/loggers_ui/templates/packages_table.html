@@ -13,8 +13,8 @@
 
   {% for package in packages %}
   <tr>
-    {% for field in package.values %}
-    <td>{{ field }}</td>
+    {% for name in names %}
+    <td>{{ package|get_package_fields:name }}</td>
     {% endfor %}
   </tr>
   {% endfor %}
