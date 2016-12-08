@@ -16,6 +16,10 @@
              // draw_map); 
     init_map(JSON.parse('{{ json_map_center|safe }}'));
     add_route(JSON.parse('{{ json_map_data|safe }}'));
+    set_zoom(
+            {{ json_map_center|safe }},
+            zoomFromBounds({{ json_map_bounds|safe }})
+    );
   </script>
 
 </div>

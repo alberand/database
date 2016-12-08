@@ -25,8 +25,10 @@ if __name__ == '__main__':
     # Configure test properties
     ip, port = '147.32.196.177', 5000
     # Order: normal, bad, miss, multiple
-    # _set = sessions_list[0]
-    _set = load_session_from_file('data_5.txt')
+    if len(sys.argv):
+        _set = load_session_from_file(sys.argv[1])
+    else:
+        _set = load_session_from_file('data_6.txt')
     # Clients number should be > 0
     clients_number = 1
 

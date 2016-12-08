@@ -129,10 +129,10 @@ class Listener(threading.Thread):
         Args:
             pkg: dict, with parsed data
         '''
+        self.assign_session_id(pkg)
+
         # Save package to file
         self.save_pkg(pkg)
-
-        self.assign_session_id(pkg)
 
         # Load package data to database
         if pkg['type'] == 'D':

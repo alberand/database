@@ -6,13 +6,19 @@
 # configuration.
 #==============================================================================
 
+import sys
 import json
 from pprint import pprint
 
 # Bash configuration
 bash_config = './config.cfg'
+# Json template for server config
+template = './config.json'
 # Server configuration file
-server_config = './src/config.json'
+if len(sys.argv) > 1:
+    tmp_server_config = sys.argv[1]
+else:
+    tmp_server_config = './src/config.json'
 
 # Parse function
 def parse(_file):
@@ -44,18 +50,16 @@ fields_to_update = [
 # Open and parse bash config
 with open(bash_config, 'r') as _config:
     new_values = parse(_config)
-    pprint(new_values)
 
 # Open and save new values to json config
-with open(server_config, 'r+') as _json_config:
-    new_config = json.load(_json_config)
-    for field in fields_to_update:
-        new_config[field] = new_values[field]
+with open(template, 'r+') as _json_config:
+    with open(tmp_server_config, 'r+') as tmp_server_config:
+        new_config = json.load(_json_config)
+        for field in fields_to_update:
+            new_config[field] = new_values[field]
 
-    new_config['data_storage'] = './data/{}'.format(new_values['catalog_name'])
+        new_config['data_storage'] = './data/{}'.format(new_values['catalog_name'])
 
-    _json_config.seek(0)
-    _json_config.write(json.dumps(new_config, indent=4, sort_keys=True))
-    _json_config.truncate()
-
-
+        tmp_server_config.seek(0)
+        tmp_server_config.write(json.dumps(new_config, indent=4, sort_keys=True))
+        tmp_server_config.truncate()
