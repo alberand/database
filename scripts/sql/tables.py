@@ -15,7 +15,7 @@ TABLES = dict()
 # Tables with data loggers
 TABLES['sessions'] =  (
     'CREATE TABLE `sessions` ('
-    '    `ses_id` INT(11) NOT NULL,'                    # Session number
+    '    `ses_id` VARCHAR(11) NOT NULL,'                    # Session number
     '    PRIMARY KEY (`ses_id`)'
     ') ENGINE=InnoDB'
 )
@@ -23,7 +23,7 @@ TABLES['sessions'] =  (
 TABLES['connections'] = (
     'CREATE TABLE `connections` ('
     '    `device_id` INT(11) NOT NULL,'
-    '    `ses_id` INT(11) NOT NULL,'                    # Session number
+    '    `ses_id` VARCHAR(11) NOT NULL,'                    # Session number
     '    PRIMARY KEY(`device_id`)'
     ') ENGINE=InnoDB'
 )
@@ -32,7 +32,7 @@ TABLES['connections'] = (
 TABLES['packages'] =  (
     'CREATE TABLE `packages` ('
     '    `id` int(11) NOT NULL AUTO_INCREMENT,'     # Sample id
-    '    `ses_id` INT(11) NOT NULL,'                # Session id
+    '    `ses_id` VARCHAR(11) NOT NULL,'                # Session id
    #'    `module_id` INT(11) NULL,'                 # Module id
    #'    `ses_time` TIME NULL,'                     # Time
     '    `date` DATE NULL,'                         # Date
@@ -49,9 +49,12 @@ TABLES['packages'] =  (
    #'    `pressure` INT(11) NULL,'                  # Pressure
     '    `gps_state` INT(11) NULL,'                 # Is gps connected
     '    `sat_num` INT(11) NULL,'                   # Number of sattelites
-    '    `gsm_sig_str` FLOAT NULL,'                 # GPS signal strength
-    '    `net_provider` VARCHAR(20) NULL,'                # GPS signal strength
-    '    `network_type` VARCHAR(5) NULL,'                # GPS signal strength
+    '    `gsm_sig_str` FLOAT NULL,'                 # GSM signal strength
+    '    `net_provider` VARCHAR(20) NULL,'          # Network provider O2
+    '    `network_type` VARCHAR(5) NULL,'           # Network type 2G, 3G...
+    '    `x_acc` FLOAT NULL,'                       # X accelerometer
+    '    `y_acc` FLOAT NULL,'                       # Y accelerometer
+    '    `z_acc` FLOAT NULL,'                       # Z accelerometer
     '    FOREIGN KEY pkg_session(`ses_id`)'
     '        REFERENCES sessions(`ses_id`),'
     '    PRIMARY KEY (`id`)'
@@ -62,10 +65,10 @@ TABLES['packages'] =  (
 # Table with messages
 TABLES['messages'] =  (
     'CREATE TABLE `messages` ('
-    '    `id` int(11) NOT NULL AUTO_INCREMENT,'         # Message id
-    '    `ses_id` INT(11) NOT NULL,'                    # Session id
+    '    `id` int(11) NOT NULL AUTO_INCREMENT,'     # Message id
+    '    `ses_id` VARCHAR(11) NOT NULL,'            # Session id
     '    `ses_time` TIME NULL,'                     # Time
-    '    `msg` VARCHAR(255) NOT NULL,'                  # Message
+    '    `msg` VARCHAR(255) NOT NULL,'              # Message
     '    FOREIGN KEY msg_session(`ses_id`)'
     '       REFERENCES sessions(`ses_id`),'
     '    PRIMARY KEY (`id`)'
