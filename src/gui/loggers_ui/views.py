@@ -105,7 +105,7 @@ class SessionPage(generic.TemplateView):
                     'ext_templ':        'main.html',
                     'sessions':         Sessions.objects.all(),
                     'names':            self._disp_fields_names,
-                    'packages':         packages,
+                    'packages':         packages[1:100],
                     'ses_info':         self.session_info(ses_id),
                     'json_map_data':    json_route(packages),
                     'json_map_center':  find_coords_center(packages),
