@@ -69,10 +69,12 @@ class Listener(threading.Thread):
                     if pkg['type'] == 'I':
                         self.create_new_session(pkg)
                     elif pkg['type'] == 'E':
-                        pkg['ses_id'] = self.database.select('connections', 
-                                ['device_id', 'ses_id'],
-                                {'device_id': pkg['device_id']}
-                        )
+                        # pkg['ses_id'] = self.database.select('connections', 
+                                # ['device_id', 'ses_id'],
+                                # {'device_id': pkg['device_id']}
+                        # )
+                        # Save package to file
+                        self.save_pkg(pkg)
                     else:
                         # Data or message package
                         self.process_pkg(pkg)
