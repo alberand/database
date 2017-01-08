@@ -85,7 +85,7 @@ class Listener(threading.Thread):
 
     def create_new_session(self, pkg):
         # Generate new session id
-        session_id = get_session_id()
+        session_id = get_session_id(int(pkg['device_id']))
         logging.info('Creating new session. New session id is {}.'.format(
             session_id))
         # Create session
@@ -99,7 +99,7 @@ class Listener(threading.Thread):
                     'ses_id': session_id, 
                     'device_id': pkg['device_id']
                 },
-                'ses_id={}'.format(session_id)
+                'ses_id="{}"'.format(session_id)
         )
 
     def assign_session_id(self, pkg):

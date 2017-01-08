@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+from hashids import Hashids
 import random
+
 
 def get_session_id(key=None):
     '''
@@ -11,12 +14,10 @@ def get_session_id(key=None):
     Returns:
         Random 5 places ingeger.
     '''
-    if key:
-        random.seed(int(key))
-    else:
-        random.seed(random.randint(0, 1000))
+    hashids = Hashids(min_length=8, salt=str(random.randint(0, 1000)))
+    # binascii.hexlify(os.urandom(4))
 
-    return random.randint(10000, 99999)
+    return hashids.encode(key)
 
 if __name__ == '__main__':
-    print(get_session_id())
+    print(get_session_id(2))
