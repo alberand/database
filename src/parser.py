@@ -58,9 +58,7 @@ def parse(string):
     # Get rid of package characters and split data into list
     raw_data = string[1:-1].split(config['pkg_delimeter'])
     # Remove empty positions
-    print(raw_data)
     data_list = [i if i else 'x' for i in raw_data]
-    print(data_list)
 
     # Setup some specific fields. This fields are common for all packages.
     try:
@@ -149,7 +147,8 @@ if __name__ == '__main__':
         # '@010;D;x;#',
         # '@010;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;319;99479#',
         # '@010;D;13.08.16;10:24:53.0;5004.349060N;01432.666529E;9.1;336.7;299.41;8;1;-1;-1#',
-        '@010;D;13.08.16;10:24:53.0;5004.349060N;01432.666529E;9.1;336.7;299.41;8;1;3.4;;3G;1.0;2.0;3.0#',
+        #'@010;D;13.08.16;10:24:53.0;5004.349060N;01432.666529E;9.1;336.7;299.41;8;1;3.4;;3G;1.0;2.0;3.0#',
+        '@20;D;29.12.2016;09:09:26.5;4948.93380N;1531.25368E;0.0;345.4;356.4;;;32;O2- CZ;4G;15;-16;-996#',
         # '@010;T;00:00:15;GSM Process error.#',
         # '@asdfasdfasdfasdfadsf#'
     ]
