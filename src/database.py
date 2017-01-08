@@ -111,7 +111,7 @@ class Database:
         query = QUERIES['update'].format(
             table, 
             ', '.join(struct), 
-            ', '.join(['{}'.format(fields[item]) for item in struct]),
+            ', '.join(['"{}"'.format(fields[item]) for item in struct]),
             on_update
         )
 
