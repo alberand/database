@@ -66,9 +66,7 @@ class Listener(threading.Thread):
                 if not self.queue.empty():
                     pkg = self.queue.get()
                     
-                    if pkg['type'] == 'I':
-                        self.create_new_session(pkg)
-                    elif pkg['type'] == 'E':
+                    if pkg['type'] == 'E':
                         # pkg['ses_id'] = self.database.select('connections', 
                                 # ['device_id', 'ses_id'],
                                 # {'device_id': pkg['device_id']}
@@ -76,6 +74,14 @@ class Listener(threading.Thread):
                         # Save package to file
                         self.save_pkg(pkg)
                     else:
+                        if pkg['type'] == 'I':
+                            self.create_new_session(pkg)
+
+                        self.assign_session_id(pkg)
+
+                        # Save package to file
+                        self.save_pkg(pkg)
+                        
                         # Data or message package
                         self.process_pkg(pkg)
 
@@ -131,10 +137,6 @@ class Listener(threading.Thread):
         Args:
             pkg: dict, with parsed data
         '''
-        self.assign_session_id(pkg)
-
-        # Save package to file
-        self.save_pkg(pkg)
 
         # Load package data to database
         if pkg['type'] == 'D':
