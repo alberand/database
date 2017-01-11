@@ -33,7 +33,8 @@ class Listener(threading.Thread):
         Run main loop for this thread
         '''
 
-        logging.info('Creating server.')
+        logging.info('Creating server. {}:{}'.format(
+                config['host'], config['port']))
         self.server = Server(
                 (config['host'], config['port']),
                 RequestHandler
@@ -67,10 +68,6 @@ class Listener(threading.Thread):
                     pkg = self.queue.get()
                     
                     if pkg['type'] == 'E':
-                        # pkg['ses_id'] = self.database.select('connections', 
-                                # ['device_id', 'ses_id'],
-                                # {'device_id': pkg['device_id']}
-                        # )
                         # Save package to file
                         self.save_pkg(pkg)
                     else:
@@ -99,6 +96,8 @@ class Listener(threading.Thread):
                 {'ses_id': session_id}, 'sessions')
         # Update session for the current device. If doesn't
         # exists create.
+        logging.info('Update session for the current device.' + \
+                'If doesn\'t exists create.')
         self.database.update('connections', 
                 ['ses_id', 'device_id'],
                 {
@@ -147,6 +146,8 @@ class Listener(threading.Thread):
         elif pkg['type'] == 'T':
             if not self.database.insert(msg_structure, pkg, 'messages'):
                 logging.info('Fail to load package to database.')
+        elif pkg['type'] == 'I':
+            pass
         else:
             logging.info('Unkonwn type of the packages. Skipping. Package '
                     'already saved.')
