@@ -107,7 +107,7 @@ class SessionPage(generic.TemplateView):
                     'names':            self._disp_fields_names,
                     'packages':         packages[1:100],
                     'ses_info':         self.session_info(ses_id),
-                    'json_map_data':    json_route(packages),
+                    'json_map_data':    json_route(packages[::3]),
                     'json_map_center':  find_coords_center(packages),
                     'json_map_bounds': find_bounds(packages)
                 }
@@ -218,6 +218,7 @@ class GlobalMap(generic.TemplateView):
         # Get packages
         routes = list()
         all_pkgs = list()
+        print("Get global map.")
         for session in Sessions.objects.all():
             packages = self.get_packages(getattr(session, 'ses_id'))
             all_pkgs.extend(packages)
@@ -228,8 +229,8 @@ class GlobalMap(generic.TemplateView):
                     'ext_templ':        'main.html',
                     'sessions':         Sessions.objects.all(),
                     'routes':           routes,
-                    'json_map_center': find_coords_center(all_pkgs),
-                    'json_map_bounds': find_bounds(all_pkgs)
+                    'json_map_center':  find_coords_center(all_pkgs),
+                    'json_map_bounds':  find_bounds(all_pkgs)
                 }
         )
 
