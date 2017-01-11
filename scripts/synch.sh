@@ -6,4 +6,4 @@
 host="147.32.196.177"
 user="database"
 
-rsync -vrah --exclude 'src/config.py' --exclude 'src/logging.log' ../../database $user@$host:/home/database/
+rsync -vrah --exclude 'src/config.json' --exclude 'src/config.cfg' --exclude 'src/logging.log' ../../database $user@$host:/home/database/
