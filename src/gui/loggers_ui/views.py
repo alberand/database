@@ -218,9 +218,9 @@ class GlobalMap(generic.TemplateView):
         # Get packages
         routes = list()
         all_pkgs = list()
-        print("Get global map.")
+
         for session in Sessions.objects.all():
-            packages = self.get_packages(getattr(session, 'ses_id'))
+            packages = self.get_packages(getattr(session, 'ses_id'))[::3]
             all_pkgs.extend(packages)
             routes.append(json_route(packages))
 
