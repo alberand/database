@@ -1,0 +1,24 @@
+<!-- Template for package table. -->
+<!-- { extends ext_templ %} -->
+
+{% block packages_list %}
+
+<table class="table table-striped table-bordered table-condensed">
+
+  <tr>
+    {% for name in names %}
+    <th>{{ name }}</th>
+    {% endfor %}
+  </tr>
+
+  {% for package in packages %}
+  <tr>
+    {% for name in names %}
+    <td>{{ package|get_package_fields:name }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+
+</table>
+
+{% endblock packages_list %}
