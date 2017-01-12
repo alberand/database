@@ -1,1 +1,8 @@
-./activate
+__pycache__
+tmp
+*.swp
+logging.log
+src/data
+installer
+todo
+result.tar
