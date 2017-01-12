@@ -22,7 +22,7 @@ config = json.load(open(os.path.join(config_dir, config_name), 'r'))
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
-current_pkg_version = '1b'
+current_pkg_version = '1c'
 pkg_versions = {
         '1a':[
             # 'ses_time',
