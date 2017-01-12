@@ -2,7 +2,7 @@
     "server_name": "server_01",
     "corrupted_storage": "./data/corrupted_data.txt",
     "data_storage": "./data/server_01",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "ini_end": "#",
     "ini_start": "P",
     "mysql_db": "loggersdb",
