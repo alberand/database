@@ -33,7 +33,8 @@ class Listener(threading.Thread):
         Run main loop for this thread
         '''
 
-        logging.info('Creating server.')
+        logging.info('Creating server. {}:{}'.format(
+                config['host'], config['port']))
         self.server = Server(
                 (config['host'], config['port']),
                 RequestHandler
@@ -66,14 +67,18 @@ class Listener(threading.Thread):
                 if not self.queue.empty():
                     pkg = self.queue.get()
                     
-                    if pkg['type'] == 'I':
-                        self.create_new_session(pkg)
-                    elif pkg['type'] == 'E':
-                        pkg['ses_id'] = self.database.select('connections', 
-                                ['device_id', 'ses_id'],
-                                {'device_id': pkg['device_id']}
-                        )
+                    if pkg['type'] == 'E':
+                        # Save package to file
+                        self.save_pkg(pkg)
                     else:
+                        if pkg['type'] == 'I':
+                            self.create_new_session(pkg)
+
+                        self.assign_session_id(pkg)
+
+                        # Save package to file
+                        self.save_pkg(pkg)
+                        
                         # Data or message package
                         self.process_pkg(pkg)
 
@@ -83,7 +88,7 @@ class Listener(threading.Thread):
 
     def create_new_session(self, pkg):
         # Generate new session id
-        session_id = get_session_id()
+        session_id = get_session_id(int(pkg['device_id']))
         logging.info('Creating new session. New session id is {}.'.format(
             session_id))
         # Create session
@@ -91,13 +96,15 @@ class Listener(threading.Thread):
                 {'ses_id': session_id}, 'sessions')
         # Update session for the current device. If doesn't
         # exists create.
+        logging.info('Update session for the current device.' + \
+                'If doesn\'t exists create.')
         self.database.update('connections', 
                 ['ses_id', 'device_id'],
                 {
                     'ses_id': session_id, 
                     'device_id': pkg['device_id']
                 },
-                'ses_id={}'.format(session_id)
+                'ses_id="{}"'.format(session_id)
         )
 
     def assign_session_id(self, pkg):
@@ -129,10 +136,6 @@ class Listener(threading.Thread):
         Args:
             pkg: dict, with parsed data
         '''
-        self.assign_session_id(pkg)
-
-        # Save package to file
-        self.save_pkg(pkg)
 
         # Load package data to database
         if pkg['type'] == 'D':
@@ -143,6 +146,8 @@ class Listener(threading.Thread):
         elif pkg['type'] == 'T':
             if not self.database.insert(msg_structure, pkg, 'messages'):
                 logging.info('Fail to load package to database.')
+        elif pkg['type'] == 'I':
+            pass
         else:
             logging.info('Unkonwn type of the packages. Skipping. Package '
                     'already saved.')

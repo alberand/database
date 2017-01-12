@@ -7,12 +7,15 @@ from django.template.defaulttags import register
 def get_package_fields(package, field):
     return package.get(field)
 
-class Sessions(models.Model):
-    ses_id = models.IntegerField(primary_key=True)
+class Messages(models.Model):
+    ses = models.ForeignKey('Sessions', models.DO_NOTHING)
+    ses_time = models.TimeField(blank=True, null=True)
+    msg = models.CharField(max_length=255)
 
     class Meta:
         managed = False
-        db_table = 'sessions'
+        db_table = 'messages'
+
 
 class Packages(models.Model):
     ses = models.ForeignKey('Sessions', models.DO_NOTHING)
@@ -29,16 +32,20 @@ class Packages(models.Model):
     gps_state = models.IntegerField(blank=True, null=True)
     sat_num = models.IntegerField(blank=True, null=True)
     gsm_sig_str = models.FloatField(blank=True, null=True)
+    net_provider = models.CharField(max_length=20, blank=True, null=True)
+    network_type = models.CharField(max_length=5, blank=True, null=True)
+    x_acc = models.FloatField(blank=True, null=True)
+    y_acc = models.FloatField(blank=True, null=True)
+    z_acc = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'packages'
 
-class Messages(models.Model):
-    ses = models.ForeignKey('Sessions', models.DO_NOTHING)
-    msg = models.CharField(max_length=255)
+
+class Sessions(models.Model):
+    ses_id = models.CharField(primary_key=True, max_length=11)
 
     class Meta:
         managed = False
-        db_table = 'messages'
-
+        db_table = 'sessions'

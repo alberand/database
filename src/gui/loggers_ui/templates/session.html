@@ -3,6 +3,17 @@
 {% block session_content %}
 <!-- Start of the content -->
 <div class="col-md-4">
+    <!-- Table with controls -->
+    <h4>Controls</h4>
+    <table class="table striped">
+      <tr>
+        <td class="col-md-5">Show aerospaces:</td>
+        <td>
+            <input type="checkBox" id="aerospace_on_btn" />
+        </td>
+      </tr>
+    </table>
+    <!-- End of Table with controls -->
     <!-- Table with session information -->
     <h4>Session information:</h4>
     <table class="table striped">
@@ -57,11 +68,13 @@
             zoomFromBounds({{ json_map_bounds|safe }})
     );
   </script>
+  {% load static %}
+  <script type="text/javascript" src="{% static 'controls.js' %}"></script>
 </div>
 <!-- End of map -->
 
 <div class="col-md-12">
-  <h4>Contents:</h4>
+  <h4>Some of the packages:</h4>
   <!-- { block packages_list %}{ endblock packages_list %} -->
   {% include 'packages_table.html' %}
 </div>
