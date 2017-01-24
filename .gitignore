@@ -6,3 +6,4 @@ src/data
 installer
 todo
 result.tar
+tests/*.txt
