@@ -53,7 +53,7 @@ function load_file(file, callback) {
  * Retunrs:
  *  Array of ol.Feature's
  */
-function create_route(json_data, color=[100, 200, 50]){
+function create_route(json_data, ses_id, color=[100, 200, 50]){
   var route = new ol.format.GeoJSON().readFeatures(json_data, {
       featureProjection: 'EPSG:3857'
   });
@@ -88,6 +88,7 @@ function create_route(json_data, color=[100, 200, 50]){
       type: 'point',
     });
     point.id = i
+    point.ses_id = ses_id
 		point.setStyle(
       new ol.style.Style({
         image: new ol.style.Circle({
@@ -114,8 +115,8 @@ function create_route(json_data, color=[100, 200, 50]){
  * Args:
  *  feat_data: GeoJSON reponse.
  */
-function add_route(feat_data, color=[100, 200, 50]){
-  var features = create_route(feat_data, color);
+function add_route(feat_data, ses_id, color=[100, 200, 50]){
+  var features = create_route(feat_data, ses_id, color);
   
   vec_layer.getSource().addFeatures(features);
 }
