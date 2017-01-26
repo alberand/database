@@ -1,13 +1,13 @@
-Programs for work with database
+Telemetry data collecting server and web-interface
 ===============================================================================
-This repository contains scripts, programs and other materials to work with
-database for the CAST team in Czech Technical University.
+This repository contains scripts, programs and other materials for the project 
+developed in CAST team at Czech Technical University.
 
 The purpose of this application is to collect telemetry data from devices
 (GPS-tracker, mobile etc.) and save them for further usage. Two type of data
 storage are used MySQL database and *.txt* files.
 
-Application is also delivered with a GUI HTTP server based on Django framework.
+Application is also delivered with a HTTP-server based on Django framework.
 This interface allows display data on the interactive map and download collected
 files. 
 
