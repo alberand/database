@@ -224,17 +224,19 @@ class GlobalMap(generic.TemplateView):
             all_pkgs.extend(packages)
             routes.append(json_route(packages))
 
-        routes = zip(routes, [getattr(session, 'ses_id') 
-                for session in Sessions.objects.all()])
+        routes = zip(routes, [
+                json.dumps(getattr(session, 'ses_id')) 
+                for session in Sessions.objects.all()
+            ]
+        )
 
-        print(list(routes))
+        routes = list(map(list, routes))
 
         response =  render(request, self.template_name, 
                 {
                     'ext_templ':        'main.html',
                     'sessions':         Sessions.objects.all(),
-                    'n_routes':         len(list(routes)),
-                    'routes':           list(map(list, routes)),
+                    'routes':           routes,
                     'json_map_center':  find_coords_center(all_pkgs),
                     'json_map_bounds':  find_bounds(all_pkgs)
                 }

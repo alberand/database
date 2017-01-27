@@ -14,6 +14,10 @@
       <td id="point_coords"></td>
     </tr>
     <tr>
+      <td class="col-md-5">Session id of the point:</td>
+      <td id="point_ses_id"></td>
+    </tr>
+    <tr>
       <td class="col-md-5">Point nearest address:</td>
       <td id="point_address"></td>
     </tr>
@@ -28,17 +32,17 @@
   <!-- Script for sending map data to javascript code. -->
   <script type="text/javascript">
     init_map(JSON.parse('{{ json_map_center|safe }}'));
-    console.log('Number of routes: ' + {{ routes|safe }});
-    {% for route, ses_id in routes %}
+    {% for route in routes %}
       // Create number which is used to define route color
 	  var color = [
         getRandomInt(40, 255),
         getRandomInt(40, 255),
         getRandomInt(40, 255)
       ];
-      add_route({{ route }}, {{ ses_id }}, color);
+      add_route(JSON.parse('{{ route.0|safe }}'), 
+                JSON.parse('{{ route.1|safe }}'), 
+                color);
     {% endfor %}
-    // set_zoom(, );
     set_zoom(
             {{ json_map_center|safe }},
             zoomFromBounds({{ json_map_bounds|safe }})

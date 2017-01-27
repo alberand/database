@@ -136,12 +136,16 @@ function create_popup(feature, element){
     var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
         coordinates, 'EPSG:3857', 'EPSG:4326'));
     content = '<p>Information:</p><code>' + hdms +
-        '</code>';
+        '</code><p>Session:</p><code>' + feature.ses_id +'</code>';
     content = content + '<p id="hidden_id">' + feature.id + '</p>'
     // Add coordinates to Point information table
-	  var point_table = document.getElementById('point_coords');
-    if(point_table){
-      point_table.innerHTML = '<code>' + hdms + '</code>';
+	  var point_coords_table = document.getElementById('point_coords');
+    if(point_coords_table){
+      point_coords_table.innerHTML = '<code>' + hdms + '</code>';
+    }
+	  var point_ses_table = document.getElementById('point_ses_id');
+    if(point_ses_table){
+      point_ses_table.innerHTML = feature.ses_id;
     }
     $(element).popover({
       'placement': 'top',
