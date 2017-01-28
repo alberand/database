@@ -13,8 +13,10 @@ files.
 
 # How to run
 Run collecting server:
+
 1. Go to source directory
 2. Run following command with specified configuration file:
+
 ```
 python3 ./main.py config.json
 ```
@@ -22,8 +24,10 @@ This will run collecting server. Now you can send data to address specified in
 configuration file.
 
 Run GUI server:
+
 1. Go to source directory. Then to the *gui* directory.
 2. Run following program:
+
 ```
 python3 ./manage.py runserver 8000
 ```
