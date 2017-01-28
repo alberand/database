@@ -12,6 +12,35 @@
             <input type="checkBox" id="aerospace_on_btn" />
         </td>
       </tr>
+      <tr>
+        <td class="col-md-5">Data and map:</td>
+        <td>
+          <!-- Start download button -->
+          <span class="menu-item-cont-icon" >
+            <a class="menu-icon-link" 
+               style="padding: 7px 5px;"
+               href="{% url 'Session'  ses_info.ses_id %}download"
+               title="Download session"
+               target="_blank">
+              <span class="glyphicon glyphicon-download-alt icon-cont"
+                    aria-hidden="true"></span>
+            </a>
+          </span>
+          <!-- End download button -->
+          <!-- Start Map button -->
+          <span class="menu-item-cont-icon" >
+            <a class="menu-icon-link" 
+               style="padding: 7px 5px;"
+               href="{% url 'Session'  ses_info.ses_id %}Map"
+               title="View map in another tab." 
+               target="_blank">
+              <span class="glyphicon glyphicon-map-marker icon-cont"
+                    aria-hidden="true"></span>
+            </a>
+          </span>
+          <!-- End Map button -->
+        </td>
+      </tr>
     </table>
     <!-- End of Table with controls -->
     <!-- Table with session information -->
@@ -62,7 +91,7 @@
   <!-- Script for sending map data to javascript code. -->
   <script type="text/javascript">
     init_map(JSON.parse('{{ json_map_center|safe }}'));
-    add_route(JSON.parse('{{ json_map_data|safe }}'));
+    add_route(JSON.parse('{{ json_map_data|safe }}'), '{{ ses_info.ses_id }}');
     set_zoom(
             {{ json_map_center|safe }},
             zoomFromBounds({{ json_map_bounds|safe }})
