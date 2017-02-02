@@ -7,3 +7,5 @@ installer
 todo
 result.tar
 tests/*.txt
+src/config.json
+src/config.cfg
