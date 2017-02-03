@@ -4,7 +4,6 @@ import os
 import sys
 import json
 import logging
-from pprint import pprint
 import configparser
 from datetime import datetime
 
@@ -26,7 +25,15 @@ items = parser['CONFIG'].items()
 
 config = dict(items)
 config['port'] = int(config['port'])
-pprint(config)
+
+config['pkg_delimeter'] = ';'
+config['pkg_end'] = '#'
+config['pkg_start'] = '@'
+config['txt_end'] = '\r'
+config['txt_start'] = 'T'
+config['ini_end'] = "#"
+config['ini_start'] = "P"
+config['data_storage'] = './data/{}'.format(config['server_name'])
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
