@@ -77,13 +77,14 @@ class Listener(threading.Thread):
                         if pkg['type'] == 'I':
                             self.create_new_session(pkg)
 
-                        self.assign_session_id(pkg)
+                        if self.assign_session_id(pkg):
+                            # Data or message package
+                            self.process_pkg(pkg)
+                        else:
+                            pkg['type'] = 'E'
 
                         # Save package to file
                         self.save_pkg(pkg)
-                        
-                        # Data or message package
-                        self.process_pkg(pkg)
 
                 time.sleep(0.1)
         except KeyboardInterrupt:
@@ -121,7 +122,7 @@ class Listener(threading.Thread):
             Package (dict) or None.
         '''
         if not pkg:
-            return None
+            return False
         ses_id = self.database.select(
                 'connections', ['ses_id'], 
                 {'device_id': pkg['device_id']}
@@ -129,9 +130,9 @@ class Listener(threading.Thread):
 
         if len(ses_id):
             pkg['ses_id'] = ses_id[0][0]
-            return pkg
+            return True
 
-        return None
+        return False
 
     def process_pkg(self, pkg):
         '''
@@ -162,7 +163,10 @@ class Listener(threading.Thread):
         Args:
             pkg: dict, with parsed data
         '''
-        filename = '{}/{}.txt'.format(config['data_storage'], pkg['ses_id'])
+        if pkg['type'] == 'E':
+            filename = config['corrupted_storage']
+        else:
+            filename = '{}/{}.txt'.format(config['data_storage'], pkg['ses_id'])
 
         # Create server's data directory if doesn't exist
         if not os.path.exists(config['data_storage']):
