@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import time
 import socket
 import logging
@@ -56,7 +57,9 @@ class Listener(threading.Thread):
 
         # Connect to database
         logging.info('Connect to database.')
-        self.database.connect()
+        if not self.database.connect():
+            logging.error('Fail to connect to database. Exit.')
+            self.stop()
 
         # Start processing loop
         try:
@@ -193,4 +196,6 @@ class Listener(threading.Thread):
         self.server.server_close()
         # Close database connection
         self.database.close()
+
+        sys.exit(0)
 
