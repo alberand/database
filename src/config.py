@@ -4,6 +4,8 @@ import os
 import sys
 import json
 import logging
+from pprint import pprint
+import configparser
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -17,7 +19,14 @@ if len(sys.argv) < 2:
 else:
     config_name = sys.argv[1]
 
-config = json.load(open(os.path.join(config_dir, config_name), 'r'))
+# config = json.load(open(os.path.join(config_dir, config_name), 'r'))
+parser = configparser.ConfigParser()
+parser.read(os.path.join(config_dir, config_name))
+items = parser['CONFIG'].items()
+
+config = dict(items)
+config['port'] = int(config['port'])
+pprint(config)
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
