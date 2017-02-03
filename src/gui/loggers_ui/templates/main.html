@@ -8,7 +8,13 @@
   <!-- Start of the side bar -->
   <div class="col-md-2 nav-sidebar-without-rp">
 
-    <h4><a href="{% url 'GlobalMap' %}">Global Map</a></h4>
+    <h4>Global data:</h4>
+    <nav class="nav-sidebar">
+	  <ul class="nav-sidebar-list">
+        <li><a href="{% url 'corrupted_data' %}">Corrupted data</a></li>
+        <li><a href="{% url 'GlobalMap' %}">Global Map</a></li>
+      </ul>
+    </nav>
     <h4>Sessions:</h4>
     <nav class="nav-sidebar">
 	  <ul class="nav-sidebar-list">

@@ -12,4 +12,6 @@ urlpatterns = [
             name='Map'),
         url(r'^(?P<ses_id>[a-zA-Z0-9]+)/download$', views.download_file, 
             name='ses_down'),
+        url(r'^corrupted_data/download$', views.download_file,
+            name='corrupted_data'),
 ]

@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import logging
+import configparser
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -17,26 +18,77 @@ if len(sys.argv) < 2:
 else:
     config_name = sys.argv[1]
 
-config = json.load(open(os.path.join(config_dir, config_name), 'r'))
+# config = json.load(open(os.path.join(config_dir, config_name), 'r'))
+parser = configparser.ConfigParser()
+parser.read(os.path.join(config_dir, config_name))
+items = parser['CONFIG'].items()
+
+config = dict(items)
+config['port'] = int(config['port'])
+
+config['pkg_delimeter'] = ';'
+config['pkg_end'] = '#'
+config['pkg_start'] = '@'
+config['txt_end'] = '\r'
+config['txt_start'] = 'T'
+config['ini_end'] = "#"
+config['ini_start'] = "P"
+config['data_storage'] = './data/{}'.format(config['server_name'])
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
-pkg_structure = [
-        # 'ses_time',
-        'date',
-        'time',
-        'latitude',
-        'longitude',
-        'speed',
-        'course',
-        'gps_altitude',
-        'sat_num',
-        'gps_state',
-        'gps_sig_str'
-        # 'temperature',
-        # 'pressure',
-]
+current_pkg_version = '1c'
+pkg_versions = {
+        '1a':[
+            # 'ses_time',
+            'date',
+            'time',
+            'latitude',
+            'longitude',
+            'speed',
+            'course',
+            'gps_altitude',
+            'sat_num',
+            'gps_state',
+            'gsm_sig_str'
+        ],
+        '1b':[
+            # 'ses_time',
+            'date',
+            'time',
+            'latitude',
+            'longitude',
+            'speed',
+            'course',
+            'gps_altitude',
+            'sat_num',
+            'gps_state',
+            'gsm_sig_str',
+            'net_provider',
+            'network_type'
+        ],
+        '1c':[
+            # 'ses_time',
+            'date',
+            'time',
+            'latitude',
+            'longitude',
+            'speed',
+            'course',
+            'gps_altitude',
+            'sat_num',
+            'gps_state',
+            'gsm_sig_str',
+            'net_provider',
+            'network_type',
+            'x_acc',
+            'y_acc',
+            'z_acc'
+        ]
+}
+
+pkg_structure = pkg_versions[current_pkg_version]
 
 # Messages package structure
 msg_structure = [
@@ -67,8 +119,13 @@ handlers = {
         'temperature':  int,
         'pressure':     int,
         'gps_state':    int,
-        'gps_sig_str':  float,
-        'sat_num':      int
+        'gsm_sig_str':  float,
+        'sat_num':      int,
+        'net_provider': str,
+        'network_type': str,
+        'x_acc': float,
+        'y_acc': float,
+        'z_acc': float,
 }
 
 # Some elements in received packages can be divided in more data elements. For
