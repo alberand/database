@@ -1,6 +1,7 @@
 __pycache__
 tmp
 *.swp
+*.ini
 logging.log
 src/data
 installer
