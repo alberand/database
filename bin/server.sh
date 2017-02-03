@@ -14,10 +14,10 @@ function help(){
     echo -e "This script is used to manipulate Telemetry data servers. It
 allows spawn, terminate TCP-servers, backup and clear data after them."
     echo -e "\t-h show this help text"
-    echo -e "\t-r config: Spawn server with specified configuration."
+    echo -e "\t-s config: Spawn server with specified configuration."
     echo -e "\t-t config: Terminate server."
     echo -e "\t-b config: Backup server's data storage and database."
-    echo -e "\t-d config: Clear server's data storage and database."
+    echo -e "\t-c config: Clear server's data storage and database."
 }
 
 # Run function
@@ -39,12 +39,12 @@ function clear_server(){
 #==============================================================================
 function run(){
     # Create tmp file
-    tmpfile=$(mktemp)
+    # tmpfile=$(mktemp)
     # Fill this file with JSON configuration created from bash config
-    python3 $DIRECTORY/scripts/json_config_producer.py $tmpfile $1
+    # python3 $DIRECTORY/scripts/json_config_producer.py $tmpfile $1
     # Run server
     cd $DIRECTORY/src/
-    exec python3 main.py $tmpfile
+    exec python3 main.py $1
 }
 
 # Backup function
@@ -117,15 +117,22 @@ while [[ $# -gt 0 ]]; do
     arg="$1"
     config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
     # Execute configuration script
-    # Run command
+    eval "$(cat $config | ./ini2arr.py)"
+
+    # Parse arguments
+    #==========================================================================
     case $arg in
-        -c|--config)
-            head "Config specified."
+        -s|--spawn)
+            head "Spawning server."
             run $config
             shift
             ;;
-        -r|--remove)
-            head "Remove server."
+        -t|--terminate)
+            head "Terminating server."
+            shift
+            ;;
+        -c|--clear)
+            head "Clear server's data."
             remove_server $mysql_db $mysql_user $mysql_pass $host $catalog_name 
             if [ $? -eq 0 ]; then
                 success "Server's data were successfully removed from the "\
