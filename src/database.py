@@ -36,13 +36,18 @@ class Database:
             self.cnx.commit()
         except mysql.connector.Error as err:
             # Handle some errors
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 logger.error('Something is wrong with your user name'
                              ' or password')
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                return False
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 logger.error("Database does not exist")
+                return False
             else:
                 logger.error(err)
+                return False
+
+        return True
 
     def insert(self, struct, data, table='packages'):
         '''
@@ -130,7 +135,8 @@ class Database:
         '''
         logger.info("Closing database.")
         # Don't know maybe there also can be error =)
-        try:
-            self.cnx.close()
-        except mysql.connector.Error as e:
-            logging.error('Error while closing database. \n{}'.format(e))
+        if self.cnx:
+            try:
+                self.cnx.close()
+            except mysql.connector.Error as e:
+                logging.error('Error while closing database. \n{}'.format(e))
