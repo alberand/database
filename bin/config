@@ -1,0 +1,44 @@
+# Configuration file for installation and running of server.
+
+#==============================================================================
+# Main information
+#==============================================================================
+
+[CONFIG]
+
+# Should be changed
+#==============================================================================
+server_name: server_01
+# Server port. Unique per server instance.
+port: 5000
+# Name of catalog where server will be put ($HOME/catalog_name)
+# catalog_name: server_01
+# Mysql ROOT password. If mysql-server isn't installed on the machine. It will
+# be installed and need root pass
+mysql_root_pass: root
+# Database name
+mysql_db: server_01
+# MySQL user name
+mysql_user: user
+# MySQL user password
+mysql_pass: pass
+
+# Doesn't need to be changed
+#==============================================================================
+# Machine address. Network address of machine where this server will be run.
+# Change it once.
+host: 127.0.0.1
+# Unix User name
+user: unix_user
+# Unix User default password
+password: unix_pass
+# Name of python virtual environment used to install all requered packages
+venv_name: server
+# Address of the machine with MySQL-server
+mysql_host: 127.0.0.1
+# File where to store corrupted data
+corrupted_storage: ./data/corrupted_data.txt
+
+#==============================================================================
+# Backup configuration
+#==============================================================================
