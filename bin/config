@@ -22,6 +22,8 @@ mysql_db: server_01
 mysql_user: user
 # MySQL user password
 mysql_pass: pass
+# File where to store corrupted data
+corrupted_storage: ./data/server_01/corrupted.txt
 
 # Doesn't need to be changed
 #==============================================================================
@@ -36,8 +38,6 @@ password: unix_pass
 venv_name: server
 # Address of the machine with MySQL-server
 mysql_host: 127.0.0.1
-# File where to store corrupted data
-corrupted_storage: ./data/corrupted_data.txt
 
 #==============================================================================
 # Backup configuration
