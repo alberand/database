@@ -6,7 +6,11 @@
 
 # DIRRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # DIRECTORY=$(echo $(pwd) )
+# Application directory
 DIRECTORY="$( cd "$( dirname "$0" )/../" && pwd )"
+# File with list of created servers
+SERVERS_LIST="/tmp/servers_list"
+touch $SERVERS_LIST
 
 # Help message
 #==============================================================================
@@ -35,16 +39,24 @@ function clear_server(){
     # TODO remove data catalog
 }
 
-# Run function
+# Runs server
 #==============================================================================
 function run(){
-    # Create tmp file
-    # tmpfile=$(mktemp)
-    # Fill this file with JSON configuration created from bash config
-    # python3 $DIRECTORY/scripts/json_config_producer.py $tmpfile $1
     # Run server
     cd $DIRECTORY/src/
-    exec python3 main.py $1
+    nohup python3 main.py $1 > /dev/null 2>&1 &
+    PID=$!
+
+    if [ $? -eq 0 ]; then
+        # Success
+        echo "Server is succesfully run in background. PID:" $PID
+        append_to_servers_list ${CONFIG['server_name']} ${CONFIG['port']} $PID
+        return 1
+    else
+        # Fail
+        echo "Fail to run server."
+        return 0
+    fi
 }
 
 # Backup function
@@ -101,6 +113,15 @@ function error(){
  echo -e "==============================================================================${NC}"
 }
 
+function append_to_servers_list(){
+    echo "Name: $1. Port: $2. PID: $3." >> $SERVERS_LIST
+}
+
+function list_all_open_server(){
+    info "To stop server type following command. 'kill PID'"
+    cat $SERVERS_LIST
+}
+
 
 #==============================================================================
 # Main
@@ -115,15 +136,15 @@ function error(){
 while [[ $# -gt 0 ]]; do
     # Get command
     arg="$1"
-    config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
-    # Execute configuration script
-    eval "$(cat $config | ./ini2arr.py)"
-
     # Parse arguments
     #==========================================================================
     case $arg in
         -s|--spawn)
             head "Spawning server."
+            config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
+            # Execute configuration script
+            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+
             run $config
             shift
             ;;
@@ -155,6 +176,10 @@ while [[ $# -gt 0 ]]; do
             fi
             shift
             ;;
+        -l|--list)
+            list_all_open_server
+            shift
+            ;;
         *)
             help
             exit 1
@@ -162,6 +187,3 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-# cd /home/database/database/src/
-# python3 ./main.py
