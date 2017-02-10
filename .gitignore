@@ -12,3 +12,4 @@ src/config.json
 src/config.cfg
 activate
 ./src/gui/gui/settings.py
+scripts/synch.sh
