@@ -114,11 +114,26 @@ function error(){
 }
 
 function append_to_servers_list(){
-    echo "Name: $1. Port: $2. PID: $3." >> $SERVERS_LIST
+    echo "Name: $1. Port: $2. PID: $3" >> $SERVERS_LIST
 }
 
 function list_all_open_server(){
     info "To stop server type following command. 'kill PID'"
+
+    # TMP file used for server list cleaning
+    TMP=$(mktemp)
+    # Delete already killed servers
+    while IFS='' read -r line || [[ -n "$line" ]]; do
+        PID=$(echo $line | cut -d' ' -f6)
+
+        ps -p $PID > /dev/null
+        if [[ $? -ne 0 ]]
+        then
+            awk "!/$PID/" $SERVERS_LIST > $TMP && mv $TMP $SERVERS_LIST
+        fi
+    done < $SERVERS_LIST
+
+    info "List of servers:"
     cat $SERVERS_LIST
 }
 
