@@ -94,23 +94,27 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 function head(){
- echo -e "${BLUE}=============================================================================="
- echo -e "$1"
- echo -e "==============================================================================${NC}"
+ echo -ne "${BLUE}"
+ printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+ echo -e ${1}
+ printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+ echo -e "${NC}"
 }
 
 function info(){
- echo -e "${BLUE}$1${NC}"
+ echo -e "${BLUE}${1}${NC}"
 }
 
 function success(){
- echo -e "${GREEN}$1${NC}"
+ echo -e "${GREEN}${1}${NC}"
 }
 
 function error(){
- echo -e "${RED}=============================================================================="
- echo -e "$1"
- echo -e "==============================================================================${NC}"
+ echo -ne "${RED}"
+ printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+ echo -e ${1}
+ printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+ echo -e "${NC}"
 }
 
 function append_to_servers_list(){
@@ -118,7 +122,10 @@ function append_to_servers_list(){
 }
 
 function list_all_open_server(){
-    info "To stop server type following command. 'kill PID'"
+    error "BE CAREFUL!!! This list can be wrong and doesn't have actual
+    information. There is posibillity that it is not your server and you can 
+    kill wrong process. Check what process you want to kill before doing it."
+    echo "To stop server type following command. 'kill PID'"
 
     # TMP file used for server list cleaning
     TMP=$(mktemp)
@@ -133,7 +140,7 @@ function list_all_open_server(){
         fi
     done < $SERVERS_LIST
 
-    info "List of servers:"
+    head "List of servers:"
     cat $SERVERS_LIST
 }
 
