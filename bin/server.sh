@@ -21,7 +21,6 @@ function help(){
 allows spawn, terminate TCP-servers, backup and clear data after them."
     echo -e "\t-h show this help text"
     echo -e "\t-s config: Spawn server with specified configuration."
-    # echo -e "\t-t config: Terminate server."
     echo -e "\t-b config: Backup server's data storage and database."
     echo -e "\t-c config: Clear server's data storage and database."
 }
@@ -29,9 +28,27 @@ allows spawn, terminate TCP-servers, backup and clear data after them."
 # Run function
 #==============================================================================
 function clear_server(){
-    # Run script which will drop database
-    python3 $DIRECTORY/scripts/clear.py $1 "drop"
-    # TODO remove data catalog
+    echo -e "Check if database specified in configuration file exist."
+    is_db_exist
+    status=$?
+
+    if [ "$status" -eq "1" ]; then
+        echo "Database '${CONFIG['mysql_db']}' doesn't exist."
+    elif [ "$status" -eq "2" ]; then
+        error "Can't access to database with user: ${CONFIG['mysql_user']}."
+        exit 1
+    else
+        # Run script which will drop database
+        python3 $DIRECTORY/scripts/clear.py $1 "drop"
+    fi
+
+    echo "Check if data folder exists and remove it."
+    if [ -d "$DIRECTORY/data/${CONFIG['server_name']}" ]; then
+        echo "Remove $DIRECTORY/data/${CONFIG['server_name']}."
+        rm -Rv $DIRECTORY/data/${CONFIG['server_name']}
+    else
+        echo "Directory doesn't exist."
+    fi
 }
 
 # Runs server
