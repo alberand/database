@@ -19,7 +19,7 @@ function help(){
 allows spawn, terminate TCP-servers, backup and clear data after them."
     echo -e "\t-h show this help text"
     echo -e "\t-s config: Spawn server with specified configuration."
-    echo -e "\t-t config: Terminate server."
+    # echo -e "\t-t config: Terminate server."
     echo -e "\t-b config: Backup server's data storage and database."
     echo -e "\t-c config: Clear server's data storage and database."
 }
@@ -62,25 +62,32 @@ function run(){
 # Backup function
 #==============================================================================
 function backup(){
-    # Get arguments
-    mysql_db="$1"
-    mysql_user="$2"
-    mysql_pass="$3"
-    host="$4"
+    head "Start backup for ${CONFIG['mysql_db']} on host ${CONFIG['mysql_host']}."
 
     # Create file
-    filename="./backups/$mysql_db.sql"
-    touch $filename
-    info "Filename is $filename."
+    filename=$DIRECTORY"/backups/${CONFIG['mysql_db']}.sql"
+	# Check if file already exists
+    if [ -f $filename ]; then
+        error "File already exists!"
+		confirm
+		if [ $? -eq 1 ]; then
+			return 1
+		fi
+    fi
+    mkdir -p "$(dirname "$filename")" && touch "$filename"
+    echo "Database backup will be stored in $filename."
 
     # Backup database
-    mysqldump --single-transaction --flush-logs --master-data=2 -h"$host" \
-        -u"$mysql_user" -p"$mysql_pass" --databases "$mysql_db" > $filename
+    mysqldump --single-transaction --flush-logs --master-data=2 \
+    -h"${CONFIG['mysql_host']}" -u"${CONFIG['mysql_user']}" \
+    -p"${CONFIG['mysql_pass']}" --databases "${CONFIG['mysql_db']}" > $filename
 
     if [ $? -eq 0 ]; then
+        success "Succsess."
         # Success
         return 0
     else
+        error "Fail."
         # Fail
         return 1
     fi
@@ -144,16 +151,22 @@ function list_all_open_server(){
     cat $SERVERS_LIST
 }
 
+function confirm() {
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
 
 #==============================================================================
 # Main
 #==============================================================================
-
-# echo $0
-# echo $(basename $0)
-# echo $(dirname $0)
-# echo $(readlink -f $0)
-# exit
 
 while [[ $# -gt 0 ]]; do
     # Get command
@@ -170,29 +183,25 @@ while [[ $# -gt 0 ]]; do
             run $config
             shift
             ;;
-        -t|--terminate)
-            head "Terminating server."
-            shift
-            ;;
         -c|--clear)
             head "Clear server's data."
             remove_server $mysql_db $mysql_user $mysql_pass $host $catalog_name 
             if [ $? -eq 0 ]; then
-                success "Server's data were successfully removed from the "\
-"machine."
+                success "Server's data were successfully removed from the 
+                         machine."
             else
                 error "Fail to remove server's data."
             fi
             shift
             ;;
         -b|--backup)
-            head "Backup server data."
-            backup $mysql_db $mysql_user $mysql_pass $host
+            config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
+            # Execute configuration script
+            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+
+            backup
             if [ $? -eq 0 ]; then
                 success "Succesfully backup whole database."
-                msg="You should find file named the same as the name of the "\
-"database with .sql format."
-                echo -e "$msg";
             else
                 error "Fail to back up database.";
             fi
