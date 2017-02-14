@@ -2,6 +2,7 @@
 
 # TODO: 
 # * Check correct port
+# * Check that server is not running before clear all it's data
 
 #==============================================================================
 # Script for running socket server with specified configuration file.
@@ -28,15 +29,8 @@ allows spawn, terminate TCP-servers, backup and clear data after them."
 # Run function
 #==============================================================================
 function clear_server(){
-    # Get arguments
-    mysql_db="$1"
-    mysql_user="$2"
-    mysql_pass="$3"
-    host="$4"
-    catalog="$5"
-
     # Run script which will drop database
-    python3 $DIRECTORY/scripts/clear.py $mysql_user $mysql_pass $mysql_db $host "drop"
+    python3 $DIRECTORY/scripts/clear.py $1 "drop"
     # TODO remove data catalog
 }
 
@@ -144,7 +138,7 @@ function success(){
 function error(){
  echo -ne "${RED}"
  # printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
- echo -e ${1}
+ echo -ne ${1}
  # printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
  echo -e "${NC}"
 }
@@ -154,10 +148,11 @@ function append_to_servers_list(){
 }
 
 function list_all_open_server(){
+    head "List of servers:"
     error "BE CAREFUL!!! This list can be wrong and doesn't have actual
     information. There is posibillity that it is not your server and you can 
     kill wrong process. Check what process you want to kill before doing it."
-    echo "To stop server type following command. 'kill PID'"
+    echo -e "To stop server type following command. 'kill PID'"
 
     # TMP file used for server list cleaning
     TMP=$(mktemp)
@@ -172,7 +167,7 @@ function list_all_open_server(){
         fi
     done < $SERVERS_LIST
 
-    head "List of servers:"
+    info "List of currently run PID:"
     cat $SERVERS_LIST
 }
 
@@ -226,8 +221,11 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -c|--clear)
-            head "Clear server's data."
-            remove_server $mysql_db $mysql_user $mysql_pass $host $catalog_name 
+            config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
+            # Execute configuration script
+            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+
+            clear_server $config
             if [ $? -eq 0 ]; then
                 success "Server's data were successfully removed from the 
                          machine."
