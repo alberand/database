@@ -1,11 +1,12 @@
 #/!/bin/bash
 
+# TODO: 
+# * Check correct port
+
 #==============================================================================
 # Script for running socket server with specified configuration file.
 #==============================================================================
 
-# DIRRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# DIRECTORY=$(echo $(pwd) )
 # Application directory
 DIRECTORY="$( cd "$( dirname "$0" )/../" && pwd )"
 # File with list of created servers
@@ -42,14 +43,26 @@ function clear_server(){
 # Runs server
 #==============================================================================
 function run(){
-    # Run server
+    echo -e "Check if database specified in configuration file exist. If not create it."
+    is_db_exist
+    status=$?
+
+    if [ "$status" -eq "1" ]; then
+        error "Database '${CONFIG['mysql_db']}' doesn't exist. Create it."
+        python3 $DIRECTORY/scripts/init.py $1
+    elif [ "$status" -eq "2" ]; then
+        error "Can't access to database with user: ${CONFIG['mysql_user']}."
+        exit 1
+    fi
+
+    echo "Running server."
     cd $DIRECTORY/src/
     nohup python3 main.py $1 > /dev/null 2>&1 &
     PID=$!
 
     if [ $? -eq 0 ]; then
         # Success
-        echo "Server is succesfully run in background. PID:" $PID
+        echo "Server is run in background. PID:" $PID
         append_to_servers_list ${CONFIG['server_name']} ${CONFIG['port']} $PID
         return 1
     else
@@ -64,7 +77,21 @@ function run(){
 function backup(){
     head "Start backup for ${CONFIG['mysql_db']} on host ${CONFIG['mysql_host']}."
 
-    # Create file
+    echo "Check if database exist and user has access to it."
+    is_db_exist
+    status=$?
+
+    if [ "$status" -eq "1" ]; then
+        error "Database '${CONFIG['mysql_db']}' doesn't exist. Nothing to 
+               backup."
+        exit 1
+    elif [ "$status" -eq "2" ]; then
+        error "Can't access to database with user: ${CONFIG['mysql_user']}."
+        exit 1
+    fi
+
+
+    echo "Create file to store backup."
     filename=$DIRECTORY"/backups/${CONFIG['mysql_db']}.sql"
 	# Check if file already exists
     if [ -f $filename ]; then
@@ -77,17 +104,15 @@ function backup(){
     mkdir -p "$(dirname "$filename")" && touch "$filename"
     echo "Database backup will be stored in $filename."
 
-    # Backup database
+    echo "Backup database."
     mysqldump --single-transaction --flush-logs --master-data=2 \
     -h"${CONFIG['mysql_host']}" -u"${CONFIG['mysql_user']}" \
     -p"${CONFIG['mysql_pass']}" --databases "${CONFIG['mysql_db']}" > $filename
 
     if [ $? -eq 0 ]; then
-        success "Succsess."
         # Success
         return 0
     else
-        error "Fail."
         # Fail
         return 1
     fi
@@ -118,9 +143,9 @@ function success(){
 
 function error(){
  echo -ne "${RED}"
- printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+ # printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
  echo -e ${1}
- printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
+ # printf '%*s' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
  echo -e "${NC}"
 }
 
@@ -163,6 +188,23 @@ function confirm() {
     esac
 }
 
+function is_db_exist(){
+    RESULT=`mysql -u${CONFIG['mysql_user']} -p${CONFIG['mysql_pass']} \
+    --skip-column-names -e "SHOW DATABASES LIKE '${CONFIG['mysql_db']}'"`
+    # If fail to proceed (access denied)
+    if [ $? -ne 0 ]; then
+        return 2
+    fi
+
+    if [ "$RESULT" == "${CONFIG['mysql_db']}" ]; then
+        # Exist
+        return 0
+    else
+        # Doesn't exist
+        return 1
+    fi
+}
+
 
 #==============================================================================
 # Main
@@ -201,7 +243,7 @@ while [[ $# -gt 0 ]]; do
 
             backup
             if [ $? -eq 0 ]; then
-                success "Succesfully backup whole database."
+                success "Database is successfully backuped."
             else
                 error "Fail to back up database.";
             fi
