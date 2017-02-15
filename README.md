@@ -15,11 +15,17 @@ files.
 Run collecting server:
 
 1. Go to source directory
-2. Run following command with specified configuration file:
+2. Go to **bin** directory
+3. There you will found template configuration file **config**. Change it as you
+   want.
+4. Then run shell script with following arguments:
 
 ```
-python3 ./main.py config.json
+./server.sh -s ./config
 ```
+, where ./config your configuration file. To see all available commands you can
+run shell script with __-h__ flag.
+
 This will run collecting server. Now you can send data to address specified in
 configuration file.
 
