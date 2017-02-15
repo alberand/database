@@ -23,15 +23,15 @@ Run collecting server:
 ```
 ./server.sh -s ./config
 ```
-, where ./config your configuration file. To see all available commands you can
-run shell script with __-h__ flag.
+where **./config** your configuration file. To see all available parameters you 
+can run shell script with __-h__ flag.
 
 This will run collecting server. Now you can send data to address specified in
 configuration file.
 
 Run GUI server:
 
-1. Go to source directory. Then to the *gui* directory.
+1. Go to source directory. Then to the **gui** directory.
 2. Run following program:
 
 ```
