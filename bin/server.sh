@@ -71,15 +71,21 @@ function run(){
     nohup python3 main.py $1 > /dev/null 2>&1 &
     PID=$!
 
-    if [ $? -eq 0 ]; then
+    echo "Sleep for a 3 seconds. Wait if server didn't crash."
+    sleep 3
+
+    
+
+    if ps -p $PID > /dev/null 
+    then
         # Success
         echo "Server is run in background. PID:" $PID
         append_to_servers_list ${CONFIG['server_name']} ${CONFIG['port']} $PID
-        return 1
+        return 0
     else
         # Fail
         echo "Fail to run server."
-        return 0
+        return 1
     fi
 }
 
