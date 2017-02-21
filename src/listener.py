@@ -36,10 +36,14 @@ class Listener(threading.Thread):
 
         logging.info('Creating server. {}:{}'.format(
                 config['host'], config['port']))
-        self.server = Server(
+        try:
+            self.server = Server(
                 (config['host'], config['port']),
                 RequestHandler
-        )
+            )
+        except socket.error as e:
+            logging.info('Error while creating server. {}'.format(e))
+            sys.exit(2)
         # Add queue for communication with handlers
         self.server.queue = self.queue
 
@@ -60,6 +64,7 @@ class Listener(threading.Thread):
         if not self.database.connect():
             logging.error('Fail to connect to database. Exit.')
             self.stop()
+            sys.exit(3)
 
         # Start processing loop
         try:
