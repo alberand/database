@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=TServer
+Comment=Telemetry data server
+Exec=/opt/tserver/bin/server.sh
+Icon=utilities-system-monitor.png
+Terminal=false
