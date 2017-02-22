@@ -1,9 +1,5 @@
 #/!/bin/bash
 
-# TODO: 
-# * Check correct port
-# * Check that server is not running before clear all it's data
-
 #==============================================================================
 # Script for running socket server with specified configuration file.
 #==============================================================================
@@ -28,6 +24,18 @@ allows spawn, terminate TCP-servers, backup and clear data after them."
 # Run function
 #==============================================================================
 function clear_server(){
+    # Get server PID
+    PID=$(list_all_open_server | grep "${CONFIG['server_name']}" | \
+        cut -d" " -f6)
+
+    echo -e "If server is running exit."
+    is_process_running $PID 
+    status=$?
+    if [ "$status" -eq "1" ]; then
+        echo "Server is running (in accordence to '$0 -l'). Exit."
+        exit 1
+    fi
+
     echo -e "Check if database specified in configuration file exist."
     is_db_exist
     status=$?
@@ -72,12 +80,15 @@ function run(){
     PID=$!
 
     echo "Sleep for a 3 seconds. Wait if server didn't crash."
+    # TODO: Not sure about this timeout. It should include attempt to create TCP
+    # socket and connect to MySQL database. For now, if error occure it happens
+    # immediately (and as I know there is no any timeouts).
     sleep 3
 
-    
-
-    if ps -p $PID > /dev/null 
-    then
+    # If process still exists => server is running.
+    is_process_running $PID 
+    status=$?
+    if [ "$status" -eq "1" ]; then
         # Success
         echo "Server is run in background. PID:" $PID
         append_to_servers_list ${CONFIG['server_name']} ${CONFIG['port']} $PID
@@ -223,6 +234,24 @@ function is_db_exist(){
     fi
 }
 
+###############################################################################
+# Check if process with provided PID is running.
+# Arguments:
+#   int: PID of process
+# Returns:
+#   Boolean. 1 is running.
+###############################################################################
+function is_process_running(){
+    # If process still exists => server is running.
+    if ps -p $1 > /dev/null 
+    then
+        # Success
+        return 1
+    else
+        # Fail
+        return 0
+    fi
+}
 
 #==============================================================================
 # Main
@@ -250,8 +279,7 @@ while [[ $# -gt 0 ]]; do
 
             clear_server $config
             if [ $? -eq 0 ]; then
-                success "Server's data were successfully removed from the 
-                         machine."
+                success "Server's data were successfully removed from the machine."
             else
                 error "Fail to remove server's data."
             fi
