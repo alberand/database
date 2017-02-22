@@ -1,0 +1,16 @@
+Package: tserver
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: amd64
+Depends: libsomethingorrather (>= 1.2.13), anotherDependency (>= 1.2.6)
+Maintainer: Andrey Albershteyn <albershteyn.andrey@gmail.com>
+Description: Telemetry Server
+ The purpose of this application is to collect telemetry data from devices
+ (GPS-tracker, mobile etc.) and save them for further usage. Two type of data
+ storage are used MySQL database and .txt files.
+
+ Application is also delivered with a HTTP-server based on Django framework.
+ This interface allows display data on the interactive map and download 
+ collected files. 
+ 
