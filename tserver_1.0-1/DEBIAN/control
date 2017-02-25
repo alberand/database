@@ -2,15 +2,13 @@ Package: tserver
 Version: 1.0-1
 Section: base
 Priority: optional
-Architecture: amd64
-Depends: mysql-server (>= 5.5.54), libmysqlserver-dev (>= 5.5.54), python3 (>=
-3.4.0), python3-dev (>= 3.4.0)
+Architecture: any
+Depends: mysql-server (>= 5.5.54), libmysqlclient-dev (>= 5.5.54), python3 (>= 3.4.0), python3-dev (>= 3.4.0)
 Maintainer: Andrey Albershteyn <albershteyn.andrey@gmail.com>
 Description: Telemetry Server
  The purpose of this application is to collect telemetry data from devices
  (GPS-tracker, mobile etc.) and save them for further usage. Two type of data
  storage are used MySQL database and .txt files.
-
  Application is also delivered with a HTTP-server based on Django framework.
  This interface allows display data on the interactive map and download 
  collected files. 
