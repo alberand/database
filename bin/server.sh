@@ -5,7 +5,8 @@
 #==============================================================================
 
 # Application directory
-DIRECTORY="$( cd "$( dirname "$0" )/../" && pwd )"
+# DIRECTORY="$( cd "$( dirname "$0" )/../" && pwd )" # Doesn't work for links
+DIRECTORY="$( dirname "$(readlink -f "$0")" )/../"
 # File with list of created servers
 SERVERS_LIST="/tmp/servers_list"
 touch $SERVERS_LIST
