@@ -1,5 +1,9 @@
 #/!/bin/bash
 
+# TODO:
+# - When check if there Mysql user or not there can be user with the same name
+# but different password. Should check it in future
+
 #==============================================================================
 # Script for running socket server with specified configuration file.
 #==============================================================================
@@ -63,10 +67,25 @@ function clear_server(){
 # Runs server
 #==============================================================================
 function run(){
+    echo -e "Check if MySQL user specified in configuration file exist. If not create it."
+    echo -en "Enter root's MySQL password:"
+    read root_mysql_pass
+    is_mysql_user_exists $root_mysql_pass
+    status=$?
+
+    if [ "$status" -eq "1" ]; then
+        error "MySQL user ${CONFIG['mysql_user']} doesn't exist. Create it."
+        python3 $DIRECTORY/scripts/create_user.py $1 $root_mysql_pass
+    elif [ "$status" -eq "2" ]; then
+        error "Can't create user ${CONFIG['mysql_user']}"
+        exit 1
+    fi
+
     echo -e "Check if database specified in configuration file exist. If not create it."
     is_db_exist
     status=$?
 
+    # Create database if dousn't exist
     if [ "$status" -eq "1" ]; then
         error "Database '${CONFIG['mysql_db']}' doesn't exist. Create it."
         python3 $DIRECTORY/scripts/init.py $1
@@ -235,6 +254,19 @@ function is_db_exist(){
     fi
 }
 
+function is_mysql_user_exists(){
+    while read User; do
+        if [[ "${CONFIG['mysql_user']}" == "$User" ]]; then
+            echo "$User exists in MySQL"
+            break
+        fi
+    done < <(mysql -uroot -p -B -N -e 'use mysql; SELECT `user` FROM `user`;')
+    
+    if [[ "${CONFIG['mysql_user']}" != "$User" ]]; then
+        echo "${CONFIG['mysql_user']} does not exists in MySQL"
+    fi
+}
+
 ###############################################################################
 # Check if process with provided PID is running.
 # Arguments:
@@ -301,6 +333,12 @@ while [[ $# -gt 0 ]]; do
             ;;
         -l|--list)
             list_all_open_server
+            shift
+            ;;
+        -t|--test)
+            echo -en "Enter root's MySQL password:"
+            read root_mysql_pass
+            is_mysql_user_exists $root_mysql_pass
             shift
             ;;
         *)
