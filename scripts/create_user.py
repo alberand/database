@@ -27,7 +27,7 @@ if __name__ == '__main__':
     cnx = mysql.connector.connect(
             host=config['mysql_host'], 
             user='root', 
-            password=config['mysql_root_pass'])
+            password=sys.argv[2])
     cursor = cnx.cursor()
 
     # Create MySql user
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     else:
         print("OK")
 
-
+    cnx.commit()
 
     # Close connection and database
     cursor.close()
