@@ -3,6 +3,7 @@
 # TODO:
 # - When check if there Mysql user or not there can be user with the same name
 # but different password. Should check it in future
+# - Backup data direcotry
 
 #==============================================================================
 # Script for running socket server with specified configuration file.
@@ -29,16 +30,20 @@ allows spawn, terminate TCP-servers, backup and clear data after them."
 # Run function
 #==============================================================================
 function clear_server(){
+    echo -e "If server is running exit. PID: $PID."
     # Get server PID
     PID=$(list_all_open_server | grep "${CONFIG['server_name']}" | \
         cut -d" " -f6)
 
-    echo -e "If server is running exit."
-    is_process_running $PID 
-    status=$?
-    if [ "$status" -eq "1" ]; then
-        echo "Server is running (in accordence to '$0 -l'). Exit."
-        exit 1
+    if [[ -z "${PID// }" ]]; then
+        echo "Server is down. Continue."
+    else
+        is_process_running $PID 
+        status=$?
+        if [ "$status" -eq "1" ]; then
+            echo "Server is running (in accordence to '$0 -l'). Exit."
+            exit 1
+        fi
     fi
 
     echo -e "Check if database specified in configuration file exist."
@@ -56,9 +61,9 @@ function clear_server(){
     fi
 
     echo "Check if data folder exists and remove it."
-    if [ -d "$DIRECTORY/data/${CONFIG['server_name']}" ]; then
-        echo "Remove $DIRECTORY/data/${CONFIG['server_name']}."
-        rm -Rv $DIRECTORY/data/${CONFIG['server_name']}
+    if [ -d "$DIRECTORY/src/data/${CONFIG['server_name']}" ]; then
+        echo "Remove $DIRECTORY/src/data/${CONFIG['server_name']}."
+        rm -Rv $DIRECTORY/src/data/${CONFIG['server_name']}
     else
         echo "Directory doesn't exist."
     fi
@@ -68,31 +73,39 @@ function clear_server(){
 #==============================================================================
 function run(){
     echo -e "Check if MySQL user specified in configuration file exist. If not create it."
-    echo -en "Enter root's MySQL password:"
-    read root_mysql_pass
+    read -p "Enter root's MySQL password: " root_mysql_pass
     is_mysql_user_exists $root_mysql_pass
     status=$?
 
-    if [ "$status" -eq "1" ]; then
-        error "MySQL user ${CONFIG['mysql_user']} doesn't exist. Create it."
+    if [ "$status" -eq "0" ]; then
+        error "MySQL user '${CONFIG['mysql_user']}' doesn't exist. Create it."
         python3 $DIRECTORY/scripts/create_user.py $1 $root_mysql_pass
     elif [ "$status" -eq "2" ]; then
         error "Can't create user ${CONFIG['mysql_user']}"
         exit 1
+    elif [ "$status" -eq "1" ]; then
+        success "[OK]"
     fi
 
     echo -e "Check if database specified in configuration file exist. If not create it."
     is_db_exist
     status=$?
 
-    # Create database if dousn't exist
+    # Create database if doesn't exist
     if [ "$status" -eq "1" ]; then
         error "Database '${CONFIG['mysql_db']}' doesn't exist. Create it."
         python3 $DIRECTORY/scripts/init.py $1
     elif [ "$status" -eq "2" ]; then
         error "Can't access to database with user: ${CONFIG['mysql_user']}."
         exit 1
+    elif [ "$status" -eq "0" ]; then
+        success "[OK]"
     fi
+
+    # Create data direcctory if doen't exist
+    data_dir=$DIRECTORY/src/data/${CONFIG['server_name']}
+    mkdir -p $data_dir
+    echo "Server's data directory: $data_dir."
 
     echo "Running server."
     cd $DIRECTORY/src/
@@ -110,12 +123,13 @@ function run(){
     status=$?
     if [ "$status" -eq "1" ]; then
         # Success
+        success "[OK]"
         echo "Server is run in background. PID:" $PID
         append_to_servers_list ${CONFIG['server_name']} ${CONFIG['port']} $PID
         return 0
     else
         # Fail
-        echo "Fail to run server."
+        error "Fail to run server."
         return 1
     fi
 }
@@ -254,17 +268,26 @@ function is_db_exist(){
     fi
 }
 
+###############################################################################
+# Check if process with provided PID is running.
+# Globals:
+#   CONFIG: array with configurations.
+# Arguments:
+#   string: MySQL root password
+# Returns:
+#   Boolean. 1 exists.
+###############################################################################
 function is_mysql_user_exists(){
+    mysql -uroot -p$1 -B -N -e 'use mysql; SELECT `user` FROM `user`;' |
     while read User; do
         if [[ "${CONFIG['mysql_user']}" == "$User" ]]; then
-            echo "$User exists in MySQL"
-            break
+            # Exists
+            return 1
         fi
-    done < <(mysql -uroot -p -B -N -e 'use mysql; SELECT `user` FROM `user`;')
+    done
     
-    if [[ "${CONFIG['mysql_user']}" != "$User" ]]; then
-        echo "${CONFIG['mysql_user']} does not exists in MySQL"
-    fi
+    # Doesn't exist
+    return 0
 }
 
 ###############################################################################
@@ -336,9 +359,14 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -t|--test)
-            echo -en "Enter root's MySQL password:"
-            read root_mysql_pass
+            config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
+            # Execute configuration script
+            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+
+            read -p "Enter root's MySQL password:" root_mysql_pass
             is_mysql_user_exists $root_mysql_pass
+            status=$?
+            echo $status
             shift
             ;;
         *)
