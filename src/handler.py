@@ -4,6 +4,7 @@
 import time
 import logging
 import socket
+import select
 import threading
 import socketserver
 
@@ -23,6 +24,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
         # String buffer for receiving symbols
         self.buf = ''
         self.coding = 'utf-8'
+        self.timeout = 3
         self.request.setblocking(True)
         self.request.settimeout(3)
 
@@ -55,15 +57,21 @@ class RequestHandler(socketserver.BaseRequestHandler):
 
         # Don't know why but if I put this construction only in cycle loop
         # continue executing forever. Like if socket was is non-blocking state.
-        # byte = self.request.recv(1, socket.MSG_WAITALL) 
+        byte = self.request.recv(1, socket.MSG_WAITALL) 
 
-        while symbol != config['pkg_end']:
-            byte = self.request.recv(1, socket.MSG_WAITALL) 
-            if not byte:
+        while byte:
+            # event = select.select([self.request], [], [], self.timeout)
+
+            while symbol != config['pkg_end']:
+                byte = self.request.recv(1) 
+                if not byte:
+                    break
+
+                symbol = str(byte, self.coding)
+                string = string + symbol
+
+            if symbol == config['pkg_end']:
                 break
-
-            symbol = str(byte, self.coding)
-            string = string + symbol
             time.sleep(0.001)
 
         logging.info('Received string: {}'.format(string))
