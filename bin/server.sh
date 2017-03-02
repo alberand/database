@@ -56,6 +56,7 @@ function clear_server(){
         error "Can't access to database with user: ${CONFIG['mysql_user']}."
         exit 1
     else
+        echo "Delteting database."
         # Run script which will drop database
         python3 $DIRECTORY/scripts/clear.py $1 "drop"
     fi
@@ -73,7 +74,8 @@ function clear_server(){
 #==============================================================================
 function run(){
     echo -e "Check if MySQL user specified in configuration file exist. If not create it."
-    read -p "Enter root's MySQL password: " root_mysql_pass
+    read -sp "Enter root's MySQL password: " root_mysql_pass
+    echo
     is_mysql_user_exists $root_mysql_pass
     status=$?
 
@@ -171,12 +173,13 @@ function backup(){
     -h"${CONFIG['mysql_host']}" -u"${CONFIG['mysql_user']}" \
     -p"${CONFIG['mysql_pass']}" --databases "${CONFIG['mysql_db']}" > $filename
 
-    if [ $? -eq 0 ]; then
-        # Success
-        return 0
+    echo "Backup server's direcotry."
+    if [ -d "$DIRECTORY/src/data/${CONFIG['server_name']}" ]; then
+        cp -R $DIRECTORY/src/data/${CONFIG['server_name']} $DIRECTORY/backups/${CONFIG['server_name']}
+        echo "Copy is saved to: $DIRECTORY/backups/${CONFIG['server_name']}"
     else
-        # Fail
-        return 1
+        echo -e "Server's directory $DIRECTORY/src/data/${CONFIG['server_name']}
+        doesn't exist. Nothing to copy."
     fi
 }
 
@@ -363,7 +366,8 @@ while [[ $# -gt 0 ]]; do
             # Execute configuration script
             eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
 
-            read -p "Enter root's MySQL password:" root_mysql_pass
+            read -sp "Enter root's MySQL password:" root_mysql_pass
+            echo
             is_mysql_user_exists $root_mysql_pass
             status=$?
             echo $status
