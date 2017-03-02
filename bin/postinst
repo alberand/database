@@ -37,3 +37,8 @@ source "$DIRECTORY/bin/$venv_name/bin/activate"
 #==============================================================================
 echo "Installing python packages ..."
 pip3 --no-cache-dir install -r $DIRECTORY/bin/requirements.txt
+
+#==============================================================================
+# Change privileges
+#==============================================================================
+chmod -R 766 /opt/tserver/src/data
