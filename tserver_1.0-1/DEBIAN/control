@@ -2,7 +2,7 @@ Package: tserver
 Version: 1.0-1
 Section: base
 Priority: optional
-Architecture: any
+Architecture: amd64
 Depends: mysql-server (>= 5.5.54), libmysqlclient-dev (>= 5.5.54), python3 (>= 3.4.0), python3-dev (>= 3.4.0)
 Maintainer: Andrey Albershteyn <albershteyn.andrey@gmail.com>
 Description: Telemetry Server
