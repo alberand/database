@@ -11,12 +11,7 @@
 server_name: server_01
 # Server port. Unique per server instance.
 port: 5000
-# Name of catalog where server will be put ($HOME/catalog_name)
-# catalog_name: server_01
-# Mysql ROOT password. If mysql-server isn't installed on the machine. It will
-# be installed and need root pass
-mysql_root_pass: root
-# Database name
+# MySQL database name
 mysql_db: server_01
 # MySQL user name
 mysql_user: user
@@ -30,12 +25,6 @@ corrupted_storage: ./data/server_01/corrupted.txt
 # Machine address. Network address of machine where this server will be run.
 # Change it once.
 host: 127.0.0.1
-# Unix User name
-user: unix_user
-# Unix User default password
-password: unix_pass
-# Name of python virtual environment used to install all requered packages
-# venv_name: server
 # Address of the machine with MySQL-server
 mysql_host: 127.0.0.1
 
