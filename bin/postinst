@@ -33,19 +33,6 @@ virtualenv -p `which python3` "$DIRECTORY/bin/$venv_name"
 source "$DIRECTORY/bin/$venv_name/bin/activate"
 
 #==============================================================================
-# Install python packages from .deb
-#==============================================================================
-echo "Installing linux packages from .deb files."
-fuser /var/lib/dpkg/lock &>/dev/null
-if [ $? -eq 1 ]; then
-  echo "Installing mysql-connector-python"
-  yes | dpkg -i "$DIRECTORY/packets/mysql-connector-python-py3_2.1.3-1ubuntu14.04_all.deb"
-else
-  echo "dpkg lock is locked. Can't install packages. Are you installing something?"
-  exit 1
-fi
-
-#==============================================================================
 # Install python packages
 #==============================================================================
 echo "Installing python packages ..."
