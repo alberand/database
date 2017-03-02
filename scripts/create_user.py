@@ -31,24 +31,31 @@ if __name__ == '__main__':
     cursor = cnx.cursor()
 
     # Create MySql user
-    command = '''
-    CREATE USER '{}'@'{}' IDENTIFIED BY '{}';
-    GRANT ALL PRIVILEGES ON *.* TO '{}'@'{}';
-    FLUSH PRIVILEGES;
-    '''.format(config['mysql_user'], config['mysql_host'], config['mysql_pass'],
-            config['mysql_user'], config['mysql_host'])
+    command = [
+        "FLUSH PRIVILEGES;",
+        "CREATE USER '{}'@'{}' IDENTIFIED BY '{}';".format(
+            config['mysql_user'], config['mysql_host'], config['mysql_pass']),
+        "GRANT ALL PRIVILEGES ON *.* TO '{}'@'{}';".format(
+            config['mysql_user'],config['mysql_host']),
+        "FLUSH PRIVILEGES;"
+    ]
 
+    rcode = 0
     try:
         print("Creating user '{}' identified by {}: ".format(
             config['mysql_user'], config['mysql_pass']), end='')
-        cursor.execute(command, multi=True)
+        for cmd in command:
+            cursor.execute(cmd)
     except mysql.connector.Error as err:
-            print(err.msg)
+        print()
+        print(err.msg)
+        rcode = 1
     else:
         print("OK")
-
-    cnx.commit()
+        rcode = 0
+        cnx.commit()
 
     # Close connection and database
     cursor.close()
     cnx.close()
+    sys.exit(rcode)
