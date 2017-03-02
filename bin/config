@@ -35,7 +35,7 @@ user: unix_user
 # Unix User default password
 password: unix_pass
 # Name of python virtual environment used to install all requered packages
-venv_name: server
+# venv_name: server
 # Address of the machine with MySQL-server
 mysql_host: 127.0.0.1
 
