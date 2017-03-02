@@ -1,4 +1,4 @@
-#/!/bin/bash
+#!/bin/bash
 
 # TODO:
 # - When check if there Mysql user or not there can be user with the same name
@@ -323,7 +323,7 @@ while [[ $# -gt 0 ]]; do
             head "Spawning server."
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
-            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+            eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
 
             run $config
             shift
@@ -331,7 +331,7 @@ while [[ $# -gt 0 ]]; do
         -c|--clear)
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
-            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+            eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
 
             clear_server $config
             if [ $? -eq 0 ]; then
@@ -344,7 +344,7 @@ while [[ $# -gt 0 ]]; do
         -b|--backup)
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
-            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+            eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
 
             backup
             if [ $? -eq 0 ]; then
@@ -361,7 +361,7 @@ while [[ $# -gt 0 ]]; do
         -t|--test)
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
-            eval "$(cat $config | $DIRECTORY/bin/ini2arr.py)"
+            eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
 
             read -p "Enter root's MySQL password:" root_mysql_pass
             is_mysql_user_exists $root_mysql_pass
