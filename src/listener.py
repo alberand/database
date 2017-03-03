@@ -90,8 +90,8 @@ class Listener(threading.Thread):
 
                         # Save package to file
                         self.save_pkg(pkg)
-
-                time.sleep(0.1)
+                else:
+                    time.sleep(0.1)
         except KeyboardInterrupt:
             self.stop()
 
