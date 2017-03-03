@@ -4,7 +4,6 @@
 import time
 import logging
 import socket
-import select
 import threading
 import socketserver
 
@@ -60,8 +59,6 @@ class RequestHandler(socketserver.BaseRequestHandler):
         byte = self.request.recv(1, socket.MSG_WAITALL) 
 
         while byte:
-            # event = select.select([self.request], [], [], self.timeout)
-
             while symbol != config['pkg_end']:
                 byte = self.request.recv(1) 
                 if not byte:
@@ -72,7 +69,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
 
             if symbol == config['pkg_end']:
                 break
-            time.sleep(0.001)
+            # time.sleep(0.001)
 
         logging.info('Received string: {}'.format(string))
 
