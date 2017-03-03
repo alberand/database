@@ -78,7 +78,7 @@ DATABASES = {
     'default': {
         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'loggersdb',
+        'NAME': 'server_01',
         'USER': 'cast',
         'PASSWORD': 'castpass',
         'HOST': 'localhost',
