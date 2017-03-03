@@ -57,19 +57,17 @@ class RequestHandler(socketserver.BaseRequestHandler):
         # Don't know why but if I put this construction only in cycle loop
         # continue executing forever. Like if socket was is non-blocking state.
         byte = self.request.recv(1, socket.MSG_WAITALL) 
+        if byte:
+            symbol = str(byte, self.coding)
+            string = string + symbol
 
-        while byte:
-            while symbol != config['pkg_end']:
-                byte = self.request.recv(1) 
-                if not byte:
-                    break
-
-                symbol = str(byte, self.coding)
-                string = string + symbol
-
-            if symbol == config['pkg_end']:
+        while byte and symbol != config['pkg_end']:
+            byte = self.request.recv(1) 
+            if not byte:
                 break
-            # time.sleep(0.001)
+
+            symbol = str(byte, self.coding)
+            string = string + symbol
 
         logging.info('Received string: {}'.format(string))
 
