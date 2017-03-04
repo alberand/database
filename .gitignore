@@ -14,3 +14,4 @@ activate
 ./src/gui/gui/settings.py
 scripts/synch.sh
 backups
+tserver_1.0-1/opt
