@@ -33,8 +33,9 @@
 .nav-sidebar-list .menu-item {
   display: block;
   position: relative;
-  width: 75%;
+  width: 100%;
   float: left;
+  margin-right: -58px;
 }
 
 .nav-sidebar-list .menu-item a {
