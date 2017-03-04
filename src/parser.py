@@ -7,8 +7,6 @@ import logging
 from utils import get_session_id
 from config import pkg_structure, handlers, config
 
-logger = logging.getLogger(__name__)
-
 GUID = 0
 
 def generate_GUID():
@@ -25,7 +23,7 @@ def is_valid_package(string):
         True is it is false otherwise.
     '''
     if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
-        logger.error('Sorry, string is not complete. String: {}'.format(string))
+        logging.error('Sorry, string is not complete. String: {}'.format(string))
         return False
     return True
 
@@ -120,8 +118,8 @@ def parse_data(data_list):
 
         except ValueError:
             # We don't want to loose data in any case so we save it to file
-            logging.error('There is wrong data or handler. The sample skipped.')
-            logging.error('item = {}, name of handler = {}'.format(
+            logging.error('There is wrong data or handler. The sample skipped.'
+                          ' Item = {}, name of handler = {}'.format(
                 data_list[i], name))
             result[name] = 'NULL'
         except TypeError:
