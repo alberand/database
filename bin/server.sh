@@ -25,6 +25,7 @@ allows spawn, terminate TCP-servers, backup and clear data after them."
     echo -e "\t-s config: Spawn server with specified configuration."
     echo -e "\t-b config: Backup server's data storage and database."
     echo -e "\t-c config: Clear server's data storage and database."
+    echo -e "\t-l: List all running server's based on scanning PID."
 }
 
 # Run function
