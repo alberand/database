@@ -70,28 +70,35 @@ class Listener(threading.Thread):
         try:
             logging.info('Running loop for receiving data from TCP-server.')
 
+            counter = 0
             while self.running:
                 # Package received
-                if not self.queue.empty():
-                    pkg = self.queue.get()
-                    
-                    if pkg['type'] == 'E':
-                        # Save package to file
-                        self.save_pkg(pkg)
-                    else:
-                        if pkg['type'] == 'I':
-                            self.create_new_session(pkg)
+                pkg = self.queue.get(True)
 
-                        if self.assign_session_id(pkg):
-                            # Data or message package
-                            self.process_pkg(pkg)
-                        else:
-                            pkg['type'] = 'E'
-
-                        # Save package to file
-                        self.save_pkg(pkg)
+                if pkg['type'] == 'E':
+                    # Save package to file
+                    self.save_pkg(pkg)
                 else:
-                    time.sleep(0.1)
+                    if pkg['type'] == 'I':
+                        self.create_new_session(pkg)
+
+                    if self.assign_session_id(pkg):
+                        # Data or message package
+                        self.process_pkg(pkg)
+                        # to_db.append(pkg)
+                    else:
+                        pkg['type'] = 'E'
+
+                    # Save package to file
+                    self.save_pkg(pkg)
+
+                # Commit to database every 10 packages or if queue is empty
+                if counter == 10 or self.queue.qsize() == 0:
+                    self.database.commit()
+                    counter = 0
+
+                counter += 1
+
         except KeyboardInterrupt:
             self.stop()
 
@@ -102,7 +109,7 @@ class Listener(threading.Thread):
             session_id))
         # Create session
         self.database.insert(['ses_id'], 
-                {'ses_id': session_id}, 'sessions')
+                [(session_id,), ], 'sessions')
         # Update session for the current device. If doesn't
         # exists create.
         logging.info('Update session for the current device.' + \
@@ -150,10 +157,11 @@ class Listener(threading.Thread):
         if pkg['type'] == 'D':
             # There we need to change package structure a little bit.
             if not self.database.insert(expand_pkg_struct(), 
-                    data_for_db(pkg), 'packages'):
+                    [data_for_db(pkg, expand_pkg_struct())], 'packages'):
                 logging.info('Fail to load package to database.')
         elif pkg['type'] == 'T':
-            if not self.database.insert(msg_structure, pkg, 'messages'):
+            if not self.database.insert(msg_structure, 
+                    [[pkg[item] for item in msg_structure],], 'messages'):
                 logging.info('Fail to load package to database.')
         elif pkg['type'] == 'I':
             pass
@@ -207,4 +215,11 @@ class Listener(threading.Thread):
         self.database.close()
 
         sys.exit(0)
+
+    def get_all_queue_result(self, queue):
+        result_list = []
+        while not queue.empty():
+            result_list.append(queue.get())
+
+        return result_list
 
