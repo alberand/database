@@ -19,49 +19,60 @@ package.
 1. Install *.deb* package by running following commands.
 
 ```sh
-    sudo dpkg -i tserver.deb
-    sudo apt-get install -f
+sudo dpkg -i tserver.deb
+sudo apt-get install -f
 ```
 
 First command will fail and generate required list of dependencies. Second
 command will install all needed packages and main package.
 
-While installation if MY SQL-server is not installed you will be asked for MY SQL
+While installation if MySQL-server is not installed you will be asked for MySQL
 root password.
 
-2. After successful installation you can create new configuration file. You can
-   find template configuration file at `/opt/tserver/bin`. There will be file
-   named `config`. Copy it somewhere to home folder and change it as you need.
+## Usage
+After successful installation you can create new configuration file. You should
+find template configuration file at `/opt/tserver/bin`. There will be file
+named `config`. Copy it somewhere to your home folder and change it as you need.
 
 ```sh
-    cp /opt/tserver/bin/config ~/config.ini
+cp /opt/tserver/bin/config ~/config.ini
 ```
 
-Pay attention to fields `port`. If chosen port will already in use server will 
+Pay attention to field `port`. If chosen port will be already in use server will 
 fail to start.
 
-## Usage
-
-Prepared configuration file can be used to run, backup and delete all data of 
-the server (database, text-files).
+Prepared configuration file can be used to run, backup and delete server. 
+Deleting means that you can delete server's database and txt-files.
 
 To run server use following command:
 
 ```sh
-    tserver -s config.ini
+tserver -s config.ini
 ```
 
-This will run collecting server. Now you can send data to address specified in
-configuration file.
+You will be ask for MySQL root password to check if there is specified MySQL
+user or server needs to create it.
 
+If specified database or MySQL user are not exist it will be automatically 
+create. In the end of running process you will be informed about server status 
+and see server PID. Process ID can be used to stop the server by using `kill`
+command.
+
+After successful running you can send data to address specified in 
+configuration file. Manually data can be found in:
+
+```
+/opt/tserver/src/data/NAME_OF_SERVER/
+``` 
 
 To see all possible commands run:
 
 ```sh
-    tserver -h
+tserver -h
 ```
 
 ### Notes
+
 For now it is impossible to automatically run web-interface. Also it can be run
 only for one server simultaneously. 
 
@@ -70,7 +81,7 @@ Run GUI server:
 1. Go to source directory:
 
 ```sh
-    cd /opt/tserver/src/gui
+cd /opt/tserver/src/gui
 ```
 
 2. Run following program:
