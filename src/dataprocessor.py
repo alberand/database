@@ -18,7 +18,7 @@ def expand_pkg_struct():
     '''
     return copy.copy(pkg_structure) + db_fields
 
-def data_for_db(data):
+def data_for_db(data, struct):
     '''
     Preapare data for inserting it to database. Because package structure is
     different than data saved in database we need to change dictionary with data
@@ -45,5 +45,7 @@ def data_for_db(data):
         data['lon_pos'] = 'NULL'
         data['longitude'] = 'NULL'
 
-    return data
+    result = (data[item] for item in struct)
+
+    return result
 
