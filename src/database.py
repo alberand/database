@@ -49,24 +49,26 @@ class Database:
 
         return True
 
-    def insert(self, struct, data, table='packages'):
+    def insert(self, struct, data_set, table='packages'):
         '''
         Inserting data sample to table.
         Args:
             struct: list with data fields in database
-            data: dictionary with parsed data
+            data_set: dictionary with parsed data
             table: string with name of the table where to insert data
         '''
         # Generate quiery from data. For now table is static. But table should
         # be choosen based on data.
         query = QUERIES['insert'].format(
             table, ', '.join(struct), 
-            ', '.join(['"{}"'.format(data[item]) for item in struct])
+            ', '.join(['%s' for item in struct])
         )
 
+        # logging.error(query)
+        # logging.error(data_set)
+
         try:
-            self.cursor.execute(query)
-            self.cnx.commit()
+            self.cursor.executemany(query, data_set)
             return True
         except mysql.connector.Error as e:
             logging.info(e)
@@ -128,6 +130,9 @@ class Database:
             logging.info('Query: {}.'.format(query))
             self.cnx.rollback()
             return False
+
+    def commit(self):
+        self.cnx.commit()
 
     def close(self):
         '''
