@@ -2,6 +2,9 @@ __pycache__
 tmp
 *.swp
 *.ini
+*.aux
+*.fls
+*.log
 logging.log
 src/data
 installer
@@ -15,3 +18,4 @@ activate
 scripts/synch.sh
 backups
 tserver_1.0-1/opt
+
