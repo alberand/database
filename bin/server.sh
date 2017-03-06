@@ -284,7 +284,6 @@ function is_db_exist(){
 function is_mysql_user_exists(){
     mysql -uroot -p$1 -B -N -e 'use mysql; SELECT `user` FROM `user`;' |
     while read User; do
-        echo $User
         if [[ "${CONFIG['mysql_user']}" == "$User" ]]; then
             # Exists
             return 1
