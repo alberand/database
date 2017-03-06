@@ -16,7 +16,8 @@ files.
 You should get two files. _mysql-connector-python-*.deb_ and _tserver-*.deb_
 packages.
 
-1. Install *.deb* package by running following commands.
+1. Go to directory with downloaded _.deb_ packages.
+2. Install *.deb* package by running following commands.
 
 ```sh
 sudo dpkg -i mysql-connector-python-py3_2.1.3-1ubuntu14.04_all.deb
@@ -61,10 +62,10 @@ and see server PID. Process ID can be used to stop the server by using `kill`
 command.
 
 After successful running you can send data to address specified in 
-configuration file. Manually data can be found in:
+configuration file. Data can be found in:
 
 ```
-/opt/tserver/src/data/NAME_OF_SERVER/
+cd /opt/tserver/src/data/NAME_OF_SERVER/
 ``` 
 
 To see all possible commands run:
@@ -86,7 +87,7 @@ Run GUI server:
 cd /opt/tserver/src/gui
 ```
 
-2. Run following program:
+2. Run following command:
 
 ```
 python3 ./manage.py runserver 8000
