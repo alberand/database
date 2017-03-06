@@ -26,8 +26,4 @@ corrupted_storage: ./data/server_01/corrupted.txt
 # Change it once.
 host: 127.0.0.1
 # Address of the machine with MySQL-server
-mysql_host: 127.0.0.1
-
-#==============================================================================
-# Backup configuration
-#==============================================================================
+mysql_host: localhost
