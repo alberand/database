@@ -273,7 +273,7 @@ function is_db_exist(){
 }
 
 ###############################################################################
-# Check if process with provided PID is running.
+# Check if MySQL user exist in database
 # Globals:
 #   CONFIG: array with configurations.
 # Arguments:
@@ -284,14 +284,14 @@ function is_db_exist(){
 function is_mysql_user_exists(){
     mysql -uroot -p$1 -B -N -e 'use mysql; SELECT `user` FROM `user`;' |
     while read User; do
+        echo $User
         if [[ "${CONFIG['mysql_user']}" == "$User" ]]; then
             # Exists
             return 1
+            break
         fi
     done
-    
-    # Doesn't exist
-    return 0
+    return $?
 }
 
 ###############################################################################
@@ -324,6 +324,10 @@ while [[ $# -gt 0 ]]; do
     #==========================================================================
     case $arg in
         -s|--spawn)
+            if [ "$#" -ne 2 ]; then
+                echo "Illegal number of parameters. Use -h flag."
+                exit 1
+            fi
             head "Spawning server."
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
@@ -333,6 +337,10 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -c|--clear)
+            if [ "$#" -ne 2 ]; then
+                echo "Illegal number of parameters. Use -h flag."
+                exit 1
+            fi
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
             eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
@@ -346,6 +354,10 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -b|--backup)
+            if [ "$#" -ne 2 ]; then
+                echo "Illegal number of parameters. Use -h flag."
+                exit 1
+            fi
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
             eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
@@ -363,6 +375,10 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -t|--test)
+            if [ "$#" -ne 2 ]; then
+                echo "Illegal number of parameters. Use -h flag."
+                exit 1
+            fi
             config="$( cd "$(dirname "$2")" && pwd )""/$(basename $2)"
             # Execute configuration script
             eval "$(cat $config | $DIRECTORY/scripts/ini2arr.py)"
