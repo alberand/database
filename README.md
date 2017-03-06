@@ -13,17 +13,19 @@ files.
 
 ## Installation guide
 
-You should get two files. This installation guide and _tserver-*.deb_
-package.
+You should get two files. _mysql-connector-python-*.deb_ and _tserver-*.deb_
+packages.
 
 1. Install *.deb* package by running following commands.
 
 ```sh
-sudo dpkg -i tserver.deb
+sudo dpkg -i mysql-connector-python-py3_2.1.3-1ubuntu14.04_all.deb
+sudo dpkg -i tserver_1.0-1.deb
 sudo apt-get install -f
 ```
 
-First command will fail and generate required list of dependencies. Second
+First command install necessary package which is not in Ubuntu repository. 
+Second command will fail and generate required list of dependencies. Last
 command will install all needed packages and main package.
 
 While installation if MySQL-server is not installed you will be asked for MySQL
