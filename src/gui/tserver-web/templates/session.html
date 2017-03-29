@@ -42,11 +42,10 @@
           <!-- Start Delete button -->
           <span class="menu-item-cont-icon" >
             <a class="menu-icon-link" 
-               style="padding: 7px 5px;"
-               href="{% url 'Session'  ses_info.ses_id %}delete"
-               title="Delete current session" 
-               target="_blank">
-              <span class="glyphicon glyphicon-map-marker icon-cont"
+               href="javascript:void(0)"
+               onclick="javascript:deleteSession({% url 'Session'  item.ses_id %})"
+               title="Delete this session.">
+              <span class="glyphicon glyphicon-remove icon-cont"
                     aria-hidden="true"></span>
             </a>
           </span>

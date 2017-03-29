@@ -50,11 +50,18 @@
           </span>
           <!-- End Map button -->
           <!-- Start Delete button -->
+          <script type="text/javascript">
+          function deleteSession(ses_id){
+          if (confirm('Are you sure you want to delete this session?')) {
+            window.location.href = ses_id + "delete";
+          }
+          }
+          </script>
           <span class="menu-item-cont-icon" >
             <a class="menu-icon-link" 
-               href="{% url 'Session'  item.ses_id %}delete"
-               title="Delete this session." 
-               target="_blank">
+               href="javascript:void(0)"
+               onclick="javascript:deleteSession({% url 'Session'  item.ses_id %})"
+               title="Delete this session.">
               <span class="glyphicon glyphicon-remove icon-cont"
                     aria-hidden="true"></span>
             </a>
