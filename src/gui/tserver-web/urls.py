@@ -12,4 +12,6 @@ urlpatterns = [
             name='Map'),
         url(r'^(?P<ses_id>[a-zA-Z0-9]+)/download$', views.download_file, 
             name='ses_down'),
+        url(r'^(?P<ses_id>[a-zA-Z0-9]+)/delete$', views.deleteSession, 
+            name='ses_delete'),
 ]

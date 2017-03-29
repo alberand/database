@@ -3,7 +3,7 @@ import json
 
 from django.views import generic
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.encoding import smart_str
 from django.core.files import File
 from django.db.models import Max, Min
@@ -249,7 +249,7 @@ def download_file(request, ses_id):
     Function which called when you want to download session file.
     Args:
         request:
-        ses_id: integer, session id.
+        ses_id: string, session id.
     Returns:
         HttpResponse response objects for browser.
     '''
@@ -264,3 +264,14 @@ def download_file(request, ses_id):
             smart_str('{}.txt'.format(ses_id)))
 
     return response
+
+def deleteSession(request, ses_id):
+    '''
+    Delete session and all packages from the database.
+    Args:
+        ses_id_to_del: strin, session id.
+    '''
+    print(ses_id)
+    Sessions.objects.get(ses_id=ses_id).delete()
+
+    return HttpResponseRedirect("/")
