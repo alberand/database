@@ -35,13 +35,12 @@
   position: relative;
   width: 100%;
   float: left;
-  margin-right: -58px;
+  margin-right: -82px;
 }
 
 .nav-sidebar-list .menu-item a {
   padding: 7px 5px;
   float: left;
-  width: 100%;
 }
 
 .nav-sidebar-list .menu-item-cont-icon {

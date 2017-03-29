@@ -7,8 +7,18 @@ from django.template.defaulttags import register
 def get_package_fields(package, field):
     return package.get(field)
 
+class Sessions(models.Model):
+    ses_id = models.CharField(primary_key=True, max_length=11)
+
+    class Meta:
+        managed = False
+        db_table = 'sessions'
+
+    def getDate(self):
+        return Packages.objects.filter(ses_id=self.ses_id).earliest('date').date
+
 class Messages(models.Model):
-    ses = models.ForeignKey('Sessions', models.DO_NOTHING)
+    ses = models.ForeignKey(Sessions, on_delete=models.CASCADE)
     ses_time = models.TimeField(blank=True, null=True)
     msg = models.CharField(max_length=255)
 
@@ -18,7 +28,7 @@ class Messages(models.Model):
 
 
 class Packages(models.Model):
-    ses = models.ForeignKey('Sessions', models.DO_NOTHING)
+    ses = models.ForeignKey(Sessions, on_delete=models.CASCADE)
     date = models.DateField(blank=True, null=True)
     time = models.TimeField(blank=True, null=True)
     t_ms = models.IntegerField(blank=True, null=True)
@@ -43,9 +53,3 @@ class Packages(models.Model):
         db_table = 'packages'
 
 
-class Sessions(models.Model):
-    ses_id = models.CharField(primary_key=True, max_length=11)
-
-    class Meta:
-        managed = False
-        db_table = 'sessions'

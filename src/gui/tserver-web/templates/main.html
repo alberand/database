@@ -22,7 +22,8 @@
         <li>
           <!-- Start link to session -->
           <span class="menu-item" >
-            <a href="{% url 'Session'  item.ses_id %}">{{ item.ses_id }}</a>
+            <a href="{% url 'Session'  item.ses_id %}">{{ item.ses_id }} - 
+                {{ item.getDate }}</a>
           </span>
           <!-- End link to session -->
 
@@ -48,6 +49,17 @@
             </a>
           </span>
           <!-- End Map button -->
+          <!-- Start Delete button -->
+          <span class="menu-item-cont-icon" >
+            <a class="menu-icon-link" 
+               href="{% url 'Session'  item.ses_id %}delete"
+               title="Delete this session." 
+               target="_blank">
+              <span class="glyphicon glyphicon-remove icon-cont"
+                    aria-hidden="true"></span>
+            </a>
+          </span>
+          <!-- End Delete button -->
 		</li>
 		{% endfor %}
 	  </ul>

@@ -17,6 +17,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-        url(r'^', include('loggers_ui.urls')),
+        url(r'^', include('tserver-web.urls')),
         # url(r'^admin/', admin.site.urls),
 ]
