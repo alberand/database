@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'loggers_ui',
+    'tserver-web',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'gui.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'loggers_ui/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,6 +82,7 @@ DATABASES = {
         'USER': 'cast',
         'PASSWORD': 'castpass',
         'HOST': 'localhost',
+        'sql_mode': 'STRICT_ALL_TABLES',
     }
 }
 
@@ -129,6 +130,3 @@ REST_FRAMEWORK = {
         'UNAUTHENTICATED_USER': None,
 }
 
-TEMPLATE_DIRS = (
-        os.path.join(BASE_DIR, 'loggers_ui/templates'),
-)
