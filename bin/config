@@ -27,3 +27,15 @@ corrupted_storage: ./data/server_01/corrupted.txt
 host: 127.0.0.1
 # Address of the machine with MySQL-server
 mysql_host: localhost
+
+#==============================================================================
+# Utils configuration
+#==============================================================================
+
+# Commiting to database is slow. Receive package is immediately inserted it into
+# a database. But doesn't commit. After receiving `to_commit_pkg_count` number 
+# of packages server commits package into a datbase.
+# But it is not only case when packages are commited into a database. Commiting
+# rate is also depends on frequency of the packages. If there is only 
+# 1 package per second, every package will be commited.
+to_commit_pkg_count: 10
