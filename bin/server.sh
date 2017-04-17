@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # TODO:
-# - When check if there Mysql user or not there can be user with the same name
+# * When check if there Mysql user or not there can be user with the same name
 # but different password. Should check it in future
-# - Backup data direcotry
 
 #==============================================================================
 # Script for running socket server with specified configuration file.
@@ -21,7 +20,7 @@ touch $SERVERS_LIST
 function help(){
     echo -e "This script is used to manipulate Telemetry data servers. It
 allows spawn, terminate TCP-servers, backup and clear data after them."
-    echo -e "\t-h show this help text"
+    echo -e "\t-h show this help message"
     echo -e "\t-s config: Spawn server with specified configuration."
     echo -e "\t-b config: Backup server's data storage and database."
     echo -e "\t-c config: Clear server's data storage and database."
@@ -315,6 +314,13 @@ function is_process_running(){
 #==============================================================================
 # Main
 #==============================================================================
+
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters"
+    echo ""
+    help
+    exit 1
+fi
 
 while [[ $# -gt 0 ]]; do
     # Get command
