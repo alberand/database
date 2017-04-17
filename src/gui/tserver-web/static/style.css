@@ -34,13 +34,25 @@
   display: block;
   position: relative;
   width: 100%;
-  float: left;
+  /* float: left;*/
   margin-right: -82px;
 }
 
 .nav-sidebar-list .menu-item a {
   padding: 7px 5px;
   float: left;
+}
+
+/*============================================================================*/
+/* Icons */
+/*============================================================================*/
+.session-control-buttons {
+  float: right;
+  right: 0px;
+  width 82px;
+}
+.grey {
+  color: #8d8d8d;
 }
 
 .nav-sidebar-list .menu-item-cont-icon {
@@ -55,6 +67,7 @@
 
 .nav-sidebar-list .menu-icon-link .icon-cont {
   text-align: center;
+  font-size: 12px;
   display: block;
 }
 

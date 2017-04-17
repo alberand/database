@@ -28,12 +28,13 @@
           <!-- End link to session -->
 
           <!-- Start download button -->
+          <div class="session-control-buttons">
           <span class="menu-item-cont-icon" >
             <a class="menu-icon-link" 
                href="{% url 'Session'  item.ses_id %}download"
                title="Download session"
                target="_blank">
-              <span class="glyphicon glyphicon-download-alt icon-cont"
+              <span class="glyphicon glyphicon-download-alt icon-cont grey"
                     aria-hidden="true"></span>
             </a>
           </span>
@@ -44,7 +45,7 @@
                href="{% url 'Session'  item.ses_id %}Map"
                title="View map in another tab." 
                target="_blank">
-              <span class="glyphicon glyphicon-map-marker icon-cont"
+              <span class="glyphicon glyphicon-map-marker icon-cont grey"
                     aria-hidden="true"></span>
             </a>
           </span>
@@ -62,11 +63,12 @@
                href="javascript:void(0)"
                onclick="javascript:deleteSession({% url 'Session'  item.ses_id %})"
                title="Delete this session.">
-              <span class="glyphicon glyphicon-remove icon-cont"
+              <span class="glyphicon glyphicon-remove icon-cont grey"
                     aria-hidden="true"></span>
             </a>
           </span>
           <!-- End Delete button -->
+          </div>
 		</li>
 		{% endfor %}
 	  </ul>
