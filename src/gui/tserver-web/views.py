@@ -253,15 +253,19 @@ def download_file(request, ses_id):
     Returns:
         HttpResponse response objects for browser.
     '''
-    path_to_file = os.path.realpath("./loggers_ui/data/server_01/{}.txt".format(ses_id))
-    _file = open(path_to_file, 'r')
+    path_to_file = os.path.realpath("./tserver-web/data/server_01/{}.txt".format(ses_id))
 
-    file_to_down = File(_file)
-    response = HttpResponse(
-            file_to_down, 
-            content_type='text/plain') 
-    response['Content-Disposition'] = 'inline; filename={}'.format(
-            smart_str('{}.txt'.format(ses_id)))
+    try:
+        with open(path_to_file, 'r') as _file:
+            file_to_down = File(_file)
+            response = HttpResponse(
+                    file_to_down, 
+                    content_type='text/plain') 
+            response['Content-Disposition'] = 'inline; filename={}'.format(
+                    smart_str('{}.txt'.format(ses_id)))
+    except EnvironmentError:
+        print(path_to_file)
+        response = HttpResponse('<html><body>Sorry can\'t find file.</body></html>') 
 
     return response
 
