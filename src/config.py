@@ -46,7 +46,7 @@ config['pkg_delimeter'] = ';'
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
 # non defined fields.
-current_pkg_version = '1c'
+current_pkg_version = '1a'
 pkg_versions = {
         '1a':[
             # 'ses_time',
