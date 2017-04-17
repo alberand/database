@@ -9,6 +9,8 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
+# TODO: Parsing for binary packages? (1byte 2bytes)
+
 config_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Get configuration file name which send as first argumen to the program
@@ -18,22 +20,28 @@ if len(sys.argv) < 2:
 else:
     config_name = sys.argv[1]
 
-# config = json.load(open(os.path.join(config_dir, config_name), 'r'))
+# Parse configurations
 parser = configparser.ConfigParser()
 parser.read(os.path.join(config_dir, config_name))
 items = parser['CONFIG'].items()
 
 config = dict(items)
-config['port'] = int(config['port'])
 
-config['pkg_delimeter'] = ';'
-config['pkg_end'] = '#'
-config['pkg_start'] = '@'
-config['txt_end'] = '\r'
-config['txt_start'] = 'T'
-config['ini_end'] = "#"
-config['ini_start'] = "P"
+# Addition configurations
+#==============================================================================
+config['port'] = int(config['port'])
 config['data_storage'] = './data/{}'.format(config['server_name'])
+
+# Packages are assumed in following format. There should be package start
+# symbol, data delimeter symbol and package end symbol.
+# +-----------------------------+
+# | @ | data_1 |;| data_2 |;| # |
+# +-----------------------------+
+#
+
+config['pkg_start'] = '@'
+config['pkg_end'] = '#'
+config['pkg_delimeter'] = ';'
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as

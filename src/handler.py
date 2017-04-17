@@ -69,7 +69,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
             symbol = str(byte, self.coding)
             string = string + symbol
 
-        logging.info('Received string: {}'.format(string))
+        logging.debug('Received string: {}'.format(string))
 
         return string
 
