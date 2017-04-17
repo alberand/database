@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import os
-from hashids import Hashids
 import random
 
+from hashids import Hashids
 
 def get_session_id(key=None):
     '''
@@ -15,7 +15,6 @@ def get_session_id(key=None):
         Random 5 places ingeger.
     '''
     hashids = Hashids(min_length=8, salt=str(random.randint(0, 1000)))
-    # binascii.hexlify(os.urandom(4))
 
     return hashids.encode(key)
 
