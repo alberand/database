@@ -278,4 +278,10 @@ def deleteSession(request, ses_id):
     print(ses_id)
     Sessions.objects.get(ses_id=ses_id).delete()
 
+    path_to_file = os.path.realpath("./tserver-web/data/server_01/{}.txt".format(ses_id))
+    try:
+        os.remove(path_to_file)
+    except OSError:
+        pass
+
     return HttpResponseRedirect("/")
