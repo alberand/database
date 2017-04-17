@@ -1,0 +1,77 @@
+{
+  "protocol_version": "1.1",
+  "protocol_name": "telemetry-protocol",
+  "package_types":[
+      "I", 
+      "D", 
+      "T"
+  ],
+  "package": {
+    "device_id": {
+      "range": [0, 999],
+      "handler": "int"
+    },
+    "package_type": {
+      "range": ["I", "D", "T"],
+      "handler": "char"
+    },
+    "date": {
+      "format": "%d.%m.%y",
+      "handler": "datetime"
+    },
+    "time": {
+      "format": "%H:%M:%S.%f",
+      "handler": "datetime"
+    },
+    "lat": {
+      "handler": "latitude"
+    },
+    "lon": {
+      "handler": "longitude"
+    },
+    "speed": {
+      "range": [0.0, 10000.0],
+      "handler": "float"
+    },
+    "course":{
+      "range": [0.0, 360.0],
+      "handler": "float"
+    },
+    "altitude": {
+      "range": [-10000.0, 10000.0],
+      "handler": "float"
+    },
+    "sat_num": {
+      "range": [0, 40],
+      "handler": "int"
+    },
+    "gps_state": {
+      "range": [-10, 10],
+      "handler": "int"
+    },
+    "gsm_sig_stg": {
+      "range": [0.0, 100.0],
+      "handler": "float"
+    },
+    "net_prov": {
+      "format": "^.*$",
+      "handler": "str"
+    },
+    "net_type": {
+      "format": "^.*$",
+      "handler": "str"
+    },
+    "x_acc": {
+      "range": [-100000.0, 100000.0],
+      "handler": "float"
+    },
+    "y_acc": {
+      "range": [-100000.0, 100000.0],
+      "handler": "float"
+    },
+    "z_acc": {
+      "range": [-100000.0, 100000.0],
+      "handler": "float"
+    }
+  }
+}
