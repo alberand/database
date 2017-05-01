@@ -101,8 +101,8 @@ pkg_structure = pkg_versions[current_pkg_version]
 # Messages package structure
 msg_structure = [
         'msg',
-        'ses_time',
-        'ses_id',
+        # 'ses_time',
+        # 'ses_id',
 ]
 
 # This dictionary define data handlers. There is no need to keep right order.
@@ -134,6 +134,7 @@ handlers = {
         'x_acc': float,
         'y_acc': float,
         'z_acc': float,
+        'msg': str
 }
 
 # Some elements in received packages can be divided in more data elements. For

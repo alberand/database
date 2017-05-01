@@ -5,7 +5,7 @@ import pprint
 import logging
 
 from utils import get_session_id
-from config import pkg_structure, handlers, config
+from config import pkg_structure, msg_structure, handlers, config
 
 GUID = 0
 
@@ -71,31 +71,15 @@ def parse(string):
     if package['type'] == 'I':
         package['version'] = data_list.pop(0).split(':')[1]
     elif package['type'] == 'T':
-        package.update(parse_msg(data_list))
+        package.update(parse_data(data_list, msg_structure))
     elif package['type'] == 'D':
-        package.update(parse_data(data_list))
+        package.update(parse_data(data_list, pkg_structure))
     else:
         logging.info('Unknown package type. Just save it to file.')
 
     return package
 
-
-def parse_msg(data_list):
-    '''
-    Parse message package. 
-    '''
-    result = dict()
-
-    result['msg'] = str(';'.join(data_list[1:]))
-    try:
-        result['ses_time'] = handlers['time_ms_out'](data_list[0])
-    except ValueError:
-        logging.error('There is wrong data or handler. Data field will be empty.')
-        result['ses_time'] = 'NULL'
-
-    return result
-
-def parse_data(data_list):
+def parse_data(data_list, struct):
     '''
     This function receive string which represent data package sent by logger.
     Then this string is parsed into separate elements. Those data are added 
@@ -108,7 +92,7 @@ def parse_data(data_list):
     # Parse and convert data
     result = dict()
 
-    for i, name in enumerate(pkg_structure):
+    for i, name in enumerate(struct):
         try:
             if data_list[i] != 'x':
                 result[name] = handlers[name](data_list[i])
@@ -134,8 +118,8 @@ def parse_data(data_list):
 
 if __name__ == '__main__':
     test_list = [
-        # '@010;T;00:00:00;Var. init.;SW:PaPa,0.2;HW:s12,SIM5320e,bastl#',
-        # '@010;T;00:00:00;Reset#',
+        '@10;T;Var. init.;SW:PaPa,0.2;HW:s12,SIM5320e,bastl#',
+        '@10;T;Reset#',
         # '@010;T;00:00:05;Init wait done.#',
         # '@010;T;00:00:05;Modem init done.#',
         # '@010;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;319;99479#',
@@ -145,7 +129,7 @@ if __name__ == '__main__':
         # '@010;D;13.08.16;10:24:49.0;5004.340927N;01432.673110E;6.2;323.4;298.61;8;1;319;99479#',
         # '@010;D;13.08.16;10:24:53.0;5004.349060N;01432.666529E;9.1;336.7;299.41;8;1;-1;-1#',
         #'@010;D;13.08.16;10:24:53.0;5004.349060N;01432.666529E;9.1;336.7;299.41;8;1;3.4;;3G;1.0;2.0;3.0#',
-        '@20;D;29.12.2016;09:09:26.5;4948.93380N;1531.25368E;0.0;345.4;356.4;;;32;O2- CZ;4G;15;-16;-996#',
+        '@20;D;29.12.16;09:09:26.5;4948.93380N;1531.25368E;0.0;345.4;356.4;;;32;O2- CZ;4G;15;-16;-996#',
         # '@010;T;00:00:15;GSM Process error.#',
         # '@asdfasdfasdfasdfadsf#'
     ]
