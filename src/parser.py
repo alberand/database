@@ -7,12 +7,6 @@ import logging
 from utils import get_session_id
 from config import pkg_structure, msg_structure, handlers, config
 
-GUID = 0
-
-def generate_GUID():
-    global GUID
-    GUID = get_session_id()
-
 def is_valid_package(string):
     '''
     Check if it is valid package. Control if it's have starting and ending
