@@ -23,7 +23,6 @@ def is_valid_package(string):
         True is it is false otherwise.
     '''
     if string[0] != config['pkg_start'] or string[-1] != config['pkg_end']:
-        logging.error('Sorry, string is not complete. String: {}'.format(string))
         return False
     return True
 
@@ -40,7 +39,7 @@ def parse(string):
         type), original (original string)
     """
     if not string:
-        return string
+        return None
 
     # Add original string to dict. Later it will be used to it to file.
     package = {
@@ -51,6 +50,7 @@ def parse(string):
 
     # Check if receive complete string
     if not is_valid_package(string):
+        logging.error('Sorry, string is not complete. String: {}'.format(string))
         return package
     
     # Get rid of package characters and split data into list
@@ -90,9 +90,8 @@ def parse_msg(data_list):
     try:
         result['ses_time'] = handlers['time_ms_out'](data_list[0])
     except ValueError:
-        logging.error('There is wrong data or handler. The sample skipped.')
-        with open(config['corrupted_storage'], 'a+') as corrupted_storage:
-            corrupted_storage.write(string + '\n')
+        logging.error('There is wrong data or handler. Data field will be empty.')
+        result['ses_time'] = 'NULL'
 
     return result
 
