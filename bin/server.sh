@@ -315,7 +315,7 @@ function is_process_running(){
 # Main
 #==============================================================================
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -lt 1 ]; then
     echo "Illegal number of parameters"
     echo ""
     help
@@ -329,7 +329,7 @@ while [[ $# -gt 0 ]]; do
     #==========================================================================
     case $arg in
         -s|--spawn)
-            if [ "$#" -ne 2 ]; then
+            if [ "$#" -lt 2 ]; then
                 echo "Illegal number of parameters. Use -h flag."
                 exit 1
             fi
@@ -342,7 +342,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -c|--clear)
-            if [ "$#" -ne 2 ]; then
+            if [ "$#" -lt 2 ]; then
                 echo "Illegal number of parameters. Use -h flag."
                 exit 1
             fi
@@ -359,7 +359,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -b|--backup)
-            if [ "$#" -ne 2 ]; then
+            if [ "$#" -lt 2 ]; then
                 echo "Illegal number of parameters. Use -h flag."
                 exit 1
             fi
@@ -380,7 +380,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -t|--test)
-            if [ "$#" -ne 2 ]; then
+            if [ "$#" -lt 2 ]; then
                 echo "Illegal number of parameters. Use -h flag."
                 exit 1
             fi
