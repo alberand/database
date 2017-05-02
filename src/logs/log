@@ -1,0 +1,84 @@
+2017-05-02 15:39:38,983 - root - INFO - Creating server. 127.0.0.1:5000
+2017-05-02 15:39:38,983 - root - INFO - Server loop running in thread: Thread-1
+2017-05-02 15:39:38,983 - root - INFO - IP: 127.0.0.1, Port: 5000
+2017-05-02 15:39:38,983 - root - INFO - Run server daemon.
+2017-05-02 15:39:38,983 - root - INFO - Connecting to database...
+2017-05-02 15:39:38,987 - root - INFO - Waiting for clients...
+2017-05-02 15:39:49,938 - root - INFO - Client with address ('127.0.0.1', 40250) connected.
+2017-05-02 15:39:49,938 - root - DEBUG - Received string: @043;I;Ver:1a#
+2017-05-02 15:39:49,939 - root - INFO - Creating new session. New session id is rBnBwZ76.
+2017-05-02 15:39:49,939 - root - DEBUG - Received string: @043;T;00:00:00;Reset#
+2017-05-02 15:39:49,940 - root - DEBUG - Received string: @043;T;00:00:05;Init wait done.#
+2017-05-02 15:39:49,940 - root - DEBUG - Received string: @043;T;00:00:05;Modem init done.#
+2017-05-02 15:39:49,940 - root - INFO - Update session for the current device.If doesn't exists create.
+2017-05-02 15:39:49,941 - root - DEBUG - Received string: @043;D;03.09.16;18:20:30.9;0.0N;10.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,948 - root - DEBUG - Received string: @043;D;03.09.16;18:20:31.9;0.0N;110.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,948 - root - DEBUG - Received string: @043;D;03.09.16;18:20:32.9;0.0N;120.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,949 - root - DEBUG - Received string: @043;D;03.09.16;18:20:33.9;0.0N;130.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,949 - root - DEBUG - Received string: @043;D;03.09.16;18:20:34.9;0.0N;140.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,949 - root - DEBUG - Received string: @043;D;03.09.16;18:20:35.9;0.0N;150.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,950 - root - INFO - 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`server_02`.`messages`, CONSTRAINT `msg_session` FOREIGN KEY (`ses_id`) REFERENCES `sessions` (`ses_id`))
+2017-05-02 15:39:49,950 - root - DEBUG - Received string: @043;D;03.09.16;18:20:36.9;0.0N;160.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,950 - root - INFO - Query: INSERT INTO messages (msg) VALUES (%s).
+2017-05-02 15:39:49,952 - root - DEBUG - Received string: @043;D;03.09.16;18:20:37.9;0.0N;170.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,952 - root - DEBUG - Received string: @043;D;03.09.16;18:20:38.9;0.0N;180.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,953 - root - DEBUG - Received string: @043;D;03.09.16;18:20:39.9;0.0N;190.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,954 - root - DEBUG - Received string: @043;D;03.09.16;18:20:40.9;0.0N;200.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,955 - root - DEBUG - Received string: @043;D;03.09.16;18:20:41.9;0.0N;210.0E;6.2;323.4;298.61;8;1;22.0;Teletwo;2G;;;#
+2017-05-02 15:39:49,956 - root - DEBUG - Received string: @044;I;Ver:1a#
+2017-05-02 15:39:49,956 - root - DEBUG - Received string: @044;T;00:00:00;Reset#
+2017-05-02 15:39:49,957 - root - INFO - Fail to load package to database.
+2017-05-02 15:39:49,958 - root - DEBUG - Received string: @044;T;00:00:05;Init wait done.#
+2017-05-02 15:39:49,960 - root - DEBUG - Received string: @044;T;00:00:05;Modem init done.#
+2017-05-02 15:39:49,961 - root - DEBUG - Received string: @044;D;03.09.16;18:20:30.9;0.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,963 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,963 - root - DEBUG - Received string: @044;D;03.09.16;18:20:31.9;10.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,964 - root - DEBUG - Received string: @044;D;03.09.16;18:20:32.9;20.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,965 - root - DEBUG - Received string: @044;D;03.09.16;18:20:33.9;30.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,965 - root - DEBUG - Received string: @044;D;03.09.16;18:20:34.9;40.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,965 - root - DEBUG - Received string: @044;D;03.09.16;18:20:35.9;50.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,966 - root - DEBUG - Received string: @044;D;03.09.16;18:20:36.9;60.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,966 - root - DEBUG - Received string: @044;D;03.09.16;18:20:37.9;70.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,966 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,968 - root - DEBUG - Received string: @044;D;03.09.16;18:20:38.9;80.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,969 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,970 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,970 - root - DEBUG - Received string: @044;D;03.09.16;18:20:39.9;90.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,971 - root - DEBUG - Received string: @044;D;03.09.16;18:20:40.9;100.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,971 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,975 - root - DEBUG - Received string: @044;D;03.09.16;18:20:41.9;110.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,978 - root - DEBUG - Received string: @045;D;03.09.16;18:20:40.9;100.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,979 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,982 - root - DEBUG - Received string: @045;D;03.09.16;18:20:41.9;110.0N;0.0E;6.2;323.4;298.61;8;1;22.1;Vodafone;3G;;;#
+2017-05-02 15:39:49,982 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,983 - root - DEBUG - Received string: 
+2017-05-02 15:39:49,983 - root - INFO - Handler for client ('127.0.0.1', 40250) end working.
+2017-05-02 15:39:49,984 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,985 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,985 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,986 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,987 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,987 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,988 - root - DEBUG - Fail to find session assigned to device id 043 .
+2017-05-02 15:39:49,989 - root - INFO - Creating new session. New session id is OLBlmY1z.
+2017-05-02 15:39:49,990 - root - INFO - Update session for the current device.If doesn't exists create.
+2017-05-02 15:39:50,002 - root - INFO - 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`server_02`.`messages`, CONSTRAINT `msg_session` FOREIGN KEY (`ses_id`) REFERENCES `sessions` (`ses_id`))
+2017-05-02 15:39:50,003 - root - INFO - Query: INSERT INTO messages (msg) VALUES (%s).
+2017-05-02 15:39:50,009 - root - INFO - Fail to load package to database.
+2017-05-02 15:39:50,011 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,011 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,012 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,012 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,013 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,013 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,014 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,014 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,014 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,015 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,015 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,015 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,016 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,016 - root - DEBUG - Fail to find session assigned to device id 044 .
+2017-05-02 15:39:50,017 - root - DEBUG - Fail to find session assigned to device id 045 .
+2017-05-02 15:39:50,017 - root - DEBUG - Fail to find session assigned to device id 045 .
+2017-05-02 15:40:02,336 - root - INFO - Stop.
