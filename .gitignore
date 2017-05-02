@@ -18,5 +18,4 @@ activate
 scripts/synch.sh
 backups
 tserver_1.0-1/opt
-
-tserver/src/logs
+src/logs
