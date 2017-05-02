@@ -4,8 +4,10 @@
 import sys
 import logging.config
 
+from config import config
 from listener import Listener
 
+logging.filename = 'logs/{}_log'.format(config['server_name'])
 logging.config.fileConfig('logging.ini')
 
 if __name__ == '__main__':

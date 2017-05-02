@@ -7,8 +7,6 @@ import logging
 import configparser
 from datetime import datetime
 
-logger = logging.getLogger(__name__)
-
 # TODO: Parsing for binary packages? (1byte 2bytes)
 
 config_dir = os.path.dirname(os.path.abspath(__file__))
