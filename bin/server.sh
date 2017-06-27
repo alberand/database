@@ -30,10 +30,11 @@ allows spawn, terminate TCP-servers, backup and clear data after them."
 # Run function
 #==============================================================================
 function clear_server(){
-    echo -e "If server is running exit. PID: $PID."
     # Get server PID
     PID=$(list_all_open_server | grep "${CONFIG['server_name']}" | \
         cut -d" " -f6)
+
+    echo -e "If server is running exit. PID: $PID."
 
     if [[ -z "${PID// }" ]]; then
         echo "Server is down. Continue."
