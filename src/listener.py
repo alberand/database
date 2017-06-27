@@ -134,6 +134,7 @@ class Listener(threading.Thread):
                 },
                 'ses_id="{}"'.format(session_id)
         )
+        self.database.commit()
 
     def assign_session_id(self, pkg):
         '''
