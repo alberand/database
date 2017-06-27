@@ -16,6 +16,7 @@ TABLES = dict()
 TABLES['sessions'] =  (
     'CREATE TABLE `sessions` ('
     '    `ses_id` VARCHAR(11) NOT NULL,'                    # Session number
+    '    `name`   VARCHAR(255) DEFAULT \'Default Name\','   # Session name
     '    PRIMARY KEY (`ses_id`)'
     ') ENGINE=InnoDB'
 )
