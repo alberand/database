@@ -83,6 +83,11 @@ function run(){
     if [ "$status" -eq "0" ]; then
         error "MySQL user '${CONFIG['mysql_user']}' doesn't exist. Create it."
         python3 $DIRECTORY/scripts/create_user.py $1 $root_mysql_pass
+        status=$?
+        if [ "$status" -ne "0" ]; then
+            error "Can't create user '${CONFIG['mysql_user']}'."
+            exit 1
+        fi
     elif [ "$status" -eq "2" ]; then
         error "Can't create user ${CONFIG['mysql_user']}"
         exit 1
