@@ -54,8 +54,8 @@ def parse(string):
 
     # Setup some specific fields. This fields are common for all packages.
     try:
-        package['device_id'] = data_list.pop(0)
-        package['type'] = data_list.pop(0)
+        package['device_id'] = int(data_list.pop(0))
+        package['type'] = str(data_list.pop(0))
     except:
         # This is case if package really bad and hasn't some basic fields.
         logging.info('Fail to parse primary fields. Package is wrong.')
