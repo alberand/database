@@ -14,4 +14,6 @@ urlpatterns = [
             name='ses_down'),
         url(r'^(?P<ses_id>[a-zA-Z0-9]+)/delete$', views.deleteSession, 
             name='ses_delete'),
+        url(r'^(?P<ses_id>[a-zA-Z0-9]+)/(?P<new_name>[a-zA-Z0-9 ]+)/rename$', 
+            views.renameSession, name='ses_rename'),
 ]

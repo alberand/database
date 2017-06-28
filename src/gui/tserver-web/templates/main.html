@@ -3,29 +3,62 @@
 {% load static %}
 
 {% block content %}
+
+{% block navbar %}
+<!-- Header bar -->
+<nav class="navbar">
+
+  <div class="navbar-header">
+    <a class="navbar-brand" href="">CAST - Database of telemetry logs</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="menu-container">
+    <ul class="menu-list">
+      <li><a href="{% url 'GlobalMap' %}">Global Map</a></li>
+      <li><a href="{% url 'Session' 'corrupted'  %}download">Corrupted Data</a></li>
+      <li><a href="http://measure.feld.cvut.cz/cast">About</a></li>
+      <!--
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Works</a></li>
+      <li><a href="#">News</a></li>
+      <li><a href="#">Contact</a></li>
+      -->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav><!-- /.navbar -->
+
+{% endblock navbar %}
+
 <div class="row row-border">
 
   <!-- Start of the side bar -->
   <div class="col-md-2 nav-sidebar-without-rp">
 
-    <h4>Global data:</h4>
+    <!--<h4>Global data:</h4>
     <nav class="nav-sidebar">
 	  <ul class="nav-sidebar-list">
         <li><a href="{% url 'Session' 'corrupted'  %}download">Corrupted data</a></li>
         <li><a href="{% url 'GlobalMap' %}">Global Map</a></li>
       </ul>
-    </nav>
-    <h4>Sessions:</h4>
+    </nav> -->
+    <h4>Log-Sessions:</h4>
     <nav class="nav-sidebar">
 	  <ul class="nav-sidebar-list">
 	    {% for item in sessions %}
-        <li>
+        <li class="menu-button-container">
           <!-- Start link to session -->
-          <span class="menu-item" >
-            <a href="{% url 'Session'  item.ses_id %}">{{ item.ses_id }} - 
-                {{ item.getDate }}</a>
-          </span>
+          <div>
+            <span class="menu-item" >
+                <a href="{% url 'Session'  item.ses_id %}">{{ item.name }}</a>
+            </span>
+          </div>
           <!-- End link to session -->
+
+          <!-- Start Notes and controls block -->
+          <div class="notes-controls-container">
+              <div><span class="notes">id: {{ item.ses_id }}</span></div>
+              <div><span class="notes">date: {{ item.getDate }}</span>
 
           <!-- Start download button -->
           <div class="session-control-buttons">
@@ -68,6 +101,9 @@
             </a>
           </span>
           <!-- End Delete button -->
+          </div>
+          <div>
+
           </div>
 		</li>
 		{% endfor %}

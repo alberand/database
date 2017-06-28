@@ -5,6 +5,7 @@
     <title>{% block title %}CAST - Loggers database{% endblock title %}</title>
 
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Tether for Bootstrap -->
 
     <!-- Include Bootstrap --!>
@@ -40,28 +41,6 @@
   </head>
   <body>
     <div class="container-fluid">
-
-      <!-- Header bar -->
-      <nav class="navbar">
-
-        <div class="navbar-header">
-          <a class="navbar-brand" href="">CAST - Loggers database</a>
-        </div>
-    
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="menu-container">
-          <ul class="menu-list">
-            <!--
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Works</a></li>
-            <li><a href="#">News</a></li>
-            <li><a href="#">Contact</a></li>
-            -->
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </nav><!-- /.navbar -->
 
       {% block content %}{% endblock content%}
 

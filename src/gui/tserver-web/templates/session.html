@@ -2,7 +2,30 @@
 
 {% block session_content %}
 <!-- Start of the content -->
+
+<!-- Log-session name -->
+<div class="row">
+<div class="col-md-12">
+<h2 style="float:left;">{{ ses_info.ses_name }}</h2>
+<!-- Button trigger modal -->
+      <span class="menu-item-cont-icon" >
+        <a class="menu-icon-link"
+           style="padding: 7px 5px;"
+           role="button"
+           data-toggle="modal"
+           href="#myModal"
+           title="Rename"
+           target="_blank">
+          <span class="glyphicon glyphicon-pencil icon-cont" 
+                id="session-name-edit" aria-hidden="true"></span>
+        </a>
+      </span>
+</div>
+</div>
+
+<div class="row">
 <div class="col-md-4">
+
     <!-- Table with controls -->
     <h4>Controls</h4>
     <table class="table striped">
@@ -113,10 +136,52 @@
 </div>
 <!-- End of map -->
 
+<!-- 
 <div class="col-md-12">
   <h4>Some of the packages:</h4>
-  <!-- { block packages_list %}{ endblock packages_list %} -->
-  {% include 'packages_table.html' %}
+  {\% include 'packages_table.html' %}
 </div>
+-->
+
+<script type="text/javascript">
+  function rename_session_log(){
+		var new_name = document.getElementById("new-name-input").value;
+        location.href = '/' + '{{ ses_info.ses_id }}' + '/' + new_name + '/rename';
+  }
+</script>
+
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Rename Log-session</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label for="example-text-input" class="col-2 col-form-label">
+              New name
+          </label>
+          <div class="col-10">
+            <input class="form-control" type="text" value="{{ ses_info.ses_name }}" id="new-name-input">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a class="btn btn-primary" href='javascript:rename_session_log()'>
+		  <!-- <button type="button" class="btn btn-primary">
+			Save changes
+		  </button> -->
+		  Save changes
+		</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
+
+
 <!-- End of the content -->
 {% endblock session_content %}

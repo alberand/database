@@ -4,8 +4,11 @@
 
 <!-- Map -->
 <div class="col-md-12">
-  <!-- Table with session information -->
-  <h4>Session information:</h4>
+  <!-- Map -->
+  <div id="map" class="map">
+    <div id="popup" class="ol-popup"></div>
+  </div>
+
   <!-- Point information -->
   <h4>Current point:</h4>
   <table style="width: 500px;" class="table striped">
@@ -22,13 +25,8 @@
       <td id="point_address"></td>
     </tr>
   </table>
-  <!--<div>
-    {{ json_map_bounds|safe }}
-  </div> -->
   <!-- End of point information table -->
-  <div id="map" class="map">
-    <div id="popup" class="ol-popup"></div>
-  </div>
+
   <!-- Script for sending map data to javascript code. -->
   <script type="text/javascript">
     init_map(JSON.parse('{{ json_map_center|safe }}'));

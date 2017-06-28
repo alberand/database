@@ -9,6 +9,7 @@ def get_package_fields(package, field):
 
 class Sessions(models.Model):
     ses_id = models.CharField(primary_key=True, max_length=11)
+    name = models.CharField(max_length=255)
 
     class Meta:
         managed = False

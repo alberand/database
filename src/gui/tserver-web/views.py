@@ -86,6 +86,7 @@ class SessionPage(generic.TemplateView):
         latest_t = Packages.objects.all().aggregate(Max('time'))['time__max']
 
         ses_info['ses_id'] = ses_id
+        ses_info['ses_name'] = Sessions.objects.get(ses_id=ses_id).name
         ses_info['date_range'] = ('{} - {}'.format(earliest_d, latest_d) if
                 latest_d != earliest_d else '{}'.format(latest_d))
         ses_info['time_range'] = ('{} - {}'.format(earliest_t, latest_t) if
@@ -156,7 +157,7 @@ class MapPage(generic.TemplateView):
 class GlobalMap(generic.TemplateView):
     '''
     '''
-    template_name = 'maps.html'
+    template_name = 'gmap.html'
 
     def get_packages(self, ses_id):
         '''
@@ -273,7 +274,7 @@ def deleteSession(request, ses_id):
     '''
     Delete session and all packages from the database.
     Args:
-        ses_id_to_del: strin, session id.
+        ses_id: string, session id.
     '''
     print(ses_id)
     Sessions.objects.get(ses_id=ses_id).delete()
@@ -285,3 +286,16 @@ def deleteSession(request, ses_id):
         pass
 
     return HttpResponseRedirect("/")
+
+def renameSession(request, ses_id, new_name):
+    '''
+    Rename log-session.
+    Args:
+        ses_id: string, session id.
+        new_name: string
+    '''
+    obj = Sessions.objects.get(ses_id=ses_id)
+    obj.name = new_name
+    obj.save()
+
+    return HttpResponseRedirect("/{}/".format(ses_id))

@@ -11,6 +11,8 @@
   display: none;
 }
 
+/* Navigation sidebar */
+
 .nav-sidebar { 
   width: 100%;
 }
@@ -31,16 +33,39 @@
 }
 
 .nav-sidebar-list .menu-item {
-  display: block;
+  /* display: block;
   position: relative;
   width: 100%;
-  /* float: left;*/
-  margin-right: -82px;
+  float: left;
+  margin-right: -82px; */
 }
 
 .nav-sidebar-list .menu-item a {
-  padding: 7px 5px;
-  float: left;
+  /*padding: 7px 5px;
+  float: left;*/
+}
+
+.menu-button-container {
+  background: white;
+  padding: 5px;
+}
+
+.menu-button-container:hover {
+  background: #f4f4f4;
+}
+
+.menu-button-container {
+  background: white;
+}
+
+.notes-controls-container {
+	margin-top: 3px;
+  line-height: 14px;
+}
+
+.notes {
+  color: #747474;
+  font-size: 12px;
 }
 
 /*============================================================================*/
@@ -48,8 +73,8 @@
 /*============================================================================*/
 .session-control-buttons {
   float: right;
-  right: 0px;
   width 82px;
+  margin-top: -9px;
 }
 .grey {
   color: #8d8d8d;
@@ -58,6 +83,11 @@
 .nav-sidebar-list .menu-item-cont-icon {
   padding: 0;
   float: left;
+}
+
+#session-name-edit {
+  margin-top: 25px;
+  margin-left: 10px;
 }
 
 .nav-sidebar-list .menu-icon-link {
