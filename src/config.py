@@ -98,9 +98,9 @@ pkg_structure = pkg_versions[current_pkg_version]
 
 # Messages package structure
 msg_structure = [
+        'ses_id',
+        'ses_time',
         'msg',
-        # 'ses_time',
-        # 'ses_id',
 ]
 
 # This dictionary define data handlers. There is no need to keep right order.
