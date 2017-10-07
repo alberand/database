@@ -42,8 +42,8 @@ class RequestHandler(socketserver.BaseRequestHandler):
             logging.info('Handler for client {} end working.'.format(
                 self.client_address))
 
-        except socket.error:
-            logging.info('Connection dropped.')
+        except socket.error as e:
+            logging.info('Connection dropped. Error: {}'.format(e))
 
     def read_package(self):
         '''
