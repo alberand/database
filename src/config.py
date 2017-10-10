@@ -98,7 +98,7 @@ pkg_structure = pkg_versions[current_pkg_version]
 
 # Messages package structure
 msg_structure = [
-        'ses_id',
+        # 'module_id',
         'ses_time',
         'msg',
 ]

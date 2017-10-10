@@ -72,7 +72,7 @@ class Database:
             return True
         except mysql.connector.Error as e:
             logging.info(e)
-            logging.info('Query: {}.'.format(query))
+            logging.info('Query: {}. Data: {}.'.format(query, data_set))
             self.cnx.rollback()
             return False
 
