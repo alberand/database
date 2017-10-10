@@ -117,15 +117,14 @@ class Listener(threading.Thread):
     def create_new_session(self, pkg):
         # Generate new session id
         session_id = get_session_id(int(pkg['device_id']))
-        logging.info('Creating new session. New session id is {}.'.format(
+        logging.info('Creating new session. New session id is "{}".'.format(
             session_id))
         # Create session
         self.database.insert(['ses_id'], 
                 [(session_id,), ], 'sessions')
         # Update session for the current device. If doesn't
         # exists create.
-        logging.info('Update session for the current device.' + \
-                'If doesn\'t exists create.')
+        logging.info('Update/Create session for the current device.')
         self.database.update('connections', 
                 ['ses_id', 'device_id'],
                 {
@@ -175,8 +174,9 @@ class Listener(threading.Thread):
                     [data_for_db(pkg, expand_pkg_struct())], 'packages'):
                 logging.info('Fail to load package to database.')
         elif pkg['type'] == 'T':
-            if not self.database.insert(msg_structure, 
-                    [[pkg[item] for item in msg_structure],], 'messages'):
+            msg_s = msg_structure + ['ses_id']
+            if not self.database.insert(msg_s, 
+                    [[pkg[item] for item in msg_s],], 'messages'):
                 logging.info('Fail to load package to database.')
         elif pkg['type'] == 'I':
             pass
