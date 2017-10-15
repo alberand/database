@@ -4,8 +4,8 @@
 import pprint
 import logging
 
-from utils import get_session_id
-from config import pkg_structure, msg_structure, handlers, config
+from .utils import get_session_id
+from .config import pkg_structure, msg_structure, handlers, config
 
 def is_valid_package(string):
     '''

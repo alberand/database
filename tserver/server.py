@@ -16,8 +16,13 @@ class Server(socketserver.ThreadingMixIn, socketserver.TCPServer):
     # Much faster rebinding
     allow_reuse_address = True
 
-    def __init__(self, a, b):
-        socketserver.TCPServer.__init__(self, a, b)
+    def __init__(self, ip, port):
+        socketserver.TCPServer.__init__(self, ip, port)
         socketserver.ThreadingMixIn.__init__(self)
         self.socket.setblocking(0)
 
+    def acquire(self):
+        self.serve_forever()
+
+    def stop(self):
+        self.shutdown()

@@ -11,16 +11,16 @@ import threading
 from queue import Queue
 import mysql.connector
 
-from server import Server
-from handler import RequestHandler
-from config import config, msg_structure
-from utils import get_session_id
-from database import Database
-from dataprocessor import data_for_db, expand_pkg_struct
+from .server import Server
+from .handler import RequestHandler
+from .config import config, msg_structure
+from .utils import get_session_id
+from .database import Database
+from .dataprocessor import data_for_db, expand_pkg_struct
 
 logger = logging.getLogger(__name__)
 
-class Listener(threading.Thread):
+class Processor(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -28,6 +28,8 @@ class Listener(threading.Thread):
         self.queue = Queue()
         self.running = True
         self.database = Database()
+
+        print(config)
 
     def start(self):
         '''

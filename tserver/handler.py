@@ -7,8 +7,8 @@ import socket
 import threading
 import socketserver
 
-from parser import parse
-from config import config
+from .parser import parse
+from .config import config
 
 # log_filename = 'handlers_log.log'
 # logging.basicConfig(filename=log_filename, level=logging.DEBUG)

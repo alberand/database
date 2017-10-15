@@ -3,7 +3,7 @@
 
 import copy
 
-from config import config, pkg_structure, db_fields
+from .config import config, pkg_structure, db_fields
 
 def expand_pkg_struct():
     '''
