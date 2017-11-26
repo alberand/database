@@ -29,8 +29,8 @@ class Processor(threading.Thread):
         self.queue = Queue()
         self.running = True
         self.database = Database()
-
-        print(config)
+        self.buff = ''
+        self.buff_size = 1000
 
     def start(self):
         '''
@@ -45,7 +45,17 @@ class Processor(threading.Thread):
             counter = 0
             while self.running:
                 # Package received
-                pkg = self.queue.get(True)
+                self.buff += self.queue.get(True)
+
+                # strs = pkg_from_str(self.buff)
+
+                # logging.info(self.buff)
+                idx_s, idx_f = find_pkg(self.buff)
+                if idx_s == None or idx_f == None:
+                    continue
+
+                pkg = parse(self.buff[idx_s: idx_f + 1])
+                self.buff = self.buff[idx_f + 1:]
 
                 self.process_pkg(pkg)
 

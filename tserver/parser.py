@@ -21,6 +21,20 @@ def is_valid_package(string):
         return False
     return True
 
+def pkg_from_str(string):
+    return re.findall('{0}([^{0}^{1}]*){1}'.format(config['pkg_start'], config['pkg_end']), string)
+
+def find_pkg(string):
+    st_idx, end_idx = (None, None)
+    for i, ch in enumerate(string):
+        if ch == config['pkg_start'] and st_idx == None:
+            st_idx = i
+
+        if ch == config['pkg_end'] and st_idx != None and end_idx == None:
+            end_idx = i
+
+    return (st_idx, end_idx)
+
 def parse(string):
     """
     This function receive raw string (package) in next format: 
