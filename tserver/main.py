@@ -8,6 +8,8 @@ import logging.config
 from config import config
 from processor import Processor
 
+logging.filename = os.path.abspath('../logs/{}_log'.format(config['server_name']))
+logging.config.fileConfig(os.path.abspath('logging.ini'))
 
 def start():
     if '-h' in sys.argv or '--help' in sys.argv:
@@ -15,13 +17,8 @@ def start():
               'file. For example: python main.py config.ini')
 
     if len(sys.argv) < 2:
-        print('Please specify config name.')
+        logging.error('Please specify config name.')
         sys.exit(1)
-    else:
-        config.init(sys.argv[1])
-
-    logging.filename = 'logs/{}_log'.format(config.config['server_name'])
-    logging.config.fileConfig(os.path.abspath('tserver/logging.ini'))
 
     listener = Processor()
     try:

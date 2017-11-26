@@ -14,58 +14,56 @@ from server import Server
 # config_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Get configuration file name which send as first argumen to the program
-# if len(sys.argv) < 2:
-    # logging.error('Please specify config name.')
-    # sys.exit(1)
-# else:
-    # config_name = sys.argv[1]
-config = dict()
+if len(sys.argv) < 2:
+    logging.error('Please specify config name.')
+    sys.exit(1)
+else:
+    config_name = sys.argv[1]
 
-def init(config_name):
-    global config
-    # Parse configurations
-    parser = configparser.ConfigParser()
-    # parser.read(os.path.join(config_dir, config_name))
-    print(os.path.abspath(config_name))
-    parser.read(os.path.abspath(config_name))
-    items = parser['CONFIG'].items()
+# Parse configurations
+parser = configparser.ConfigParser()
+# parser.read(os.path.join(config_dir, config_name))
+print(os.path.abspath(config_name))
+parser.read(os.path.abspath(config_name))
+items = parser['CONFIG'].items()
 
-    config = dict(items)
-    #==============================================================================
-    # Source 
-    #==============================================================================
-    sources = {
-        'TCP':{
-            'class': Server,
-            'ip': '127.0.0.1',
-            'port': '5000'
-        },
-        'serial':{
-            'class': print,
-            'port': '/dev/ttyUSB0'
-        },
-        'bluetooth':{
-            'class': print,
-            'name': 'Sensor_01'
-        },
-    }
-    config['source'] = sources['TCP']
-    
-    # Addition configurations
-    #==============================================================================
-    config['port'] = int(config['port'])
-    config['data_storage'] = './data/{}'.format(config['server_name'])
-    
-    # Packages are assumed in following format. There should be package start
-    # symbol, data delimeter symbol and package end symbol.
-    # +-----------------------------+
-    # | @ | data_1 |;| data_2 |;| # |
-    # +-----------------------------+
-    #
-    
-    config['pkg_start'] = '@'
-    config['pkg_end'] = '#'
-    config['pkg_delimeter'] = ';'
+config = dict(items)
+#==============================================================================
+# Source 
+#==============================================================================
+# 
+sources = {
+    'TCP':{
+        'class': Server,
+        'ip': '127.0.0.1',
+        'port': '5000'
+    },
+    'serial':{
+        'class': print,
+        'port': '/dev/ttyUSB0'
+    },
+    'bluetooth':{
+        'class': print,
+        'name': 'Sensor_01'
+    },
+}
+config['source'] = sources['TCP']
+
+# Addition configurations
+#==============================================================================
+config['port'] = int(config['port'])
+config['data_storage'] = './data/{}'.format(config['server_name'])
+
+# Packages are assumed in following format. There should be package start
+# symbol, data delimeter symbol and package end symbol.
+# +-----------------------------+
+# | @ | data_1 |;| data_2 |;| # |
+# +-----------------------------+
+#
+
+config['pkg_start'] = '@'
+config['pkg_end'] = '#'
+config['pkg_delimeter'] = ';'
 
 # This list define package structure. Thus, in which order data are arranged.
 # Empty fields doesn't appear in data structure. They are just skipped, also as
