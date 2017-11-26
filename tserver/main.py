@@ -5,8 +5,8 @@ import os
 import sys
 import logging.config
 
-from . import config
-from .processor import Processor
+from config import config
+from processor import Processor
 
 
 def start():

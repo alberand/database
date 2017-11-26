@@ -5,8 +5,8 @@ import logging
 
 import mysql.connector
 
-from .config import config, pkg_structure, db_fields
-from .sql.queries import QUERIES
+from config import config, pkg_structure, db_fields
+from sql.queries import QUERIES
 
 logger = logging.getLogger(__name__)
 

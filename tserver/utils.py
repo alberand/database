@@ -4,7 +4,7 @@
 import os
 import random
 
-from .hashids import Hashids
+from hashids import Hashids
 
 def get_session_id(key=None):
     '''

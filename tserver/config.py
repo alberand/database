@@ -7,7 +7,7 @@ import logging
 import configparser
 from datetime import datetime
 
-from .server import Server
+from server import Server
 
 # TODO: Parsing for binary packages? (1byte 2bytes)
 

@@ -11,12 +11,13 @@ import threading
 from queue import Queue
 import mysql.connector
 
-from .server import Server
-from .handler import RequestHandler
-from .config import config, msg_structure
-from .utils import get_session_id
-from .database import Database
-from .dataprocessor import data_for_db, expand_pkg_struct
+from server import Server
+from handler import RequestHandler
+from config import config, msg_structure
+from utils import get_session_id
+from database import Database
+from dataprocessor import data_for_db, expand_pkg_struct
+from parser import parse, find_pkg
 
 logger = logging.getLogger(__name__)
 
