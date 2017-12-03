@@ -167,3 +167,6 @@ LOGGING = {
         },
     },
 }
+
+# CUSTOM
+TSERVER_DIR = '/home/andrew/Projects/CAST/tserver'

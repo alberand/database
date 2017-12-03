@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import json
+import subprocess
+
+from django.conf import settings
 
 lvl_to_degree = [
     360.0,
@@ -158,7 +162,23 @@ def json_route(packages):
 
     return str(data_set).replace('\'', '"') 
 
+def list_servers():
+    cmd = '{}/bin/server.sh -l | grep -E "^Name"'.format(settings.TSERVER_DIR)
+    proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE)
+    output = proc.stdout.decode('utf-8')
+
+    servers = []
+    if not isinstance(output, int):
+        lines = filter(None, output.split('\n'))
+        for line in lines:
+            servers.append(line)
+
+    return servers
+
 if __name__ == '__main__':
+    print(list_servers())
+
+    sys.exit(0)
     from pprint import pprint
 
     print('='*80)

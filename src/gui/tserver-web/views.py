@@ -12,6 +12,7 @@ from .models import Sessions, Packages
 
 from .utils import add_coords_to_json, NMEA_to_ll, NMEA_to_dd, lvl_to_degree
 from .utils import route_template, json_route, find_coords_center, find_bounds
+from .utils import list_servers
 
 class MainPage(generic.TemplateView):
     '''
@@ -22,6 +23,7 @@ class MainPage(generic.TemplateView):
     def get(self, request):
         response =  render(request, self.template_name, 
                 {
+                    'servers': list_servers(),
                     'sessions': Sessions.objects.all()
                 }
         )

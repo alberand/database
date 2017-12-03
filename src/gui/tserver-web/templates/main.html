@@ -42,6 +42,18 @@
         <li><a href="{% url 'GlobalMap' %}">Global Map</a></li>
       </ul>
     </nav> -->
+    {% if servers %}
+    <div class="alert alert-success" role="alert">
+        List of currently running servers:
+        {% for server in servers %}
+            <p>{{ server }}</p>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+        We couldn't find any running servers.
+    </div>
+    {% endif %}
     <h4>Log-Sessions:</h4>
     <nav class="nav-sidebar">
 	  <ul class="nav-sidebar-list">
