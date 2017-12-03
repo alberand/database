@@ -150,7 +150,7 @@ LOGGING = {
         'file': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': 'tserver-web.log',
+            'filename': os.path.join(BASE_DIR, 'tserver-web.log'),
             'maxBytes': 1024*1024*15, # 15MB
             'backupCount': 10,
         },
