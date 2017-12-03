@@ -105,6 +105,7 @@ class SessionPage(generic.TemplateView):
 
         return render(request, self.template_name, 
                 {
+                    'servers': list_servers(),
                     'ext_templ':        'main.html',
                     'sessions':         Sessions.objects.all(),
                     'names':            self._disp_fields_names,
@@ -237,6 +238,7 @@ class GlobalMap(generic.TemplateView):
 
         response =  render(request, self.template_name, 
                 {
+                    'servers': list_servers(),
                     'ext_templ':        'main.html',
                     'sessions':         Sessions.objects.all(),
                     'routes':           routes,
